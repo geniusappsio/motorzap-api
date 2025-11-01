@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/http/server.ts",
-    "build": "bun build src/http/server.ts --target bun --outdir ./dist",
+    "build:dev": "bun build --minify-whitespace --minify-syntax src/http/server.ts --target bun --outdir ./dist",
+    "build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server src/index.ts",
     "start": "NODE_ENV=production bun dist/server.js",
     "test": "bun test",
     "generate": "drizzle-kit generate",
@@ -15,6 +16,8 @@
   },
   "private": true,
   "dependencies": {
+    "@elysiajs/openapi": "^1.4.11",
+    "@elysiajs/opentelemetry": "^1.4.0",
     "dotenv": "^17.2.2",
     "drizzle-orm": "^0.44.5",
     "elysia": "^1.4.7",
@@ -34,6 +37,8 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "pg-mcp-server": "^0.2.0",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }

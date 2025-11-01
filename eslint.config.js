@@ -5,6 +5,7 @@ import drizzlePlugin from 'eslint-plugin-drizzle'
 import importPlugin from 'eslint-plugin-import'
 import nPlugin from 'eslint-plugin-n'
 import promisePlugin from 'eslint-plugin-promise'
+import simpleImportSort from 'eslint-plugin-simple-import-sort'
 
 export default [
   js.configs.recommended,
@@ -30,7 +31,8 @@ export default [
       drizzle: drizzlePlugin,
       import: importPlugin,
       n: nPlugin,
-      promise: promisePlugin
+      promise: promisePlugin,
+      'simple-import-sort': simpleImportSort
     },
     rules: {
       // Standard JS rules adaptadas para TypeScript
@@ -69,18 +71,8 @@ export default [
       'promise/catch-or-return': 'warn',
 
       // Import rules
-      'import/order': ['error', {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          'parent',
-          'sibling',
-          'index'
-        ],
-        'newlines-between': 'always',
-        alphabetize: { order: 'asc', caseInsensitive: true }
-      }],
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
       'import/no-duplicates': 'error',
 
       // Node.js rules
