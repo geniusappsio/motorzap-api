@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+bun.lockb
+
+# Build outputs
+dist/
+*.log
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.sample
+
+# Git
+.git/
+.gitignore
+.github/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+*.test.ts
+*.spec.ts
+
+# Documentation
+README.md
+CLAUDE.md
+.claude/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Misc
+.DS_Store
+*.md
+!package.json

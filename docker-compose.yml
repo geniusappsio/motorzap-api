@@ -1,17 +1,45 @@
 services:
   postgres:
     image: postgres:18
+    container_name: motorzap-postgres
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: motorzap
       POSTGRES_PASSWORD: motorzap
       POSTGRES_DB: motorzap
-  
-  adminer:
-    image: adminer:5
-    ports:
-      - 8080:8080
+    volumes:
+      - pg_motorzap_data:/var/lib/postgresql/data
+    networks:
+      - motorzap-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U motorzap"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: motorzap-api
     environment:
-      ADMINER_DESIGN: dracula
-      ADMINER_DEFAULT_SERVER: postgres
+      DATABASE_URL: postgres://motorzap:motorzap@postgres:5432/motorzap
+      PORT: 3333
+      NODE_ENV: production
+    ports:
+      - "3333:3333"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - motorzap-network
+    restart: unless-stopped
+
+volumes:
+  pg_motorzap_data:
+    driver: local
+
+networks:
+  motorzap-network:
+    driver: bridge
