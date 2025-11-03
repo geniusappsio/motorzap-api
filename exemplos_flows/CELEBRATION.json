@@ -1,0 +1,1755 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "INICIO": ["PERFIL_CIDADE", "AGRADECIMENTO_RECUSA"],
+    "PERFIL_CIDADE": ["PERFIL_IDADE"],
+    "PERFIL_IDADE": ["PERFIL_FREQUENCIA"],
+    "PERFIL_FREQUENCIA": ["CONHECIMENTO_EVENTO"],
+    "CONHECIMENTO_EVENTO": ["COMO_CONHECEU", "INFO_EVENTO"],
+    "INFO_EVENTO": ["BARREIRAS_MOTIVOS"],
+    "COMO_CONHECEU": ["EXPERIENCIA_PARTICIPACAO"],
+    "EXPERIENCIA_PARTICIPACAO": ["AVALIACAO_EVENTO", "BARREIRAS_MOTIVOS"],
+    "AVALIACAO_EVENTO": ["AVALIACAO_RECOMENDACAO"],
+    "AVALIACAO_RECOMENDACAO": ["PERCEPCAO_GERAL"],
+    "BARREIRAS_MOTIVOS": ["MOTIVACOES_INTERESSE"],
+    "MOTIVACOES_INTERESSE": ["AGRADECIMENTO_NAO_CONHECE", "CONHECE_PERCEPCAO"],
+    "CONHECE_PERCEPCAO": ["PERCEPCAO_GERAL", "RELEVANCIA_EVENTO"],
+    "PERCEPCAO_GERAL": ["RELEVANCIA_EVENTO"],
+    "RELEVANCIA_EVENTO": ["AGRADECIMENTO_FINAL"],
+    "AGRADECIMENTO_RECUSA": [],
+    "AGRADECIMENTO_NAO_CONHECE": [],
+    "AGRADECIMENTO_FINAL": []
+  },
+  "screens": [
+    {
+      "id": "INICIO",
+      "title": "Pesquisa Réveillon",
+      "sensitive": ["aceita_participar"],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎆 Pesquisa sobre o Réveillon Celebration"
+          },
+          {
+            "type": "TextBody",
+            "text": "Olá! Estamos realizando uma pesquisa para conhecer melhor a percepção do público alagoano sobre o Réveillon Celebration."
+          },
+          {
+            "type": "TextBody",
+            "text": "A pesquisa é anônima e leva apenas alguns minutos."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_participar",
+                "label": "Aceita participar?",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim, quero participar"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não, obrigado"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.aceita_participar} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Iniciar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "PERFIL_CIDADE"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_RECUSA"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_CIDADE",
+      "title": "Sua Cidade",
+      "sensitive": ["cidade", "outra_cidade"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📍 Perfil - Localização"
+          },
+          {
+            "type": "TextBody",
+            "text": "Em qual cidade você mora em Alagoas?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "cidade",
+                "label": "Selecione:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MACEIO",
+                    "title": "Maceió"
+                  },
+                  {
+                    "id": "ARAPIRACA",
+                    "title": "Arapiraca"
+                  },
+                  {
+                    "id": "OUTRA",
+                    "title": "Outra cidade"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.cidade} == 'OUTRA'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outra_cidade",
+                    "label": "Qual cidade?",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERFIL_IDADE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${form.cidade}",
+                    "outra_cidade": "${form.outra_cidade}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_IDADE",
+      "title": "Faixa Etária",
+      "sensitive": ["faixa_etaria"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "cidade": {
+          "type": "string",
+          "__example__": "MACEIO"
+        },
+        "outra_cidade": {
+          "type": "string",
+          "__example__": ""
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👤 Perfil - Idade"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual sua faixa etária?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "faixa_etaria",
+                "label": "Selecione:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MENOS_18",
+                    "title": "Menos de 18 anos"
+                  },
+                  {
+                    "id": "18_24",
+                    "title": "18 a 24 anos"
+                  },
+                  {
+                    "id": "25_34",
+                    "title": "25 a 34 anos"
+                  },
+                  {
+                    "id": "35_44",
+                    "title": "35 a 44 anos"
+                  },
+                  {
+                    "id": "45_MAIS",
+                    "title": "45 anos ou mais"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERFIL_FREQUENCIA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${form.faixa_etaria}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_FREQUENCIA",
+      "title": "Frequência em Eventos",
+      "sensitive": ["frequencia_eventos"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "cidade": {
+          "type": "string",
+          "__example__": "MACEIO"
+        },
+        "outra_cidade": {
+          "type": "string",
+          "__example__": ""
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎉 Perfil - Eventos"
+          },
+          {
+            "type": "TextBody",
+            "text": "Com que frequência você costuma participar de festas ou eventos de entretenimento em Alagoas?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "frequencia_eventos",
+                "label": "Selecione:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "NUNCA",
+                    "title": "Nunca"
+                  },
+                  {
+                    "id": "RARAMENTE",
+                    "title": "Raramente",
+                    "description": "1-2 vezes por ano"
+                  },
+                  {
+                    "id": "OCASIONALMENTE",
+                    "title": "Ocasionalmente",
+                    "description": "3-5 vezes por ano"
+                  },
+                  {
+                    "id": "FREQUENTEMENTE",
+                    "title": "Frequentemente",
+                    "description": "Mais de 5 vezes por ano"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "CONHECIMENTO_EVENTO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${form.frequencia_eventos}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONHECIMENTO_EVENTO",
+      "title": "Conhecimento do Evento",
+      "sensitive": ["conhece_evento"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "cidade": {
+          "type": "string",
+          "__example__": "MACEIO"
+        },
+        "outra_cidade": {
+          "type": "string",
+          "__example__": ""
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "frequencia_eventos": {
+          "type": "string",
+          "__example__": "OCASIONALMENTE"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎆 Conhecimento do Evento"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você já ouviu falar do Réveillon Celebration?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "conhece_evento",
+                "label": "Responda:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.conhece_evento} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "COMO_CONHECEU"
+                      },
+                      "payload": {
+                        "aceita_participar": "${data.aceita_participar}",
+                        "cidade": "${data.cidade}",
+                        "outra_cidade": "${data.outra_cidade}",
+                        "faixa_etaria": "${data.faixa_etaria}",
+                        "frequencia_eventos": "${data.frequencia_eventos}",
+                        "conhece_evento": "${form.conhece_evento}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "INFO_EVENTO"
+                      },
+                      "payload": {
+                        "aceita_participar": "${data.aceita_participar}",
+                        "cidade": "${data.cidade}",
+                        "outra_cidade": "${data.outra_cidade}",
+                        "faixa_etaria": "${data.faixa_etaria}",
+                        "frequencia_eventos": "${data.frequencia_eventos}",
+                        "conhece_evento": "${form.conhece_evento}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "INFO_EVENTO",
+      "title": "Seguir no Instagram",
+      "sensitive": ["aceita_instagram"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "cidade": {
+          "type": "string",
+          "__example__": "MACEIO"
+        },
+        "outra_cidade": {
+          "type": "string",
+          "__example__": ""
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "frequencia_eventos": {
+          "type": "string",
+          "__example__": "OCASIONALMENTE"
+        },
+        "conhece_evento": {
+          "type": "string",
+          "__example__": "NAO"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📱 Siga no Instagram"
+          },
+          {
+            "type": "TextBody",
+            "text": "Gostaria de receber informações sobre a edição de 2026 do Réveillon Celebration?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_instagram",
+                "label": "Responda:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não"
+                  }
+                ]
+              },
+              {
+                "type": "EmbeddedLink",
+                "text": "Abrir Instagram",
+                "on-click-action": {
+                  "name": "open_url",
+                  "url": "https://www.instagram.com/reveilloncelebration/"
+                }
+              },
+              {
+                "type": "Footer",
+                "label": "Continuar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "BARREIRAS_MOTIVOS"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "aceita_instagram": "${form.aceita_instagram}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "BARREIRAS_MOTIVOS",
+      "title": "Barreiras",
+      "sensitive": ["motivos_nao_participacao", "outro_motivo"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "NAO"},
+        "como_conheceu": {"type": "string", "__example__": ""},
+        "outro_como": {"type": "string", "__example__": ""},
+        "ja_participou": {"type": "string", "__example__": ""},
+        "aceita_instagram": {"type": "string", "__example__": "NAO"},
+        "mostrar_outro_motivo": {"type": "boolean", "__example__": false}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🚧 Barreiras"
+          },
+          {
+            "type": "TextBody",
+            "text": "Quais motivos mais influenciam sua decisão de não participar?"
+          },
+          {
+            "type": "TextBody",
+            "text": "Selecione todas as opções que se aplicam:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "CheckboxGroup",
+                "name": "motivos_nao_participacao",
+                "label": "Marque os motivos:",
+                "required": true,
+                "min-selected-items": 1,
+                "data-source": [
+                  {
+                    "id": "PRECO",
+                    "title": "💰 Preço do ingresso"
+                  },
+                  {
+                    "id": "LOCALIZACAO",
+                    "title": "📍 Localização"
+                  },
+                  {
+                    "id": "SEM_INTERESSE",
+                    "title": "😐 Sem interesse"
+                  },
+                  {
+                    "id": "FAMILIA",
+                    "title": "👨‍👩‍👧‍👦 Prefiro com família"
+                  },
+                  {
+                    "id": "TRANSPORTE",
+                    "title": "🚗 Transporte/hospedagem"
+                  },
+                  {
+                    "id": "NAO_CONHECO",
+                    "title": "❓ Não conheço bem"
+                  },
+                  {
+                    "id": "OUTROS",
+                    "title": "Outros motivos",
+                    "on-select-action": {
+                      "name": "update_data",
+                      "payload": {"mostrar_outro_motivo": true}
+                    },
+                    "on-unselect-action": {
+                      "name": "update_data",
+                      "payload": {"mostrar_outro_motivo": false}
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${data.mostrar_outro_motivo}",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_motivo",
+                    "label": "Qual motivo?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "MOTIVACOES_INTERESSE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${data.como_conheceu}",
+                    "outro_como": "${data.outro_como}",
+                    "ja_participou": "${data.ja_participou}",
+                    "aceita_instagram": "${data.aceita_instagram}",
+                    "motivos_nao_participacao": "${form.motivos_nao_participacao}",
+                    "outro_motivo": "${form.outro_motivo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "MOTIVACOES_INTERESSE",
+      "title": "Motivações",
+      "sensitive": ["motivacoes_interesse", "outra_sugestao"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "NAO"},
+        "como_conheceu": {"type": "string", "__example__": ""},
+        "outro_como": {"type": "string", "__example__": ""},
+        "ja_participou": {"type": "string", "__example__": ""},
+        "aceita_instagram": {"type": "string", "__example__": "NAO"},
+        "motivos_nao_participacao": {"type": "array", "items": {"type": "string"}, "__example__": ["PRECO"]},
+        "outro_motivo": {"type": "string", "__example__": ""},
+        "mostrar_outra_sugestao": {"type": "boolean", "__example__": false}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "💡 Motivações"
+          },
+          {
+            "type": "TextBody",
+            "text": "O que faria você ter mais interesse em participar do Réveillon Celebration?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "CheckboxGroup",
+                "name": "motivacoes_interesse",
+                "label": "Selecione as opções:",
+                "required": true,
+                "min-selected-items": 1,
+                "data-source": [
+                  {
+                    "id": "INGRESSOS_ACESSIVEIS",
+                    "title": "💸 Ingressos acessíveis"
+                  },
+                  {
+                    "id": "ATRACOES_DIFERENCIADAS",
+                    "title": "🎤 Atrações diferenciadas"
+                  },
+                  {
+                    "id": "MELHOR_DIVULGACAO",
+                    "title": "📢 Melhor divulgação"
+                  },
+                  {
+                    "id": "TRANSPORTE_HOSPEDAGEM",
+                    "title": "🚌 Transporte/hospedagem"
+                  },
+                  {
+                    "id": "OUTRAS_SUGESTOES",
+                    "title": "💭 Outras sugestões",
+                    "on-select-action": {
+                      "name": "update_data",
+                      "payload": {"mostrar_outra_sugestao": true}
+                    },
+                    "on-unselect-action": {
+                      "name": "update_data",
+                      "payload": {"mostrar_outra_sugestao": false}
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${data.mostrar_outra_sugestao}",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outra_sugestao",
+                    "label": "Qual sugestão?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${data.conhece_evento} == 'NAO'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_NAO_CONHECE"
+                      },
+                      "payload": {
+                        "aceita_participar": "${data.aceita_participar}",
+                        "cidade": "${data.cidade}",
+                        "outra_cidade": "${data.outra_cidade}",
+                        "faixa_etaria": "${data.faixa_etaria}",
+                        "frequencia_eventos": "${data.frequencia_eventos}",
+                        "conhece_evento": "${data.conhece_evento}",
+                        "aceita_instagram": "${data.aceita_instagram}",
+                        "motivos_nao_participacao": "${data.motivos_nao_participacao}",
+                        "outro_motivo": "${data.outro_motivo}",
+                        "motivacoes_interesse": "${form.motivacoes_interesse}",
+                        "outra_sugestao": "${form.outra_sugestao}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "CONHECE_PERCEPCAO"
+                      },
+                      "payload": {
+                        "aceita_participar": "${data.aceita_participar}",
+                        "cidade": "${data.cidade}",
+                        "outra_cidade": "${data.outra_cidade}",
+                        "faixa_etaria": "${data.faixa_etaria}",
+                        "frequencia_eventos": "${data.frequencia_eventos}",
+                        "conhece_evento": "${data.conhece_evento}",
+                        "como_conheceu": "${data.como_conheceu}",
+                        "outro_como": "${data.outro_como}",
+                        "ja_participou": "${data.ja_participou}",
+                        "aceita_instagram": "${data.aceita_instagram}",
+                        "motivos_nao_participacao": "${data.motivos_nao_participacao}",
+                        "outro_motivo": "${data.outro_motivo}",
+                        "motivacoes_interesse": "${form.motivacoes_interesse}",
+                        "outra_sugestao": "${form.outra_sugestao}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_NAO_CONHECE",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "NAO"},
+        "aceita_instagram": {"type": "string", "__example__": "NAO"},
+        "motivos_nao_participacao": {"type": "array", "items": {"type": "string"}, "__example__": ["PRECO"]},
+        "outro_motivo": {"type": "string", "__example__": ""},
+        "motivacoes_interesse": {"type": "array", "items": {"type": "string"}, "__example__": ["INGRESSOS_ACESSIVEIS"]},
+        "outra_sugestao": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎉 Pesquisa Concluída!"
+          },
+          {
+            "type": "TextBody",
+            "text": "**Muito obrigado** por participar da nossa pesquisa!",
+            "markdown": true
+          },
+          {
+            "type": "TextBody",
+            "text": "Suas respostas são muito importantes para entendermos melhor as expectativas do público alagoano."
+          },
+          {
+            "type": "TextBody",
+            "text": "🎆 Desejamos um excelente Ano Novo!"
+          },
+          {
+            "type": "Form",
+            "name": "form_final",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQUISA_REVEILLON_NAO_CONHECE",
+                    "status": "pesquisa_concluida",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "aceita_instagram": "${data.aceita_instagram}",
+                    "motivos_nao_participacao": "${data.motivos_nao_participacao}",
+                    "outro_motivo": "${data.outro_motivo}",
+                    "motivacoes_interesse": "${data.motivacoes_interesse}",
+                    "outra_sugestao": "${data.outra_sugestao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "COMO_CONHECEU",
+      "title": "Como Conheceu",
+      "sensitive": ["como_conheceu", "outro_como"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "cidade": {
+          "type": "string",
+          "__example__": "MACEIO"
+        },
+        "outra_cidade": {
+          "type": "string",
+          "__example__": ""
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "frequencia_eventos": {
+          "type": "string",
+          "__example__": "OCASIONALMENTE"
+        },
+        "conhece_evento": {
+          "type": "string",
+          "__example__": "SIM"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📢 Como Conheceu"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você conheceu o Réveillon Celebration?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "como_conheceu",
+                "label": "Selecione:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "REDES_SOCIAIS",
+                    "title": "📱 Redes sociais"
+                  },
+                  {
+                    "id": "AMIGOS_FAMILIA",
+                    "title": "👥 Amigos/família"
+                  },
+                  {
+                    "id": "PROPAGANDA",
+                    "title": "📺 Propaganda",
+                    "description": "TV, rádio, outdoor, online"
+                  },
+                  {
+                    "id": "JA_PARTICIPEI",
+                    "title": "🎉 Já participei"
+                  },
+                  {
+                    "id": "OUTROS",
+                    "title": "Outros"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.como_conheceu} == 'OUTROS'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_como",
+                    "label": "Como conheceu?",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "EXPERIENCIA_PARTICIPACAO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${form.como_conheceu}",
+                    "outro_como": "${form.outro_como}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "EXPERIENCIA_PARTICIPACAO",
+      "title": "Participação no Evento",
+      "sensitive": ["ja_participou"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "cidade": {
+          "type": "string",
+          "__example__": "MACEIO"
+        },
+        "outra_cidade": {
+          "type": "string",
+          "__example__": ""
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "frequencia_eventos": {
+          "type": "string",
+          "__example__": "OCASIONALMENTE"
+        },
+        "conhece_evento": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "como_conheceu": {
+          "type": "string",
+          "__example__": "REDES_SOCIAIS"
+        },
+        "outro_como": {
+          "type": "string",
+          "__example__": ""
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎊 Experiência com o Evento"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você já participou do Réveillon Celebration?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "ja_participou",
+                "label": "Selecione:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM_UMA_VEZ",
+                    "title": "Sim, uma vez"
+                  },
+                  {
+                    "id": "SIM_MAIS_VEZES",
+                    "title": "Sim, mais de uma vez"
+                  },
+                  {
+                    "id": "NUNCA",
+                    "title": "Nunca participei"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.ja_participou} == 'NUNCA'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "BARREIRAS_MOTIVOS"
+                      },
+                      "payload": {
+                        "aceita_participar": "${data.aceita_participar}",
+                        "cidade": "${data.cidade}",
+                        "outra_cidade": "${data.outra_cidade}",
+                        "faixa_etaria": "${data.faixa_etaria}",
+                        "frequencia_eventos": "${data.frequencia_eventos}",
+                        "conhece_evento": "${data.conhece_evento}",
+                        "como_conheceu": "${data.como_conheceu}",
+                        "outro_como": "${data.outro_como}",
+                        "ja_participou": "${form.ja_participou}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AVALIACAO_EVENTO"
+                      },
+                      "payload": {
+                        "aceita_participar": "${data.aceita_participar}",
+                        "cidade": "${data.cidade}",
+                        "outra_cidade": "${data.outra_cidade}",
+                        "faixa_etaria": "${data.faixa_etaria}",
+                        "frequencia_eventos": "${data.frequencia_eventos}",
+                        "conhece_evento": "${data.conhece_evento}",
+                        "como_conheceu": "${data.como_conheceu}",
+                        "outro_como": "${data.outro_como}",
+                        "ja_participou": "${form.ja_participou}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_EVENTO",
+      "title": "Avaliação do Evento",
+      "sensitive": ["avaliacao_estrutura", "avaliacao_shows", "avaliacao_atendimento", "avaliacao_custo"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "SIM"},
+        "como_conheceu": {"type": "string", "__example__": "REDES_SOCIAIS"},
+        "outro_como": {"type": "string", "__example__": ""},
+        "ja_participou": {"type": "string", "__example__": "SIM_UMA_VEZ"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⭐ Avaliação da Experiência"
+          },
+          {
+            "type": "TextBody",
+            "text": "Por favor, avalie sua experiência no evento:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_estrutura",
+                "label": "Estrutura do evento:",
+                "required": true,
+                "data-source": [
+                  {"id": "5", "title": "5 - Excelente"},
+                  {"id": "4", "title": "4 - Boa"},
+                  {"id": "3", "title": "3 - Regular"},
+                  {"id": "2", "title": "2 - Ruim"},
+                  {"id": "1", "title": "1 - Péssima"}
+                ]
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_shows",
+                "label": "Shows/atrações:",
+                "required": true,
+                "data-source": [
+                  {"id": "5", "title": "5 - Excelente"},
+                  {"id": "4", "title": "4 - Boa"},
+                  {"id": "3", "title": "3 - Regular"},
+                  {"id": "2", "title": "2 - Ruim"},
+                  {"id": "1", "title": "1 - Péssima"}
+                ]
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_atendimento",
+                "label": "Atendimento:",
+                "required": true,
+                "data-source": [
+                  {"id": "5", "title": "5 - Excelente"},
+                  {"id": "4", "title": "4 - Bom"},
+                  {"id": "3", "title": "3 - Regular"},
+                  {"id": "2", "title": "2 - Ruim"},
+                  {"id": "1", "title": "1 - Péssimo"}
+                ]
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_custo",
+                "label": "Custo-benefício:",
+                "required": true,
+                "data-source": [
+                  {"id": "5", "title": "5 - Excelente"},
+                  {"id": "4", "title": "4 - Bom"},
+                  {"id": "3", "title": "3 - Regular"},
+                  {"id": "2", "title": "2 - Ruim"},
+                  {"id": "1", "title": "1 - Péssimo"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_RECOMENDACAO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${data.como_conheceu}",
+                    "outro_como": "${data.outro_como}",
+                    "ja_participou": "${data.ja_participou}",
+                    "avaliacao_estrutura": "${form.avaliacao_estrutura}",
+                    "avaliacao_shows": "${form.avaliacao_shows}",
+                    "avaliacao_atendimento": "${form.avaliacao_atendimento}",
+                    "avaliacao_custo": "${form.avaliacao_custo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_RECOMENDACAO",
+      "title": "Recomendação",
+      "sensitive": ["recomendaria", "iria_novamente", "justificativa_recomendacao"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "SIM"},
+        "como_conheceu": {"type": "string", "__example__": "REDES_SOCIAIS"},
+        "outro_como": {"type": "string", "__example__": ""},
+        "ja_participou": {"type": "string", "__example__": "SIM_UMA_VEZ"},
+        "avaliacao_estrutura": {"type": "string", "__example__": "4"},
+        "avaliacao_shows": {"type": "string", "__example__": "5"},
+        "avaliacao_atendimento": {"type": "string", "__example__": "4"},
+        "avaliacao_custo": {"type": "string", "__example__": "3"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👍 Recomendação"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "recomendaria",
+                "label": "Recomendaria?",
+                "required": true,
+                "data-source": [
+                  {"id": "SIM", "title": "✅ Sim"},
+                  {"id": "NAO", "title": "❌ Não"}
+                ]
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "iria_novamente",
+                "label": "Iria novamente?",
+                "required": true,
+                "data-source": [
+                  {"id": "SIM", "title": "✅ Sim"},
+                  {"id": "NAO", "title": "❌ Não"}
+                ]
+              },
+              {
+                "type": "TextArea",
+                "name": "justificativa_recomendacao",
+                "label": "Por que?",
+                "required": false
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERCEPCAO_GERAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${data.como_conheceu}",
+                    "outro_como": "${data.outro_como}",
+                    "ja_participou": "${data.ja_participou}",
+                    "avaliacao_estrutura": "${data.avaliacao_estrutura}",
+                    "avaliacao_shows": "${data.avaliacao_shows}",
+                    "avaliacao_atendimento": "${data.avaliacao_atendimento}",
+                    "avaliacao_custo": "${data.avaliacao_custo}",
+                    "recomendaria": "${form.recomendaria}",
+                    "iria_novamente": "${form.iria_novamente}",
+                    "justificativa_recomendacao": "${form.justificativa_recomendacao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONHECE_PERCEPCAO",
+      "title": "Verificação",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "NAO"},
+        "como_conheceu": {"type": "string", "__example__": ""},
+        "outro_como": {"type": "string", "__example__": ""},
+        "ja_participou": {"type": "string", "__example__": ""},
+        "aceita_instagram": {"type": "string", "__example__": "NAO"},
+        "motivos_nao_participacao": {"type": "array", "items": {"type": "string"}, "__example__": ["PRECO"]},
+        "outro_motivo": {"type": "string", "__example__": ""},
+        "motivacoes_interesse": {"type": "array", "items": {"type": "string"}, "__example__": ["INGRESSOS_ACESSIVEIS"]},
+        "outra_sugestao": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "If",
+            "condition": "${data.conhece_evento} == 'SIM'",
+            "then": [
+              {
+                "type": "Footer",
+                "label": "Continuar",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERCEPCAO_GERAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${data.como_conheceu}",
+                    "outro_como": "${data.outro_como}",
+                    "ja_participou": "${data.ja_participou}",
+                    "aceita_instagram": "${data.aceita_instagram}",
+                    "motivos_nao_participacao": "${data.motivos_nao_participacao}",
+                    "outro_motivo": "${data.outro_motivo}",
+                    "motivacoes_interesse": "${data.motivacoes_interesse}",
+                    "outra_sugestao": "${data.outra_sugestao}"
+                  }
+                }
+              }
+            ],
+            "else": [
+              {
+                "type": "Footer",
+                "label": "Continuar",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "RELEVANCIA_EVENTO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${data.como_conheceu}",
+                    "outro_como": "${data.outro_como}",
+                    "ja_participou": "${data.ja_participou}",
+                    "aceita_instagram": "${data.aceita_instagram}",
+                    "motivos_nao_participacao": "${data.motivos_nao_participacao}",
+                    "outro_motivo": "${data.outro_motivo}",
+                    "motivacoes_interesse": "${data.motivacoes_interesse}",
+                    "outra_sugestao": "${data.outra_sugestao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERCEPCAO_GERAL",
+      "title": "Percepção",
+      "sensitive": ["percepcao_palavras"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "SIM"},
+        "como_conheceu": {"type": "string", "__example__": "REDES_SOCIAIS"},
+        "outro_como": {"type": "string", "__example__": ""},
+        "ja_participou": {"type": "string", "__example__": "SIM_UMA_VEZ"},
+        "avaliacao_estrutura": {"type": "string", "__example__": ""},
+        "avaliacao_shows": {"type": "string", "__example__": ""},
+        "avaliacao_atendimento": {"type": "string", "__example__": ""},
+        "avaliacao_custo": {"type": "string", "__example__": ""},
+        "recomendaria": {"type": "string", "__example__": ""},
+        "iria_novamente": {"type": "string", "__example__": ""},
+        "justificativa_recomendacao": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "💭 Percepção Geral"
+          },
+          {
+            "type": "TextBody",
+            "text": "Quando você pensa no Réveillon Celebration, quais palavras ou sentimentos vêm à sua mente?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextArea",
+                "name": "percepcao_palavras",
+                "label": "Descreva:",
+                "required": true
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "RELEVANCIA_EVENTO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${data.como_conheceu}",
+                    "outro_como": "${data.outro_como}",
+                    "ja_participou": "${data.ja_participou}",
+                    "avaliacao_estrutura": "${data.avaliacao_estrutura}",
+                    "avaliacao_shows": "${data.avaliacao_shows}",
+                    "avaliacao_atendimento": "${data.avaliacao_atendimento}",
+                    "avaliacao_custo": "${data.avaliacao_custo}",
+                    "recomendaria": "${data.recomendaria}",
+                    "iria_novamente": "${data.iria_novamente}",
+                    "justificativa_recomendacao": "${data.justificativa_recomendacao}",
+                    "percepcao_palavras": "${form.percepcao_palavras}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "RELEVANCIA_EVENTO",
+      "title": "Relevância",
+      "sensitive": ["relevancia_evento"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "SIM"},
+        "como_conheceu": {"type": "string", "__example__": "REDES_SOCIAIS"},
+        "outro_como": {"type": "string", "__example__": ""},
+        "ja_participou": {"type": "string", "__example__": "SIM_UMA_VEZ"},
+        "aceita_instagram": {"type": "string", "__example__": "NAO"},
+        "avaliacao_estrutura": {"type": "string", "__example__": ""},
+        "avaliacao_shows": {"type": "string", "__example__": ""},
+        "avaliacao_atendimento": {"type": "string", "__example__": ""},
+        "avaliacao_custo": {"type": "string", "__example__": ""},
+        "recomendaria": {"type": "string", "__example__": ""},
+        "iria_novamente": {"type": "string", "__example__": ""},
+        "justificativa_recomendacao": {"type": "string", "__example__": ""},
+        "motivos_nao_participacao": {"type": "array", "items": {"type": "string"}, "__example__": []},
+        "outro_motivo": {"type": "string", "__example__": ""},
+        "motivacoes_interesse": {"type": "array", "items": {"type": "string"}, "__example__": []},
+        "outra_sugestao": {"type": "string", "__example__": ""},
+        "percepcao_palavras": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏆 Relevância para Alagoas"
+          },
+          {
+            "type": "TextBody",
+            "text": "Na sua opinião, o Réveillon Celebration é hoje:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "relevancia_evento",
+                "label": "Selecione:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MUITO_RELEVANTE",
+                    "title": "⭐ Muito relevante"
+                  },
+                  {
+                    "id": "MEDIO_IMPORTANTE",
+                    "title": "✨ Médio, mas importante"
+                  },
+                  {
+                    "id": "POUCO_RELEVANTE",
+                    "title": "💫 Pouco relevante"
+                  },
+                  {
+                    "id": "NAO_SEI",
+                    "title": "❓ Não sei opinar"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Finalizar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AGRADECIMENTO_FINAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${data.como_conheceu}",
+                    "outro_como": "${data.outro_como}",
+                    "ja_participou": "${data.ja_participou}",
+                    "aceita_instagram": "${data.aceita_instagram}",
+                    "avaliacao_estrutura": "${data.avaliacao_estrutura}",
+                    "avaliacao_shows": "${data.avaliacao_shows}",
+                    "avaliacao_atendimento": "${data.avaliacao_atendimento}",
+                    "avaliacao_custo": "${data.avaliacao_custo}",
+                    "recomendaria": "${data.recomendaria}",
+                    "iria_novamente": "${data.iria_novamente}",
+                    "justificativa_recomendacao": "${data.justificativa_recomendacao}",
+                    "motivos_nao_participacao": "${data.motivos_nao_participacao}",
+                    "outro_motivo": "${data.outro_motivo}",
+                    "motivacoes_interesse": "${data.motivacoes_interesse}",
+                    "outra_sugestao": "${data.outra_sugestao}",
+                    "percepcao_palavras": "${data.percepcao_palavras}",
+                    "relevancia_evento": "${form.relevancia_evento}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_RECUSA",
+      "title": "Obrigado",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "NAO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "😊 Obrigado"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agradecemos seu tempo!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Caso mude de ideia, estaremos aqui. Sua opinião é muito importante para nós."
+          },
+          {
+            "type": "Form",
+            "name": "form_recusa",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQUISA_REVEILLON",
+                    "status": "recusou_participar",
+                    "aceita_participar": "${data.aceita_participar}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_FINAL",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "cidade": {"type": "string", "__example__": "MACEIO"},
+        "outra_cidade": {"type": "string", "__example__": ""},
+        "faixa_etaria": {"type": "string", "__example__": "25_34"},
+        "frequencia_eventos": {"type": "string", "__example__": "OCASIONALMENTE"},
+        "conhece_evento": {"type": "string", "__example__": "SIM"},
+        "como_conheceu": {"type": "string", "__example__": "REDES_SOCIAIS"},
+        "outro_como": {"type": "string", "__example__": ""},
+        "ja_participou": {"type": "string", "__example__": "SIM_UMA_VEZ"},
+        "aceita_instagram": {"type": "string", "__example__": "NAO"},
+        "avaliacao_estrutura": {"type": "string", "__example__": "4"},
+        "avaliacao_shows": {"type": "string", "__example__": "5"},
+        "avaliacao_atendimento": {"type": "string", "__example__": "4"},
+        "avaliacao_custo": {"type": "string", "__example__": "3"},
+        "recomendaria": {"type": "string", "__example__": "SIM"},
+        "iria_novamente": {"type": "string", "__example__": "SIM"},
+        "justificativa_recomendacao": {"type": "string", "__example__": "Ótimo evento"},
+        "motivos_nao_participacao": {"type": "array", "items": {"type": "string"}, "__example__": []},
+        "outro_motivo": {"type": "string", "__example__": ""},
+        "motivacoes_interesse": {"type": "array", "items": {"type": "string"}, "__example__": []},
+        "outra_sugestao": {"type": "string", "__example__": ""},
+        "percepcao_palavras": {"type": "string", "__example__": "Festa grande, muita gente"},
+        "relevancia_evento": {"type": "string", "__example__": "MUITO_RELEVANTE"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎉 Pesquisa Concluída!"
+          },
+          {
+            "type": "TextBody",
+            "text": "**Muito obrigado** por participar da nossa pesquisa sobre o Réveillon Celebration!",
+            "markdown": true
+          },
+          {
+            "type": "TextBody",
+            "text": "Suas respostas são muito importantes para entendermos melhor as expectativas e percepções do público alagoano."
+          },
+          {
+            "type": "TextBody",
+            "text": "🎆 Desejamos um excelente Ano Novo!"
+          },
+          {
+            "type": "Form",
+            "name": "form_final",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQUISA_REVEILLON_COMPLETA",
+                    "status": "pesquisa_concluida",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "cidade": "${data.cidade}",
+                    "outra_cidade": "${data.outra_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "frequencia_eventos": "${data.frequencia_eventos}",
+                    "conhece_evento": "${data.conhece_evento}",
+                    "como_conheceu": "${data.como_conheceu}",
+                    "outro_como": "${data.outro_como}",
+                    "ja_participou": "${data.ja_participou}",
+                    "aceita_instagram": "${data.aceita_instagram}",
+                    "avaliacao_estrutura": "${data.avaliacao_estrutura}",
+                    "avaliacao_shows": "${data.avaliacao_shows}",
+                    "avaliacao_atendimento": "${data.avaliacao_atendimento}",
+                    "avaliacao_custo": "${data.avaliacao_custo}",
+                    "recomendaria": "${data.recomendaria}",
+                    "iria_novamente": "${data.iria_novamente}",
+                    "justificativa_recomendacao": "${data.justificativa_recomendacao}",
+                    "motivos_nao_participacao": "${data.motivos_nao_participacao}",
+                    "outro_motivo": "${data.outro_motivo}",
+                    "motivacoes_interesse": "${data.motivacoes_interesse}",
+                    "outra_sugestao": "${data.outra_sugestao}",
+                    "percepcao_palavras": "${data.percepcao_palavras}",
+                    "relevancia_evento": "${data.relevancia_evento}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,927 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "INICIO": [
+      "AVALIACAO_GESTAO",
+      "AGRADECIMENTO_RECUSA"
+    ],
+    "AVALIACAO_GESTAO": [
+      "CONDUCAO_ELEICAO"
+    ],
+    "CONDUCAO_ELEICAO": [
+      "MODELO_ELEICAO"
+    ],
+    "MODELO_ELEICAO": [
+      "BENEFICIO_CANDIDATO"
+    ],
+    "BENEFICIO_CANDIDATO": [
+      "VOTO_APOIO_GOVERNADOR"
+    ],
+    "VOTO_APOIO_GOVERNADOR": [
+      "VOTO_APOIO_OAB"
+    ],
+    "VOTO_APOIO_OAB": [
+      "ESCOLHA_CANDIDATOS"
+    ],
+    "ESCOLHA_CANDIDATOS": [
+      "AGRADECIMENTO_FINAL"
+    ],
+    "AGRADECIMENTO_RECUSA": [],
+    "AGRADECIMENTO_FINAL": []
+  },
+  "screens": [
+    {
+      "id": "INICIO",
+      "title": "Bem-vindo à Pesquisa OAB/SE",
+      "sensitive": [
+        "aceita_participar"
+      ],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Pesquisa de Opinião OAB/SE"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você aceita participar desta pesquisa sobre a gestão da OAB/SE e o processo eleitoral do 5º Constitucional do TJSE?"
+          },
+          {
+            "type": "TextBody",
+            "text": "A pesquisa é confidencial e levará alguns minutos."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_participar",
+                "label": "Sua resposta:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim, aceito participar"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não quero participar"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.aceita_participar} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Iniciar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AVALIACAO_GESTAO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_RECUSA"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "data": {}
+    },
+    {
+      "id": "AVALIACAO_GESTAO",
+      "title": "Avaliação da Gestão",
+      "sensitive": [
+        "avaliacao_gestao"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Pergunta 1 de 7"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como o(a) senhor(a) avalia a gestão da OAB/SE nesses primeiros 9 meses de gestão?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_gestao",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTIMO",
+                    "title": "A) Ótimo"
+                  },
+                  {
+                    "id": "BOM",
+                    "title": "B) Bom"
+                  },
+                  {
+                    "id": "REGULAR",
+                    "title": "C) Regular"
+                  },
+                  {
+                    "id": "RUIM",
+                    "title": "D) Ruim"
+                  },
+                  {
+                    "id": "PESSIMO",
+                    "title": "E) Péssimo"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "CONDUCAO_ELEICAO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "avaliacao_gestao": "${form.avaliacao_gestao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONDUCAO_ELEICAO",
+      "title": "Condução da Eleição",
+      "sensitive": [
+        "conducao_eleicao"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_gestao": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Pergunta 2 de 7"
+          },
+          {
+            "type": "TextBody",
+            "text": "O(a) Senhor(a) concorda com a condução da OAB/SE para a eleição do 5º Constitucional do TJSE?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "conducao_eleicao",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "CONCORDO",
+                    "title": "A) Concordo"
+                  },
+                  {
+                    "id": "DISCORDO",
+                    "title": "B) Discordo"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "MODELO_ELEICAO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "avaliacao_gestao": "${data.avaliacao_gestao}",
+                    "conducao_eleicao": "${form.conducao_eleicao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "MODELO_ELEICAO",
+      "title": "Modelo de Eleição",
+      "sensitive": [
+        "modelo_eleicao"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_gestao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "conducao_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Pergunta 3 de 7"
+          },
+          {
+            "type": "TextBody",
+            "text": "Para o(a) senhor(a), seria mais viável a OAB/SE realizar a eleição do 5º Constitucional do TJSE:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "modelo_eleicao",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "HIBRIDA_COM_COTAS",
+                    "title": "A) Híbrida com cotas"
+                  },
+                  {
+                    "id": "HIBRIDA_SEM_COTAS",
+                    "title": "B) Híbrida sem cotas"
+                  },
+                  {
+                    "id": "DIRETA_COM_COTAS",
+                    "title": "C) Direta com cotas"
+                  },
+                  {
+                    "id": "DIRETA_SEM_COTAS",
+                    "title": "D) Direta sem cotas"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "BENEFICIO_CANDIDATO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "avaliacao_gestao": "${data.avaliacao_gestao}",
+                    "conducao_eleicao": "${data.conducao_eleicao}",
+                    "modelo_eleicao": "${form.modelo_eleicao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "BENEFICIO_CANDIDATO",
+      "title": "Benefício a Candidato",
+      "sensitive": [
+        "beneficio_candidato"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_gestao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "conducao_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "modelo_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Pergunta 4 de 7"
+          },
+          {
+            "type": "TextBody",
+            "text": "Da forma que está sendo realizada a eleição do 5º Constitucional do TJSE, o(a) Senhor(a) acredita que a OAB/SE está tentando beneficiar algum candidato?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "beneficio_candidato",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "A) Sim"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "B) Não"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "VOTO_APOIO_GOVERNADOR"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "avaliacao_gestao": "${data.avaliacao_gestao}",
+                    "conducao_eleicao": "${data.conducao_eleicao}",
+                    "modelo_eleicao": "${data.modelo_eleicao}",
+                    "beneficio_candidato": "${form.beneficio_candidato}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "VOTO_APOIO_GOVERNADOR",
+      "title": "Apoio do Governador",
+      "sensitive": [
+        "voto_apoio_governador"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_gestao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "conducao_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "modelo_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "beneficio_candidato": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Pergunta 5 de 7"
+          },
+          {
+            "type": "TextBody",
+            "text": "O(a) senhor(a) votaria em um candidato apoiado pelo governador do Estado?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "voto_apoio_governador",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "A) Sim"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "B) Não"
+                  },
+                  {
+                    "id": "INDECISO",
+                    "title": "C) Indeciso"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "VOTO_APOIO_OAB"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "avaliacao_gestao": "${data.avaliacao_gestao}",
+                    "conducao_eleicao": "${data.conducao_eleicao}",
+                    "modelo_eleicao": "${data.modelo_eleicao}",
+                    "beneficio_candidato": "${data.beneficio_candidato}",
+                    "voto_apoio_governador": "${form.voto_apoio_governador}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "VOTO_APOIO_OAB",
+      "title": "Apoio da OAB/SE",
+      "sensitive": [
+        "voto_apoio_oab"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_gestao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "conducao_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "modelo_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "beneficio_candidato": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "voto_apoio_governador": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Pergunta 6 de 7"
+          },
+          {
+            "type": "TextBody",
+            "text": "O(a) senhor(a) votaria em um candidato apoiado pela atual gestão da OAB/SE?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "voto_apoio_oab",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "A) Sim"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "B) Não"
+                  },
+                  {
+                    "id": "INDECISO",
+                    "title": "C) Indeciso"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "ESCOLHA_CANDIDATOS"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "avaliacao_gestao": "${data.avaliacao_gestao}",
+                    "conducao_eleicao": "${data.conducao_eleicao}",
+                    "modelo_eleicao": "${data.modelo_eleicao}",
+                    "beneficio_candidato": "${data.beneficio_candidato}",
+                    "voto_apoio_governador": "${data.voto_apoio_governador}",
+                    "voto_apoio_oab": "${form.voto_apoio_oab}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLHA_CANDIDATOS",
+      "title": "Escolha dos Candidatos",
+      "sensitive": [
+        "candidatos_selecionados"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_gestao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "conducao_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "modelo_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "beneficio_candidato": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "voto_apoio_governador": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "voto_apoio_oab": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Pergunta 7 de 7"
+          },
+          {
+            "type": "TextBody",
+            "text": "Candidatos para 5º Constitucional do TJSE"
+          },
+          {
+            "type": "TextBody",
+            "text": "📌 Selecione de 1 a 6 candidatos de sua preferência:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "CheckboxGroup",
+                "name": "candidatos_selecionados",
+                "label": "Escolha os candidatos:",
+                "required": true,
+                "min-selected-items": 1,
+                "max-selected-items": 6,
+                "data-source": [
+                  {
+                    "id": "ACACIA_GARDENIA",
+                    "title": "ACÁCIA GARDÊNIA SANTOS LELIS"
+                  },
+                  {
+                    "id": "ALESSANDER_SANTOS",
+                    "title": "ALESSANDER SANTOS BARBOSA"
+                  },
+                  {
+                    "id": "AMERICA_CARDOSO",
+                    "title": "AMÉRICA CARDOSO B. LIMA NEJAIM"
+                  },
+                  {
+                    "id": "ANA_LUCIA",
+                    "title": "ANA LÚCIA SOUZA ALVES"
+                  },
+                  {
+                    "id": "CARLA_CAROLINE",
+                    "title": "CARLA CAROLINE DE O. SILVA"
+                  },
+                  {
+                    "id": "CARLOS_PINNA",
+                    "title": "CARLOS PINNA DE ASSIS JÚNIOR"
+                  },
+                  {
+                    "id": "CICERO_DANTAS",
+                    "title": "CÍCERO DANTAS DE OLIVEIRA"
+                  },
+                  {
+                    "id": "CLARISSE_AGUIAR",
+                    "title": "CLARISSE DE AGUIAR R. SIMAS"
+                  },
+                  {
+                    "id": "EDEM_AUGUSTO",
+                    "title": "EDEM AUGUSTO P. FERREIRA"
+                  },
+                  {
+                    "id": "FABIANO_FREIRE",
+                    "title": "FABIANO FREIRE FEITOSA"
+                  },
+                  {
+                    "id": "GENISSON_CRUZ",
+                    "title": "GENISSON CRUZ DA SILVA"
+                  },
+                  {
+                    "id": "GETULIO_SAVIO",
+                    "title": "GETÚLIO SÁVIO SOBRAL NETO"
+                  },
+                  {
+                    "id": "JANETE_OLIVEIRA",
+                    "title": "JANETE DE OLIVEIRA S. GOMES"
+                  },
+                  {
+                    "id": "JOABY_GOMES",
+                    "title": "JOABY GOMES FERREIRA"
+                  },
+                  {
+                    "id": "JUVENAL_FRANCISCO",
+                    "title": "JUVENAL FRANCISCO DA R. NETO"
+                  },
+                  {
+                    "id": "KLEIDSON_NASCIMENTO",
+                    "title": "KLEIDSON NASCIMENTO DOS SANTOS"
+                  },
+                  {
+                    "id": "MARCIO_MACEDO",
+                    "title": "MÁRCIO MACEDO CONRADO"
+                  },
+                  {
+                    "id": "MARILIA_ALMEIDA",
+                    "title": "MARILIA DE ALMEIDA MENEZES"
+                  },
+                  {
+                    "id": "TATIANA_SILVESTRE",
+                    "title": "TATIANA SILVESTRE E S. CALÇADO"
+                  },
+                  {
+                    "id": "VICTOR_RIBEIRO",
+                    "title": "VICTOR RIBEIRO BARRETO"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Finalizar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AGRADECIMENTO_FINAL"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "avaliacao_gestao": "${data.avaliacao_gestao}",
+                    "conducao_eleicao": "${data.conducao_eleicao}",
+                    "modelo_eleicao": "${data.modelo_eleicao}",
+                    "beneficio_candidato": "${data.beneficio_candidato}",
+                    "voto_apoio_governador": "${data.voto_apoio_governador}",
+                    "voto_apoio_oab": "${data.voto_apoio_oab}",
+                    "candidatos_selecionados": "${form.candidatos_selecionados}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_RECUSA",
+      "title": "Agradecimento",
+      "terminal": true,
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚖️ Obrigado"
+          },
+          {
+            "type": "TextBody",
+            "text": "Compreendemos sua decisão."
+          },
+          {
+            "type": "TextBody",
+            "text": "Agradecemos seu tempo e tenha um excelente dia!"
+          },
+          {
+            "type": "Footer",
+            "label": "Encerrar",
+            "on-click-action": {
+              "name": "complete",
+              "payload": {
+                "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                "aceita_participar": "NAO",
+                "pesquisa_completada": false
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_FINAL",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_gestao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "conducao_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "modelo_eleicao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "beneficio_candidato": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "voto_apoio_governador": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "voto_apoio_oab": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "candidatos_selecionados": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": []
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "✅ Pesquisa Finalizada!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Muito obrigado pela sua participação!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Suas respostas foram registradas com sucesso e são muito importantes para nós."
+          },
+          {
+            "type": "TextBody",
+            "text": "A OAB/SE agradece sua colaboração. Tenha um excelente dia!"
+          },
+          {
+            "type": "Footer",
+            "label": "Encerrar",
+            "on-click-action": {
+              "name": "complete",
+              "payload": {
+                "pesquisa_id": "PESQ_OAB_SE_5_CONSTITUCIONAL",
+                "aceita_participar": "${data.aceita_participar}",
+                "avaliacao_gestao": "${data.avaliacao_gestao}",
+                "conducao_eleicao": "${data.conducao_eleicao}",
+                "modelo_eleicao": "${data.modelo_eleicao}",
+                "beneficio_candidato": "${data.beneficio_candidato}",
+                "voto_apoio_governador": "${data.voto_apoio_governador}",
+                "voto_apoio_oab": "${data.voto_apoio_oab}",
+                "candidatos_selecionados": "${data.candidatos_selecionados}",
+                "pesquisa_completada": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

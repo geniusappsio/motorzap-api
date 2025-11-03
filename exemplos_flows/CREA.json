@@ -1,0 +1,1791 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "INICIO": ["PERFIL_MUNICIPIO", "AGRADECIMENTO_RECUSA"],
+    "PERFIL_MUNICIPIO": ["PERFIL_SEXO"],
+    "PERFIL_SEXO": ["PERFIL_IDADE"],
+    "PERFIL_IDADE": ["PERFIL_TEMPO_ASSOCIADO"],
+    "PERFIL_TEMPO_ASSOCIADO": ["AVALIACAO_GESTAO_PARTE_UM"],
+    "AVALIACAO_GESTAO_PARTE_UM": ["AVALIACAO_GESTAO_PARTE_DOIS"],
+    "AVALIACAO_GESTAO_PARTE_DOIS": ["PONTO_POSITIVO"],
+    "PONTO_POSITIVO": ["AREA_MELHORIA"],
+    "AREA_MELHORIA": ["AVALIACAO_PRESIDENCIA"],
+    "AVALIACAO_PRESIDENCIA": ["APROVACAO_GESTAO"],
+    "APROVACAO_GESTAO": ["COMPARACAO_ANTERIOR"],
+    "COMPARACAO_ANTERIOR": ["PRINCIPAL_PROBLEMA"],
+    "PRINCIPAL_PROBLEMA": ["CONHECE_PRESIDENTE"],
+    "CONHECE_PRESIDENTE": ["VOTO_CLASSE"],
+    "VOTO_CLASSE": ["VOTO_GOVERNADOR"],
+    "VOTO_GOVERNADOR": ["VOTO_PRESIDENTE"],
+    "VOTO_PRESIDENTE": ["VOTO_SEM_BOLSONARO"],
+    "VOTO_SEM_BOLSONARO": ["AGRADECIMENTO_FINAL"],
+    "AGRADECIMENTO_RECUSA": [],
+    "AGRADECIMENTO_FINAL": []
+  },
+  "screens": [
+    {
+      "id": "INICIO",
+      "title": "Pesquisa CREA",
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Pesquisa de Avaliação - CREA"
+          },
+          {
+            "type": "TextBody",
+            "text": "Olá! O CREA está realizando uma pesquisa para avaliar a gestão atual e conhecer melhor as necessidades dos associados."
+          },
+          {
+            "type": "TextBody",
+            "text": "Sua opinião é fundamental! A pesquisa é anônima e leva cerca de 5 minutos."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_participar",
+                "label": "Você aceita participar?",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim, quero participar"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não, obrigado"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.aceita_participar} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Iniciar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "PERFIL_MUNICIPIO"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_RECUSA"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_MUNICIPIO",
+      "title": "Município de Atuação",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📍 Perfil - Localização"
+          },
+          {
+            "type": "TextBody",
+            "text": "Em qual município você atua profissionalmente?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "municipio",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": true,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERFIL_SEXO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${form.municipio}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_SEXO",
+      "title": "Sexo",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👤 Perfil - Sexo"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "sexo",
+                "label": "Qual é o seu sexo?",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MASCULINO",
+                    "title": "Masculino"
+                  },
+                  {
+                    "id": "FEMININO",
+                    "title": "Feminino"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERFIL_IDADE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${form.sexo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_IDADE",
+      "title": "Faixa Etária",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📅 Perfil - Idade"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "faixa_etaria",
+                "label": "Qual sua faixa etária?",
+                "required": true,
+                "data-source": [
+                  {"id": "18_24", "title": "18 a 24 anos"},
+                  {"id": "25_34", "title": "25 a 34 anos"},
+                  {"id": "35_44", "title": "35 a 44 anos"},
+                  {"id": "45_59", "title": "45 a 59 anos"},
+                  {"id": "ACIMA_59", "title": "Acima de 59 anos"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERFIL_TEMPO_ASSOCIADO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${form.faixa_etaria}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_TEMPO_ASSOCIADO",
+      "title": "Tempo de Associação",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⏱️ Tempo de Associação"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "tempo_associado",
+                "label": "Há quanto tempo é associado?",
+                "required": true,
+                "data-source": [
+                  {"id": "MENOS_5", "title": "Menos de 5 anos"},
+                  {"id": "5_10", "title": "5 a 10 anos"},
+                  {"id": "MAIS_10", "title": "Mais de 10 anos"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_GESTAO_PARTE_UM"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${form.tempo_associado}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_GESTAO_PARTE_UM",
+      "title": "Avaliação - Parte 1",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📋 Avaliação da Administração"
+          },
+          {
+            "type": "TextBody",
+            "text": "Para cada afirmativa abaixo, indique seu grau de concordância:",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextBody",
+                "text": "**1. As informações são claras e acessíveis**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "divulgacao_info",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "TextBody",
+                "text": "**2. Site, e-mail, redes sociais são eficientes**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "canais_comunicacao",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "TextBody",
+                "text": "**3. Atendimento é ágil e resolutivo**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "atendimento",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "TextBody",
+                "text": "**4. Os serviços online atendem necessidades**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "servicos_online",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "TextBody",
+                "text": "**5. A diretoria representa interesses da categoria**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "representacao",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_GESTAO_PARTE_DOIS"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${form.divulgacao_info}",
+                    "canais_comunicacao": "${form.canais_comunicacao}",
+                    "atendimento": "${form.atendimento}",
+                    "servicos_online": "${form.servicos_online}",
+                    "representacao": "${form.representacao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_GESTAO_PARTE_DOIS",
+      "title": "Avaliação - Parte 2",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📋 Avaliação (continuação)"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextBody",
+                "text": "**6. Há iniciativas para fortalecer a profissão**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "fortalecimento",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "TextBody",
+                "text": "**7. Uso de recursos do CREA transparente e responsável**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "uso_recursos",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "TextBody",
+                "text": "**8. Taxas e anuidades são justas**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "taxas_justas",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "TextBody",
+                "text": "**9. Diretoria promove ações para modernizar processos**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "modernizacao",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "TextBody",
+                "text": "**10. Há investimento em tecnologias**",
+                "markdown": true
+              },
+              {
+                "type": "RadioButtonsGroup",
+                "name": "investimento_tech",
+                "label": "---",
+                "required": true,
+                "data-source": [
+                  {"id": "1", "title": "1-Concordo totalmente"},
+                  {"id": "2", "title": "2-Concordo parcial"},
+                  {"id": "3", "title": "3-Neutro"},
+                  {"id": "4", "title": "4-Discordo parcial"},
+                  {"id": "5", "title": "5-Discordo totalmente"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PONTO_POSITIVO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${form.fortalecimento}",
+                    "uso_recursos": "${form.uso_recursos}",
+                    "taxas_justas": "${form.taxas_justas}",
+                    "modernizacao": "${form.modernizacao}",
+                    "investimento_tech": "${form.investimento_tech}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PONTO_POSITIVO",
+      "title": "Ponto Positivo",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👍 Pontos Positivos"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual o principal **PONTO POSITIVO** da gestão atual?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextArea",
+                "name": "ponto_positivo",
+                "label": "Descreva aqui:",
+                "required": false
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AREA_MELHORIA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${form.ponto_positivo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AREA_MELHORIA",
+      "title": "Área para Melhoria",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência na gestão"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🔧 Melhorias Necessárias"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual área precisa de **melhoria urgente**?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "area_melhoria",
+                "label": "Selecione a área:",
+                "required": true,
+                "data-source": [
+                  {"id": "ATENDIMENTO", "title": "👤 Atendimento ao associado"},
+                  {"id": "INFRAESTRUTURA", "title": "🏢 Infraestrutura"},
+                  {"id": "GESTAO_FINANCEIRA", "title": "💰 Gestão financeira"},
+                  {"id": "OUTRO", "title": "📝 Outro"},
+                  {"id": "NAO_SEI", "title": "❓ Não sei responder"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.area_melhoria} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outra_area",
+                    "label": "Qual área?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_PRESIDENCIA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${form.area_melhoria}",
+                    "outra_area": "${form.outra_area}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_PRESIDENCIA",
+      "title": "Avaliação da Presidência",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⭐ Avaliação da Presidência"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você avalia o trabalho desenvolvido pela atual presidência do CREA?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_presidencia",
+                "label": "Sua avaliação:",
+                "required": true,
+                "data-source": [
+                  {"id": "EXCELENTE", "title": "⭐⭐⭐⭐⭐ Excelente"},
+                  {"id": "BOM", "title": "⭐⭐⭐⭐ Bom"},
+                  {"id": "REGULAR", "title": "⭐⭐⭐ Regular"},
+                  {"id": "RUIM", "title": "⭐⭐ Ruim"},
+                  {"id": "PESSIMO", "title": "⭐ Péssimo"},
+                  {"id": "NAO_SEI", "title": "❓ Não sei responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "APROVACAO_GESTAO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${form.avaliacao_presidencia}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "APROVACAO_GESTAO",
+      "title": "Aprovação da Gestão",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👍 Aprovação da Administração"
+          },
+          {
+            "type": "TextBody",
+            "text": "De maneira geral, você aprova ou desaprova a maneira como a atual presidência está administrando a entidade?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aprovacao_gestao",
+                "label": "Sua resposta:",
+                "required": true,
+                "data-source": [
+                  {"id": "APROVA", "title": "👍 Aprova"},
+                  {"id": "DESAPROVA", "title": "👎 Desaprova"},
+                  {"id": "NAO_SEI", "title": "❓ Não sei responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "COMPARACAO_ANTERIOR"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${form.aprovacao_gestao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "COMPARACAO_ANTERIOR",
+      "title": "Comparação com Gestão Anterior",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"},
+        "aprovacao_gestao": {"type": "string", "__example__": "APROVA"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🔄 Comparação de Gestões"
+          },
+          {
+            "type": "TextBody",
+            "text": "Comparando com a diretoria anterior, você acha que a atual está sendo:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "comparacao_anterior",
+                "label": "Em comparação:",
+                "required": true,
+                "data-source": [
+                  {"id": "MELHOR", "title": "📈 Melhor"},
+                  {"id": "IGUAL", "title": "➡️ Mesma coisa/Igual"},
+                  {"id": "PIOR", "title": "📉 Pior"},
+                  {"id": "NAO_SEI", "title": "❓ Não sei responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PRINCIPAL_PROBLEMA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${data.aprovacao_gestao}",
+                    "comparacao_anterior": "${form.comparacao_anterior}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRINCIPAL_PROBLEMA",
+      "title": "Principal Problema",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"},
+        "aprovacao_gestao": {"type": "string", "__example__": "APROVA"},
+        "comparacao_anterior": {"type": "string", "__example__": "MELHOR"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚠️ Principal Problema"
+          },
+          {
+            "type": "TextBody",
+            "text": "Na sua opinião, qual o principal problema que você verifica hoje na entidade?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextArea",
+                "name": "principal_problema",
+                "label": "Descreva aqui:",
+                "required": false
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "CONHECE_PRESIDENTE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${data.aprovacao_gestao}",
+                    "comparacao_anterior": "${data.comparacao_anterior}",
+                    "principal_problema": "${form.principal_problema}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONHECE_PRESIDENTE",
+      "title": "Conhecimento do Presidente",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"},
+        "aprovacao_gestao": {"type": "string", "__example__": "APROVA"},
+        "comparacao_anterior": {"type": "string", "__example__": "MELHOR"},
+        "principal_problema": {"type": "string", "__example__": "Falta de comunicação"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👤 Presidente do CREA"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você pode me dizer quem é o(a) atual presidente do CREA?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "nome_presidente",
+                "label": "Nome do presidente:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "VOTO_CLASSE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${data.aprovacao_gestao}",
+                    "comparacao_anterior": "${data.comparacao_anterior}",
+                    "principal_problema": "${data.principal_problema}",
+                    "nome_presidente": "${form.nome_presidente}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "VOTO_CLASSE",
+      "title": "Voto em Candidato da Classe",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"},
+        "aprovacao_gestao": {"type": "string", "__example__": "APROVA"},
+        "comparacao_anterior": {"type": "string", "__example__": "MELHOR"},
+        "principal_problema": {"type": "string", "__example__": "Falta de comunicação"},
+        "nome_presidente": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Representação Política"
+          },
+          {
+            "type": "TextBody",
+            "text": "No próximo ano teremos eleições. Você votaria em algum candidato que pudesse representar a classe da engenharia e da geociências?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "voto_classe",
+                "label": "Sua resposta:",
+                "required": true,
+                "data-source": [
+                  {"id": "VOTARIA", "title": "✅ Votaria"},
+                  {"id": "PODERIA_VOTAR", "title": "🤔 Poderia votar"},
+                  {"id": "NAO_VOTARIA", "title": "❌ Não votaria"},
+                  {"id": "NAO_SEI", "title": "❓ Não sei responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "VOTO_GOVERNADOR"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${data.aprovacao_gestao}",
+                    "comparacao_anterior": "${data.comparacao_anterior}",
+                    "principal_problema": "${data.principal_problema}",
+                    "nome_presidente": "${data.nome_presidente}",
+                    "voto_classe": "${form.voto_classe}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "VOTO_GOVERNADOR",
+      "title": "Intenção de Voto - Governador",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"},
+        "aprovacao_gestao": {"type": "string", "__example__": "APROVA"},
+        "comparacao_anterior": {"type": "string", "__example__": "MELHOR"},
+        "principal_problema": {"type": "string", "__example__": "Falta de comunicação"},
+        "nome_presidente": {"type": "string", "__example__": ""},
+        "voto_classe": {"type": "string", "__example__": "VOTARIA"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Eleição para Governador"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição fosse hoje, em quem você votaria para governador do Pará?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "voto_governador",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "BETO_FARO", "title": "Beto Faro"},
+                  {"id": "DANIEL_SANTOS", "title": "Dr. Daniel Santos"},
+                  {"id": "HANA_GHASSAN", "title": "Hana Ghassan"},
+                  {"id": "SIMAO_JATENE", "title": "Simão Jatene"},
+                  {"id": "EDER_MAURO", "title": "Eder Mauro"},
+                  {"id": "ARACELY_LEMOS", "title": "Aracely Lemos"},
+                  {"id": "BRANCO_NULO", "title": "Branco/Nulo"},
+                  {"id": "NAO_SEI", "title": "Não sei responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "VOTO_PRESIDENTE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${data.aprovacao_gestao}",
+                    "comparacao_anterior": "${data.comparacao_anterior}",
+                    "principal_problema": "${data.principal_problema}",
+                    "nome_presidente": "${data.nome_presidente}",
+                    "voto_classe": "${data.voto_classe}",
+                    "voto_governador": "${form.voto_governador}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "VOTO_PRESIDENTE",
+      "title": "Intenção de Voto - Presidente",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"},
+        "aprovacao_gestao": {"type": "string", "__example__": "APROVA"},
+        "comparacao_anterior": {"type": "string", "__example__": "MELHOR"},
+        "principal_problema": {"type": "string", "__example__": "Falta de comunicação"},
+        "nome_presidente": {"type": "string", "__example__": ""},
+        "voto_classe": {"type": "string", "__example__": "VOTARIA"},
+        "voto_governador": {"type": "string", "__example__": "BETO_FARO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🇧🇷 Eleição Presidencial"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição fosse hoje, em quem você votaria para presidente da República?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "voto_presidente",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "BOLSONARO", "title": "Bolsonaro"},
+                  {"id": "LULA", "title": "Lula"},
+                  {"id": "TARCISIO", "title": "Tarcísio de Freitas"},
+                  {"id": "RATINHO", "title": "Ratinho Júnior"},
+                  {"id": "EDUARDO_LEITE", "title": "Eduardo Leite"},
+                  {"id": "RONALDO_CAIADO", "title": "Ronaldo Caiado"},
+                  {"id": "ROMEU_ZEMA", "title": "Romeu Zema"},
+                  {"id": "BRANCO_NULO", "title": "Branco/Nulo"},
+                  {"id": "NAO_SEI", "title": "Não sei responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "VOTO_SEM_BOLSONARO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${data.aprovacao_gestao}",
+                    "comparacao_anterior": "${data.comparacao_anterior}",
+                    "principal_problema": "${data.principal_problema}",
+                    "nome_presidente": "${data.nome_presidente}",
+                    "voto_classe": "${data.voto_classe}",
+                    "voto_governador": "${data.voto_governador}",
+                    "voto_presidente": "${form.voto_presidente}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "VOTO_SEM_BOLSONARO",
+      "title": "Cenário sem Bolsonaro",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"},
+        "aprovacao_gestao": {"type": "string", "__example__": "APROVA"},
+        "comparacao_anterior": {"type": "string", "__example__": "MELHOR"},
+        "principal_problema": {"type": "string", "__example__": "Falta de comunicação"},
+        "nome_presidente": {"type": "string", "__example__": ""},
+        "voto_classe": {"type": "string", "__example__": "VOTARIA"},
+        "voto_governador": {"type": "string", "__example__": "BETO_FARO"},
+        "voto_presidente": {"type": "string", "__example__": "BOLSONARO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Cenário Alternativo"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se Bolsonaro não fosse candidato, em quem você votaria?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "voto_sem_bolsonaro",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "LULA", "title": "Lula"},
+                  {"id": "TARCISIO", "title": "Tarcísio de Freitas"},
+                  {"id": "RATINHO", "title": "Ratinho Júnior"},
+                  {"id": "EDUARDO_LEITE", "title": "Eduardo Leite"},
+                  {"id": "RONALDO_CAIADO", "title": "Ronaldo Caiado"},
+                  {"id": "ROMEU_ZEMA", "title": "Romeu Zema"},
+                  {"id": "BRANCO_NULO", "title": "Branco/Nulo"},
+                  {"id": "NAO_SEI", "title": "Não sei responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Finalizar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AGRADECIMENTO_FINAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${data.aprovacao_gestao}",
+                    "comparacao_anterior": "${data.comparacao_anterior}",
+                    "principal_problema": "${data.principal_problema}",
+                    "nome_presidente": "${data.nome_presidente}",
+                    "voto_classe": "${data.voto_classe}",
+                    "voto_governador": "${data.voto_governador}",
+                    "voto_presidente": "${data.voto_presidente}",
+                    "voto_sem_bolsonaro": "${form.voto_sem_bolsonaro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_RECUSA",
+      "title": "Obrigado",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "NAO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "😊 Agradecemos"
+          },
+          {
+            "type": "TextBody",
+            "text": "Obrigado pelo seu tempo!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Caso mude de ideia, estaremos sempre à disposição. Sua opinião é importante para melhorarmos os serviços do CREA."
+          },
+          {
+            "type": "Form",
+            "name": "form_recusa",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQ_CREA_2025",
+                    "status": "recusou_participar",
+                    "aceita_participar": "${data.aceita_participar}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_FINAL",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "municipio": {"type": "string", "__example__": "Belém"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "tempo_associado": {"type": "string", "__example__": "5_10"},
+        "divulgacao_info": {"type": "string", "__example__": "1"},
+        "canais_comunicacao": {"type": "string", "__example__": "2"},
+        "atendimento": {"type": "string", "__example__": "3"},
+        "servicos_online": {"type": "string", "__example__": "2"},
+        "representacao": {"type": "string", "__example__": "1"},
+        "fortalecimento": {"type": "string", "__example__": "2"},
+        "uso_recursos": {"type": "string", "__example__": "1"},
+        "taxas_justas": {"type": "string", "__example__": "3"},
+        "modernizacao": {"type": "string", "__example__": "2"},
+        "investimento_tech": {"type": "string", "__example__": "2"},
+        "ponto_positivo": {"type": "string", "__example__": "Transparência"},
+        "area_melhoria": {"type": "string", "__example__": "ATENDIMENTO"},
+        "outra_area": {"type": "string", "__example__": ""},
+        "avaliacao_presidencia": {"type": "string", "__example__": "BOM"},
+        "aprovacao_gestao": {"type": "string", "__example__": "APROVA"},
+        "comparacao_anterior": {"type": "string", "__example__": "MELHOR"},
+        "principal_problema": {"type": "string", "__example__": "Falta de comunicação"},
+        "nome_presidente": {"type": "string", "__example__": ""},
+        "voto_classe": {"type": "string", "__example__": "VOTARIA"},
+        "voto_governador": {"type": "string", "__example__": "BETO_FARO"},
+        "voto_presidente": {"type": "string", "__example__": "BOLSONARO"},
+        "voto_sem_bolsonaro": {"type": "string", "__example__": "TARCISIO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎉 Pesquisa Concluída!"
+          },
+          {
+            "type": "TextBody",
+            "text": "**Muito obrigado** por participar da pesquisa de avaliação do CREA!",
+            "markdown": true
+          },
+          {
+            "type": "TextBody",
+            "text": "Suas respostas são fundamentais para melhorarmos nossos serviços e representação da categoria."
+          },
+          {
+            "type": "TextBody",
+            "text": "📊 Os resultados serão utilizados internamente para aprimoramento da gestão."
+          },
+          {
+            "type": "Form",
+            "name": "form_final",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "flow_modulo": "PESQUISA",
+                    "pesquisa_id": "PESQ_CREA_2025",
+                    "status": "pesquisa_concluida",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "municipio": "${data.municipio}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "tempo_associado": "${data.tempo_associado}",
+                    "divulgacao_info": "${data.divulgacao_info}",
+                    "canais_comunicacao": "${data.canais_comunicacao}",
+                    "atendimento": "${data.atendimento}",
+                    "servicos_online": "${data.servicos_online}",
+                    "representacao": "${data.representacao}",
+                    "fortalecimento": "${data.fortalecimento}",
+                    "uso_recursos": "${data.uso_recursos}",
+                    "taxas_justas": "${data.taxas_justas}",
+                    "modernizacao": "${data.modernizacao}",
+                    "investimento_tech": "${data.investimento_tech}",
+                    "ponto_positivo": "${data.ponto_positivo}",
+                    "area_melhoria": "${data.area_melhoria}",
+                    "outra_area": "${data.outra_area}",
+                    "avaliacao_presidencia": "${data.avaliacao_presidencia}",
+                    "aprovacao_gestao": "${data.aprovacao_gestao}",
+                    "comparacao_anterior": "${data.comparacao_anterior}",
+                    "principal_problema": "${data.principal_problema}",
+                    "nome_presidente": "${data.nome_presidente}",
+                    "voto_classe": "${data.voto_classe}",
+                    "voto_governador": "${data.voto_governador}",
+                    "voto_presidente": "${data.voto_presidente}",
+                    "voto_sem_bolsonaro": "${data.voto_sem_bolsonaro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,991 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "INICIO": ["PERFIL_SEXO", "AGRADECIMENTO_RECUSA"],
+    "PERFIL_SEXO": ["PERFIL_IDADE"],
+    "PERFIL_IDADE": ["DEP_ESTADUAL_ESPONTANEA"],
+    "DEP_ESTADUAL_ESPONTANEA": ["DEP_ESTADUAL_ESTIMULADA"],
+    "DEP_ESTADUAL_ESTIMULADA": ["DEP_FEDERAL_ESPONTANEA"],
+    "DEP_FEDERAL_ESPONTANEA": ["DEP_FEDERAL_ESTIMULADA"],
+    "DEP_FEDERAL_ESTIMULADA": ["GOVERNADOR_ESPONTANEA"],
+    "GOVERNADOR_ESPONTANEA": ["GOVERNADOR_ESTIMULADA"],
+    "GOVERNADOR_ESTIMULADA": ["PROBLEMA_MUNICIPAL"],
+    "PROBLEMA_MUNICIPAL": ["APROVACAO_GESTAO"],
+    "APROVACAO_GESTAO": ["AVALIACAO_GESTAO"],
+    "AVALIACAO_GESTAO": ["AGRADECIMENTO_FINAL"],
+    "AGRADECIMENTO_RECUSA": [],
+    "AGRADECIMENTO_FINAL": []
+  },
+  "screens": [
+    {
+      "id": "INICIO",
+      "title": "Pesquisa de Opinião",
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Pesquisa de Opinião Pública"
+          },
+          {
+            "type": "TextBody",
+            "text": "Olá! Estamos realizando uma pesquisa de opinião em Juazeiro-BA para conhecer a opinião dos cidadãos."
+          },
+          {
+            "type": "TextBody",
+            "text": "Sua participação é anônima e leva cerca de 5 minutos. Suas respostas são muito importantes!"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_participar",
+                "label": "Você aceita participar?",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim, quero participar"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não, obrigado"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.aceita_participar} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Iniciar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "PERFIL_SEXO"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_RECUSA"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_SEXO",
+      "title": "Sexo - Etapa 1/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👤 Perfil"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "sexo",
+                "label": "Qual é o seu sexo?",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MASCULINO",
+                    "title": "Masculino"
+                  },
+                  {
+                    "id": "FEMININO",
+                    "title": "Feminino"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERFIL_IDADE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${form.sexo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_IDADE",
+      "title": "Faixa Etária - Etapa 2/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📅 Faixa Etária"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "faixa_etaria",
+                "label": "Qual sua faixa etária?",
+                "required": true,
+                "data-source": [
+                  {"id": "16_24", "title": "16 a 24 anos"},
+                  {"id": "25_34", "title": "25 a 34 anos"},
+                  {"id": "35_44", "title": "35 a 44 anos"},
+                  {"id": "45_59", "title": "45 a 59 anos"},
+                  {"id": "ACIMA_59", "title": "Acima de 59 anos"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEP_ESTADUAL_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${form.faixa_etaria}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEP_ESTADUAL_ESPONTANEA",
+      "title": "Deputado Estadual - Etapa 3/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Deputado Estadual"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para **deputado estadual** fosse hoje, em quem você votaria?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "dep_estadual_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEP_ESTADUAL_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${form.dep_estadual_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEP_ESTADUAL_ESTIMULADA",
+      "title": "Deputado Estadual - Etapa 4/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Deputado Estadual"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição fosse hoje, em quem você votaria para deputado estadual?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "dep_estadual_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "JORDAVIO", "title": "Jordávio"},
+                  {"id": "ZO", "title": "Zó"},
+                  {"id": "HITALLO", "title": "Hitallo Marcelino"},
+                  {"id": "ROBERTO", "title": "Roberto Carlos"},
+                  {"id": "JUVENILSON", "title": "Juvenilson"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei / Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.dep_estadual_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_dep_estadual",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEP_FEDERAL_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${form.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${form.outro_dep_estadual}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEP_FEDERAL_ESPONTANEA",
+      "title": "Deputado Federal - Etapa 5/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "JORDAVIO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Deputado Federal"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para **deputado federal** fosse hoje, em quem você votaria?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "dep_federal_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEP_FEDERAL_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${form.dep_federal_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEP_FEDERAL_ESTIMULADA",
+      "title": "Deputado Federal - Etapa 6/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "JORDAVIO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Deputado Federal"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição fosse hoje, em quem você votaria para deputado federal?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "dep_federal_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "JAYME_LIMA", "title": "Jayme Lima"},
+                  {"id": "RAFAEL_CAMPELO", "title": "Rafael Campelo"},
+                  {"id": "ADOLFO_VIANA", "title": "Adolfo Viana"},
+                  {"id": "ELMAR_NASCIMENTO", "title": "Elmar Nascimento"},
+                  {"id": "DIEGO_CORONEL", "title": "Diego Coronel"},
+                  {"id": "LUCAS_REIS", "title": "Lucas Reis"},
+                  {"id": "LEO_PRATES", "title": "Léo Prates"},
+                  {"id": "MARIO_NEGROMONTE", "title": "Mário Negromonte"},
+                  {"id": "ROGERIA_SANTOS", "title": "Rogéria Santos"},
+                  {"id": "CAPITAO_ALDEN", "title": "Capitão Alden"},
+                  {"id": "JOAO_BACELAR", "title": "João Bacelar"},
+                  {"id": "JOSEPH_BANDEIRA", "title": "Joseph Bandeira"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei / Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.dep_federal_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_dep_federal",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "GOVERNADOR_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${form.dep_federal_estimulada}",
+                    "outro_dep_federal": "${form.outro_dep_federal}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GOVERNADOR_ESPONTANEA",
+      "title": "Governador - Etapa 7/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "JORDAVIO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "JAYME_LIMA"},
+        "outro_dep_federal": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Governador da Bahia"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para **governador** fosse hoje, em quem você votaria?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "governador_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "GOVERNADOR_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "governador_espontanea": "${form.governador_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GOVERNADOR_ESTIMULADA",
+      "title": "Governador - Etapa 8/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "JORDAVIO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "JAYME_LIMA"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Governador"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição fosse hoje, em quem você votaria para governador?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "governador_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "JERONIMO", "title": "Jerônimo Rodrigues"},
+                  {"id": "ACM_NETO", "title": "ACM Neto"},
+                  {"id": "KLEBER_ROSA", "title": "Kleber Rosa"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei / Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.governador_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_governador",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PROBLEMA_MUNICIPAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${form.governador_estimulada}",
+                    "outro_governador": "${form.outro_governador}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PROBLEMA_MUNICIPAL",
+      "title": "Gestão Municipal - Etapa 9/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "JORDAVIO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "JAYME_LIMA"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""},
+        "governador_estimulada": {"type": "string", "__example__": "JERONIMO"},
+        "outro_governador": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Gestão Municipal"
+          },
+          {
+            "type": "TextBody",
+            "text": "Na sua opinião, qual o **principal problema** de Juazeiro-BA hoje?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextArea",
+                "name": "principal_problema",
+                "label": "Descreva aqui:",
+                "required": false
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "APROVACAO_GESTAO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${data.governador_estimulada}",
+                    "outro_governador": "${data.outro_governador}",
+                    "principal_problema": "${form.principal_problema}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "APROVACAO_GESTAO",
+      "title": "Aprovação - Etapa 10/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "JORDAVIO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "JAYME_LIMA"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""},
+        "governador_estimulada": {"type": "string", "__example__": "JERONIMO"},
+        "outro_governador": {"type": "string", "__example__": ""},
+        "principal_problema": {"type": "string", "__example__": "Saúde pública"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👍 Aprovação"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você **aprova ou desaprova** a atual gestão municipal de Juazeiro?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aprovacao",
+                "label": "Sua resposta:",
+                "required": true,
+                "data-source": [
+                  {"id": "APROVA", "title": "👍 Aprova"},
+                  {"id": "DESAPROVA", "title": "👎 Desaprova"},
+                  {"id": "NAO_SEI", "title": "❓ Não sei responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_GESTAO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${data.governador_estimulada}",
+                    "outro_governador": "${data.outro_governador}",
+                    "principal_problema": "${data.principal_problema}",
+                    "aprovacao": "${form.aprovacao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_GESTAO",
+      "title": "Avaliação - Etapa 11/11",
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "JORDAVIO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "JAYME_LIMA"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""},
+        "governador_estimulada": {"type": "string", "__example__": "JERONIMO"},
+        "outro_governador": {"type": "string", "__example__": ""},
+        "principal_problema": {"type": "string", "__example__": "Saúde pública"},
+        "aprovacao": {"type": "string", "__example__": "APROVA"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⭐ Avaliação da Gestão"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você avalia a gestão municipal atual de Juazeiro?",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao",
+                "label": "Sua avaliação:",
+                "required": true,
+                "data-source": [
+                  {"id": "OTIMO", "title": "⭐⭐⭐⭐⭐ Ótimo"},
+                  {"id": "BOM", "title": "⭐⭐⭐⭐ Bom"},
+                  {"id": "REGULAR", "title": "⭐⭐⭐ Regular"},
+                  {"id": "RUIM", "title": "⭐⭐ Ruim"},
+                  {"id": "PESSIMO", "title": "⭐ Péssimo"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Finalizar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AGRADECIMENTO_FINAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${data.governador_estimulada}",
+                    "outro_governador": "${data.outro_governador}",
+                    "principal_problema": "${data.principal_problema}",
+                    "aprovacao": "${data.aprovacao}",
+                    "avaliacao": "${form.avaliacao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_RECUSA",
+      "title": "Obrigado",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "NAO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "😊 Agradecemos"
+          },
+          {
+            "type": "TextBody",
+            "text": "Obrigado pelo seu tempo!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Caso mude de ideia, estaremos sempre à disposição. Sua opinião é importante para conhecermos melhor as opiniões da população de Juazeiro-BA."
+          },
+          {
+            "type": "Form",
+            "name": "form_recusa",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQ_JUAZEIRO_2025",
+                    "status": "recusou_participar",
+                    "aceita_participar": "${data.aceita_participar}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_FINAL",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "35_44"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "JORDAVIO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "JAYME_LIMA"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""},
+        "governador_estimulada": {"type": "string", "__example__": "JERONIMO"},
+        "outro_governador": {"type": "string", "__example__": ""},
+        "principal_problema": {"type": "string", "__example__": "Saúde pública"},
+        "aprovacao": {"type": "string", "__example__": "APROVA"},
+        "avaliacao": {"type": "string", "__example__": "BOM"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎉 Pesquisa Concluída!"
+          },
+          {
+            "type": "TextBody",
+            "text": "**Muito obrigado** por participar da pesquisa de opinião de Juazeiro-BA!",
+            "markdown": true
+          },
+          {
+            "type": "TextBody",
+            "text": "Sua participação é fundamental para entendermos as preferências da população."
+          },
+          {
+            "type": "TextBody",
+            "text": "📊 Suas respostas são anônimas e serão utilizadas apenas para fins estatísticos."
+          },
+          {
+            "type": "Form",
+            "name": "form_final",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "flow_modulo": "PESQUISA_OPINIAO",
+                    "pesquisa_id": "PESQ_JUAZEIRO_2025",
+                    "status": "pesquisa_concluida",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${data.governador_estimulada}",
+                    "outro_governador": "${data.outro_governador}",
+                    "principal_problema": "${data.principal_problema}",
+                    "aprovacao": "${data.aprovacao}",
+                    "avaliacao": "${data.avaliacao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

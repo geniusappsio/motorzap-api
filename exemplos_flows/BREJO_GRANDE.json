@@ -1,0 +1,1321 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "INICIO": ["PERFIL_SEXO", "AGRADECIMENTO_RECUSA"],
+    "PERFIL_SEXO": ["PERFIL_IDADE"],
+    "PERFIL_IDADE": ["DEP_ESTADUAL_ESPONTANEA"],
+    "DEP_ESTADUAL_ESPONTANEA": ["DEP_ESTADUAL_ESTIMULADA"],
+    "DEP_ESTADUAL_ESTIMULADA": ["DEP_FEDERAL_ESPONTANEA"],
+    "DEP_FEDERAL_ESPONTANEA": ["DEP_FEDERAL_ESTIMULADA"],
+    "DEP_FEDERAL_ESTIMULADA": ["SENADOR_PRIMEIRO_ESPONTANEA"],
+    "SENADOR_PRIMEIRO_ESPONTANEA": ["SENADOR_SEGUNDO_ESPONTANEA"],
+    "SENADOR_SEGUNDO_ESPONTANEA": ["SENADOR_PRIMEIRO_ESTIMULADA"],
+    "SENADOR_PRIMEIRO_ESTIMULADA": ["SENADOR_SEGUNDO_ESTIMULADA"],
+    "SENADOR_SEGUNDO_ESTIMULADA": ["GOVERNADOR_ESPONTANEA"],
+    "GOVERNADOR_ESPONTANEA": ["GOVERNADOR_ESTIMULADA"],
+    "GOVERNADOR_ESTIMULADA": ["PRESIDENTE_ESPONTANEA"],
+    "PRESIDENTE_ESPONTANEA": ["PRESIDENTE_ESTIMULADA"],
+    "PRESIDENTE_ESTIMULADA": ["AGRADECIMENTO_FINAL"],
+    "AGRADECIMENTO_RECUSA": [],
+    "AGRADECIMENTO_FINAL": []
+  },
+  "screens": [
+    {
+      "id": "INICIO",
+      "title": "Pesquisa de Opinião",
+      "sensitive": ["aceita_participar"],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Pesquisa Eleitoral - Brejo Grande/SE"
+          },
+          {
+            "type": "TextBody",
+            "text": "Olá! Estamos realizando uma pesquisa de opinião pública em Brejo Grande - SE."
+          },
+          {
+            "type": "TextBody",
+            "text": "Sua participação é anônima e levará alguns minutos. Suas respostas são muito importantes!"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_participar",
+                "label": "Aceita participar?",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim, quero participar"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não, obrigado"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.aceita_participar} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Iniciar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "PERFIL_SEXO"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_RECUSA"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_SEXO",
+      "title": "Perfil - Etapa 1/14",
+      "sensitive": ["sexo"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👤 Perfil do Participante"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "sexo",
+                "label": "Qual é o seu sexo?",
+                "required": true,
+                "data-source": [
+                  {"id": "MASCULINO", "title": "Masculino"},
+                  {"id": "FEMININO", "title": "Feminino"},
+                  {"id": "OUTROS", "title": "Outros"},
+                  {"id": "NAO_RESPONDER", "title": "Não quero responder"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERFIL_IDADE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${form.sexo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERFIL_IDADE",
+      "title": "Faixa Etária - Etapa 2/14",
+      "sensitive": ["faixa_etaria"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📅 Faixa Etária"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "faixa_etaria",
+                "label": "Qual sua faixa etária?",
+                "required": true,
+                "data-source": [
+                  {"id": "DEZESSEIS_VINTE_QUATRO", "title": "16 a 24 anos"},
+                  {"id": "VINTE_CINCO_TRINTA_QUATRO", "title": "25 a 34 anos"},
+                  {"id": "TRINTA_CINCO_QUARENTA_QUATRO", "title": "35 a 44 anos"},
+                  {"id": "QUARENTA_CINCO_CINQUENTA_NOVE", "title": "45 a 59 anos"},
+                  {"id": "ACIMA_CINQUENTA_NOVE", "title": "Acima de 59 anos"}
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEP_ESTADUAL_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${form.faixa_etaria}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEP_ESTADUAL_ESPONTANEA",
+      "title": "Deputado Estadual - Etapa 3/14",
+      "sensitive": ["dep_estadual_espontanea"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Deputado Estadual"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para deputado estadual fosse hoje, em quem você votaria? (espontânea)",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "dep_estadual_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEP_ESTADUAL_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${form.dep_estadual_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEP_ESTADUAL_ESTIMULADA",
+      "title": "Deputado Estadual - Etapa 4/14",
+      "sensitive": ["dep_estadual_estimulada", "outro_dep_estadual"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Deputado Estadual"
+          },
+          {
+            "type": "TextBody",
+            "text": "E dentre os nomes a seguir, em quem você votaria para deputado estadual?",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "dep_estadual_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "CRISTIANO", "title": "Cristiano Cavalcante"},
+                  {"id": "CARLINHO", "title": "Carlinho Brejo Grande"},
+                  {"id": "NETINHO", "title": "Netinho Guimarães"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei/Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.dep_estadual_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_dep_estadual",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEP_FEDERAL_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${form.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${form.outro_dep_estadual}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEP_FEDERAL_ESPONTANEA",
+      "title": "Deputado Federal - Etapa 5/14",
+      "sensitive": ["dep_federal_espontanea"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Deputado Federal"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para deputado federal fosse hoje, em quem você votaria? (espontânea)",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "dep_federal_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEP_FEDERAL_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${form.dep_federal_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEP_FEDERAL_ESTIMULADA",
+      "title": "Deputado Federal - Etapa 6/14",
+      "sensitive": ["dep_federal_estimulada", "outro_dep_federal"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Deputado Federal"
+          },
+          {
+            "type": "TextBody",
+            "text": "E dentre os nomes a seguir, em quem você votaria para deputado federal?",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "dep_federal_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "GUSTINHO", "title": "Gustinho Ribeiro"},
+                  {"id": "CLAUDIA", "title": "Cláudia Mitidieri"},
+                  {"id": "YANDRA", "title": "Yandra Moura"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei/Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.dep_federal_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_dep_federal",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "SENADOR_PRIMEIRO_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${form.dep_federal_estimulada}",
+                    "outro_dep_federal": "${form.outro_dep_federal}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SENADOR_PRIMEIRO_ESPONTANEA",
+      "title": "1º Senador - Etapa 7/14",
+      "sensitive": ["senador_primeiro_espontanea"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Senador - 1ª Vaga"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para senador fosse hoje, em quem você votaria para a primeira vaga? (espontânea)",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "senador_primeiro_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "SENADOR_SEGUNDO_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${form.senador_primeiro_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SENADOR_SEGUNDO_ESPONTANEA",
+      "title": "2º Senador - Etapa 8/14",
+      "sensitive": ["senador_segundo_espontanea"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "senador_primeiro_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Senador - 2ª Vaga"
+          },
+          {
+            "type": "TextBody",
+            "text": "E para a segunda vaga de senador, em quem você votaria? (espontânea)",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "senador_segundo_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "SENADOR_PRIMEIRO_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${data.senador_primeiro_espontanea}",
+                    "senador_segundo_espontanea": "${form.senador_segundo_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SENADOR_PRIMEIRO_ESTIMULADA",
+      "title": "1º Senador - Etapa 9/14",
+      "sensitive": ["senador_primeiro_estimulada", "outro_senador_primeiro"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "senador_primeiro_espontanea": {"type": "string", "__example__": ""},
+        "senador_segundo_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Senador - 1ª Vaga"
+          },
+          {
+            "type": "TextBody",
+            "text": "Dentre os nomes a seguir, em quem você votaria para a primeira vaga de senador?",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "senador_primeiro_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "ANDRE_MOURA", "title": "André Moura"},
+                  {"id": "ALESSANDRO", "title": "Alessandro Vieira"},
+                  {"id": "ROGERIO", "title": "Rogério Carvalho"},
+                  {"id": "EDVALDO", "title": "Edvaldo Nogueira"},
+                  {"id": "RODRIGO", "title": "Rodrigo Valadares"},
+                  {"id": "EDUARDO", "title": "Eduardo Amorim"},
+                  {"id": "IRAN", "title": "Iran Barbosa"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei/Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.senador_primeiro_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_senador_primeiro",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "SENADOR_SEGUNDO_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${data.senador_primeiro_espontanea}",
+                    "senador_segundo_espontanea": "${data.senador_segundo_espontanea}",
+                    "senador_primeiro_estimulada": "${form.senador_primeiro_estimulada}",
+                    "outro_senador_primeiro": "${form.outro_senador_primeiro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SENADOR_SEGUNDO_ESTIMULADA",
+      "title": "2º Senador - Etapa 10/14",
+      "sensitive": ["senador_segundo_estimulada", "outro_senador_segundo"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "senador_primeiro_espontanea": {"type": "string", "__example__": ""},
+        "senador_segundo_espontanea": {"type": "string", "__example__": ""},
+        "senador_primeiro_estimulada": {"type": "string", "__example__": "ANDRE_MOURA"},
+        "outro_senador_primeiro": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Senador - 2ª Vaga"
+          },
+          {
+            "type": "TextBody",
+            "text": "E para a segunda vaga de senador, em quem você votaria dentre estes nomes?",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "senador_segundo_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "ANDRE_MOURA", "title": "André Moura"},
+                  {"id": "ALESSANDRO", "title": "Alessandro Vieira"},
+                  {"id": "ROGERIO", "title": "Rogério Carvalho"},
+                  {"id": "EDVALDO", "title": "Edvaldo Nogueira"},
+                  {"id": "RODRIGO", "title": "Rodrigo Valadares"},
+                  {"id": "EDUARDO", "title": "Eduardo Amorim"},
+                  {"id": "IRAN", "title": "Iran Barbosa"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei/Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.senador_segundo_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_senador_segundo",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "GOVERNADOR_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${data.senador_primeiro_espontanea}",
+                    "senador_segundo_espontanea": "${data.senador_segundo_espontanea}",
+                    "senador_primeiro_estimulada": "${data.senador_primeiro_estimulada}",
+                    "outro_senador_primeiro": "${data.outro_senador_primeiro}",
+                    "senador_segundo_estimulada": "${form.senador_segundo_estimulada}",
+                    "outro_senador_segundo": "${form.outro_senador_segundo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GOVERNADOR_ESPONTANEA",
+      "title": "Governador - Etapa 11/14",
+      "sensitive": ["governador_espontanea"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "senador_primeiro_espontanea": {"type": "string", "__example__": ""},
+        "senador_segundo_espontanea": {"type": "string", "__example__": ""},
+        "senador_primeiro_estimulada": {"type": "string", "__example__": "ANDRE_MOURA"},
+        "outro_senador_primeiro": {"type": "string", "__example__": ""},
+        "senador_segundo_estimulada": {"type": "string", "__example__": "ALESSANDRO"},
+        "outro_senador_segundo": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Governador de Sergipe"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para governador fosse hoje, em quem você votaria? (espontânea)",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "governador_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "GOVERNADOR_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${data.senador_primeiro_espontanea}",
+                    "senador_segundo_espontanea": "${data.senador_segundo_espontanea}",
+                    "senador_primeiro_estimulada": "${data.senador_primeiro_estimulada}",
+                    "outro_senador_primeiro": "${data.outro_senador_primeiro}",
+                    "senador_segundo_estimulada": "${data.senador_segundo_estimulada}",
+                    "outro_senador_segundo": "${data.outro_senador_segundo}",
+                    "governador_espontanea": "${form.governador_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GOVERNADOR_ESTIMULADA",
+      "title": "Governador - Etapa 12/14",
+      "sensitive": ["governador_estimulada", "outro_governador"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "senador_primeiro_espontanea": {"type": "string", "__example__": ""},
+        "senador_segundo_espontanea": {"type": "string", "__example__": ""},
+        "senador_primeiro_estimulada": {"type": "string", "__example__": "ANDRE_MOURA"},
+        "outro_senador_primeiro": {"type": "string", "__example__": ""},
+        "senador_segundo_estimulada": {"type": "string", "__example__": "ALESSANDRO"},
+        "outro_senador_segundo": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Governador"
+          },
+          {
+            "type": "TextBody",
+            "text": "E dentre os nomes a seguir, em quem você votaria para governador?",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "governador_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "FABIO", "title": "Fábio Mitidieri"},
+                  {"id": "VALMIR", "title": "Valmir Francisquinho"},
+                  {"id": "THIAGO", "title": "Thiago de Joaldo"},
+                  {"id": "NIULLY", "title": "Niully Campos"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei/Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.governador_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_governador",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PRESIDENTE_ESPONTANEA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${data.senador_primeiro_espontanea}",
+                    "senador_segundo_espontanea": "${data.senador_segundo_espontanea}",
+                    "senador_primeiro_estimulada": "${data.senador_primeiro_estimulada}",
+                    "outro_senador_primeiro": "${data.outro_senador_primeiro}",
+                    "senador_segundo_estimulada": "${data.senador_segundo_estimulada}",
+                    "outro_senador_segundo": "${data.outro_senador_segundo}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${form.governador_estimulada}",
+                    "outro_governador": "${form.outro_governador}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRESIDENTE_ESPONTANEA",
+      "title": "Presidente - Etapa 13/14",
+      "sensitive": ["presidente_espontanea"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "senador_primeiro_espontanea": {"type": "string", "__example__": ""},
+        "senador_segundo_espontanea": {"type": "string", "__example__": ""},
+        "senador_primeiro_estimulada": {"type": "string", "__example__": "ANDRE_MOURA"},
+        "outro_senador_primeiro": {"type": "string", "__example__": ""},
+        "senador_segundo_estimulada": {"type": "string", "__example__": "ALESSANDRO"},
+        "outro_senador_segundo": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""},
+        "governador_estimulada": {"type": "string", "__example__": "FABIO"},
+        "outro_governador": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🇧🇷 Presidente da República"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para presidente fosse hoje, em quem você votaria? (espontânea)",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "presidente_espontanea",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "required": false,
+                "max-chars": 100
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PRESIDENTE_ESTIMULADA"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${data.senador_primeiro_espontanea}",
+                    "senador_segundo_espontanea": "${data.senador_segundo_espontanea}",
+                    "senador_primeiro_estimulada": "${data.senador_primeiro_estimulada}",
+                    "outro_senador_primeiro": "${data.outro_senador_primeiro}",
+                    "senador_segundo_estimulada": "${data.senador_segundo_estimulada}",
+                    "outro_senador_segundo": "${data.outro_senador_segundo}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${data.governador_estimulada}",
+                    "outro_governador": "${data.outro_governador}",
+                    "presidente_espontanea": "${form.presidente_espontanea}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRESIDENTE_ESTIMULADA",
+      "title": "Presidente - Etapa 14/14",
+      "sensitive": ["presidente_estimulada", "outro_presidente"],
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "senador_primeiro_espontanea": {"type": "string", "__example__": ""},
+        "senador_segundo_espontanea": {"type": "string", "__example__": ""},
+        "senador_primeiro_estimulada": {"type": "string", "__example__": "ANDRE_MOURA"},
+        "outro_senador_primeiro": {"type": "string", "__example__": ""},
+        "senador_segundo_estimulada": {"type": "string", "__example__": "ALESSANDRO"},
+        "outro_senador_segundo": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""},
+        "governador_estimulada": {"type": "string", "__example__": "FABIO"},
+        "outro_governador": {"type": "string", "__example__": ""},
+        "presidente_espontanea": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🇧🇷 Presidente"
+          },
+          {
+            "type": "TextBody",
+            "text": "E dentre os nomes a seguir, em quem você votaria para presidente?",
+            "markdown": false
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "presidente_estimulada",
+                "label": "Escolha um candidato:",
+                "required": true,
+                "data-source": [
+                  {"id": "LULA", "title": "Lula"},
+                  {"id": "TARCISIO", "title": "Tarcísio"},
+                  {"id": "MICHELE", "title": "Michele"},
+                  {"id": "RATINHO", "title": "Ratinho"},
+                  {"id": "CIRO", "title": "Ciro"},
+                  {"id": "OUTRO", "title": "Outro"},
+                  {"id": "NAO_SEI", "title": "Não sei/Não respondeu"}
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.presidente_estimulada} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_presidente",
+                    "label": "Qual candidato?",
+                    "input-type": "text",
+                    "max-chars": 100,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Finalizar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AGRADECIMENTO_FINAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${data.senador_primeiro_espontanea}",
+                    "senador_segundo_espontanea": "${data.senador_segundo_espontanea}",
+                    "senador_primeiro_estimulada": "${data.senador_primeiro_estimulada}",
+                    "outro_senador_primeiro": "${data.outro_senador_primeiro}",
+                    "senador_segundo_estimulada": "${data.senador_segundo_estimulada}",
+                    "outro_senador_segundo": "${data.outro_senador_segundo}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${data.governador_estimulada}",
+                    "outro_governador": "${data.outro_governador}",
+                    "presidente_espontanea": "${data.presidente_espontanea}",
+                    "presidente_estimulada": "${form.presidente_estimulada}",
+                    "outro_presidente": "${form.outro_presidente}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_RECUSA",
+      "title": "Obrigado",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "NAO"}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "😊 Agradecemos"
+          },
+          {
+            "type": "TextBody",
+            "text": "Obrigado pelo seu tempo!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Caso mude de ideia, estaremos sempre à disposição. Sua opinião é importante para conhecermos melhor a opinião da população de Brejo Grande - SE."
+          },
+          {
+            "type": "Form",
+            "name": "form_recusa",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQ_BREJO_GRANDE_SE_2025",
+                    "status": "recusou_participar",
+                    "aceita_participar": "${data.aceita_participar}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_FINAL",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {"type": "string", "__example__": "SIM"},
+        "sexo": {"type": "string", "__example__": "MASCULINO"},
+        "faixa_etaria": {"type": "string", "__example__": "TRINTA_CINCO_QUARENTA_QUATRO"},
+        "dep_estadual_espontanea": {"type": "string", "__example__": ""},
+        "dep_estadual_estimulada": {"type": "string", "__example__": "CRISTIANO"},
+        "outro_dep_estadual": {"type": "string", "__example__": ""},
+        "dep_federal_espontanea": {"type": "string", "__example__": ""},
+        "dep_federal_estimulada": {"type": "string", "__example__": "GUSTINHO"},
+        "outro_dep_federal": {"type": "string", "__example__": ""},
+        "senador_primeiro_espontanea": {"type": "string", "__example__": ""},
+        "senador_segundo_espontanea": {"type": "string", "__example__": ""},
+        "senador_primeiro_estimulada": {"type": "string", "__example__": "ANDRE_MOURA"},
+        "outro_senador_primeiro": {"type": "string", "__example__": ""},
+        "senador_segundo_estimulada": {"type": "string", "__example__": "ALESSANDRO"},
+        "outro_senador_segundo": {"type": "string", "__example__": ""},
+        "governador_espontanea": {"type": "string", "__example__": ""},
+        "governador_estimulada": {"type": "string", "__example__": "FABIO"},
+        "outro_governador": {"type": "string", "__example__": ""},
+        "presidente_espontanea": {"type": "string", "__example__": ""},
+        "presidente_estimulada": {"type": "string", "__example__": "LULA"},
+        "outro_presidente": {"type": "string", "__example__": ""}
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎉 Pesquisa Concluída!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Muito obrigado por participar da pesquisa de opinião de Brejo Grande - SE!",
+            "markdown": false
+          },
+          {
+            "type": "TextBody",
+            "text": "Sua participação é fundamental para entendermos melhor as preferências e opiniões da população."
+          },
+          {
+            "type": "TextBody",
+            "text": "📊 Suas respostas são anônimas e serão utilizadas apenas para fins estatísticos."
+          },
+          {
+            "type": "Form",
+            "name": "form_final",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "flow_modulo": "PESQUISA_OPINIAO",
+                    "pesquisa_id": "PESQ_BREJO_GRANDE_SE_2025",
+                    "status": "pesquisa_concluida",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "sexo": "${data.sexo}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "dep_estadual_espontanea": "${data.dep_estadual_espontanea}",
+                    "dep_estadual_estimulada": "${data.dep_estadual_estimulada}",
+                    "outro_dep_estadual": "${data.outro_dep_estadual}",
+                    "dep_federal_espontanea": "${data.dep_federal_espontanea}",
+                    "dep_federal_estimulada": "${data.dep_federal_estimulada}",
+                    "outro_dep_federal": "${data.outro_dep_federal}",
+                    "senador_primeiro_espontanea": "${data.senador_primeiro_espontanea}",
+                    "senador_segundo_espontanea": "${data.senador_segundo_espontanea}",
+                    "senador_primeiro_estimulada": "${data.senador_primeiro_estimulada}",
+                    "outro_senador_primeiro": "${data.outro_senador_primeiro}",
+                    "senador_segundo_estimulada": "${data.senador_segundo_estimulada}",
+                    "outro_senador_segundo": "${data.outro_senador_segundo}",
+                    "governador_espontanea": "${data.governador_espontanea}",
+                    "governador_estimulada": "${data.governador_estimulada}",
+                    "outro_governador": "${data.outro_governador}",
+                    "presidente_espontanea": "${data.presidente_espontanea}",
+                    "presidente_estimulada": "${data.presidente_estimulada}",
+                    "outro_presidente": "${data.outro_presidente}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,2023 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "INICIO": ["CONFIRMA_CIDADE", "AGRADECIMENTO_RECUSA"],
+    "CONFIRMA_CIDADE": ["IDADE", "AGRADECIMENTO_NAO_CIDADE"],
+    "IDADE": ["GENERO"],
+    "GENERO": ["RENDA_FAMILIAR"],
+    "RENDA_FAMILIAR": ["ESCOLARIDADE"],
+    "ESCOLARIDADE": ["RELIGIAO"],
+    "RELIGIAO": ["RACA_COR"],
+    "RACA_COR": ["AVALIACAO_GOVERNADOR"],
+    "AVALIACAO_GOVERNADOR": ["ESCOLHA_PRESIDENTE"],
+    "ESCOLHA_PRESIDENTE": ["ESCOLHA_GOVERNADOR"],
+    "ESCOLHA_GOVERNADOR": ["ESCOLHA_SENADOR"],
+    "ESCOLHA_SENADOR": ["ESCOLHA_DEP_FEDERAL"],
+    "ESCOLHA_DEP_FEDERAL": ["ESCOLHA_DEP_ESTADUAL"],
+    "ESCOLHA_DEP_ESTADUAL": ["AVALIACAO_PREFEITO"],
+    "AVALIACAO_PREFEITO": ["AGRADECIMENTO_FINAL"],
+    "AGRADECIMENTO_RECUSA": [],
+    "AGRADECIMENTO_NAO_CIDADE": [],
+    "AGRADECIMENTO_FINAL": []
+  },
+  "screens": [
+    {
+      "id": "INICIO",
+      "title": "Pesquisa de Opinião Baixa Grande",
+      "sensitive": ["aceita_participar"],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Pesquisa de Opinião Baixa Grande"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você aceita participar desta pesquisa rápida sobre preferências em Baixa Grande - BA?"
+          },
+          {
+            "type": "TextBody",
+            "text": "A pesquisa é anônima e levará apenas alguns minutos."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_participar",
+                "label": "Sua resposta:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim",
+                    "description": "Aceito participar da pesquisa"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Agora não",
+                    "description": "Não quero participar no momento"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.aceita_participar} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Iniciar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "CONFIRMA_CIDADE"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Continuar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_RECUSA"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONFIRMA_CIDADE",
+      "title": "Confirmação de Localização",
+      "sensitive": ["morador_cidade"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📍 Primeira Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você mora em Baixa Grande - BA?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "morador_cidade",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "Sim, moro em Baixa Grande"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "Não, moro em outra cidade"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.morador_cidade} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "IDADE"
+                      },
+                      "payload": {
+                        "aceita_participar": "${data.aceita_participar}",
+                        "morador_cidade": "${form.morador_cidade}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Continuar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_NAO_CIDADE"
+                      },
+                      "payload": {
+                        "aceita_participar": "${data.aceita_participar}",
+                        "morador_cidade": "${form.morador_cidade}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "IDADE",
+      "title": "Faixa Etária",
+      "sensitive": ["faixa_etaria"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎂 Segunda Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual sua faixa etária?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "faixa_etaria",
+                "label": "Selecione sua idade:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "16_24",
+                    "title": "16 a 24 anos"
+                  },
+                  {
+                    "id": "25_34",
+                    "title": "25 a 34 anos"
+                  },
+                  {
+                    "id": "35_44",
+                    "title": "35 a 44 anos"
+                  },
+                  {
+                    "id": "45_59",
+                    "title": "45 a 59 anos"
+                  },
+                  {
+                    "id": "60_MAIS",
+                    "title": "60 anos ou mais"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "GENERO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${form.faixa_etaria}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GENERO",
+      "title": "Gênero",
+      "sensitive": ["genero"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👤 Terceira Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual seu gênero?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "genero",
+                "label": "Selecione uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "FEMININO",
+                    "title": "Feminino"
+                  },
+                  {
+                    "id": "MASCULINO",
+                    "title": "Masculino"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  },
+                  {
+                    "id": "NAO_RESPONDER",
+                    "title": "Prefiro não responder"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "RENDA_FAMILIAR"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${form.genero}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "RENDA_FAMILIAR",
+      "title": "Renda Familiar",
+      "sensitive": ["renda_familiar"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "💰 Quarta Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual a faixa de renda familiar mensal da sua casa?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "renda_familiar",
+                "label": "Selecione uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "ATE_1_SM",
+                    "title": "Até 1 salário mínimo"
+                  },
+                  {
+                    "id": "1_2_SM",
+                    "title": "De 1 a 2 salários mínimos"
+                  },
+                  {
+                    "id": "2_5_SM",
+                    "title": "De 2 a 5 salários mínimos"
+                  },
+                  {
+                    "id": "5_10_SM",
+                    "title": "De 5 a 10 salários mínimos"
+                  },
+                  {
+                    "id": "ACIMA_10_SM",
+                    "title": "Acima de 10 salários mínimos"
+                  },
+                  {
+                    "id": "NAO_RESPONDER",
+                    "title": "Prefiro não responder"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "ESCOLARIDADE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${form.renda_familiar}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLARIDADE",
+      "title": "Escolaridade",
+      "sensitive": ["escolaridade"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📚 Quinta Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual seu nível de escolaridade?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "escolaridade",
+                "label": "Selecione uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "NAO_ALFABETIZADO",
+                    "title": "Não sei ler nem escrever"
+                  },
+                  {
+                    "id": "FUNDAMENTAL_INCOMPLETO",
+                    "title": "Ensino Fundamental incompleto"
+                  },
+                  {
+                    "id": "FUNDAMENTAL_COMPLETO",
+                    "title": "Ensino Fundamental completo"
+                  },
+                  {
+                    "id": "MEDIO_INCOMPLETO",
+                    "title": "Ensino Médio incompleto"
+                  },
+                  {
+                    "id": "MEDIO_COMPLETO",
+                    "title": "Ensino Médio completo"
+                  },
+                  {
+                    "id": "SUPERIOR_INCOMPLETO",
+                    "title": "Ensino Superior incompleto"
+                  },
+                  {
+                    "id": "SUPERIOR_COMPLETO",
+                    "title": "Ensino Superior completo"
+                  },
+                  {
+                    "id": "POS_GRADUACAO",
+                    "title": "Pós-graduação ou mais"
+                  },
+                  {
+                    "id": "NAO_RESPONDER",
+                    "title": "Prefiro não responder"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "RELIGIAO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${form.escolaridade}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "RELIGIAO",
+      "title": "Religião",
+      "sensitive": ["religiao"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🙏 Sexta Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é sua religião?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "religiao",
+                "label": "Selecione uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "CATOLICA",
+                    "title": "Católica"
+                  },
+                  {
+                    "id": "EVANGELICA",
+                    "title": "Evangélica"
+                  },
+                  {
+                    "id": "ESPIRITA",
+                    "title": "Espírita"
+                  },
+                  {
+                    "id": "UMBANDA_CANDOMBLE",
+                    "title": "Umbanda/Candomblé"
+                  },
+                  {
+                    "id": "ATEU_AGNOSTICO",
+                    "title": "Ateu/agnóstico"
+                  },
+                  {
+                    "id": "OUTRA",
+                    "title": "Outra religião"
+                  },
+                  {
+                    "id": "NAO_RESPONDER",
+                    "title": "Prefiro não responder"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "RACA_COR"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${form.religiao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "RACA_COR",
+      "title": "Raça/Cor",
+      "sensitive": ["raca_cor"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "CATOLICA"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🌍 Sétima Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você se identifica em relação à sua raça ou cor?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "raca_cor",
+                "label": "Selecione uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "BRANCA",
+                    "title": "Branca"
+                  },
+                  {
+                    "id": "PRETA",
+                    "title": "Preta"
+                  },
+                  {
+                    "id": "PARDA",
+                    "title": "Parda"
+                  },
+                  {
+                    "id": "AMARELA",
+                    "title": "Amarela"
+                  },
+                  {
+                    "id": "INDIGENA",
+                    "title": "Indígena"
+                  },
+                  {
+                    "id": "NAO_RESPONDER",
+                    "title": "Prefiro não responder"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_GOVERNADOR"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${data.religiao}",
+                    "raca_cor": "${form.raca_cor}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_GOVERNADOR",
+      "title": "Avaliação da Gestão Estadual",
+      "sensitive": ["avaliacao_governador"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "CATOLICA"
+        },
+        "raca_cor": {
+          "type": "string",
+          "__example__": "PARDA"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Oitava Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você analisa a gestão do governador Jerônimo Rodrigues?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_governador",
+                "label": "Sua avaliação:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTIMA",
+                    "title": "Ótima"
+                  },
+                  {
+                    "id": "BOA",
+                    "title": "Boa"
+                  },
+                  {
+                    "id": "REGULAR",
+                    "title": "Regular"
+                  },
+                  {
+                    "id": "RUIM",
+                    "title": "Ruim"
+                  },
+                  {
+                    "id": "PESSIMA",
+                    "title": "Péssima"
+                  },
+                  {
+                    "id": "NAO_SABE",
+                    "title": "Não sabe / Não opina"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "ESCOLHA_PRESIDENTE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${data.religiao}",
+                    "raca_cor": "${data.raca_cor}",
+                    "avaliacao_governador": "${form.avaliacao_governador}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLHA_PRESIDENTE",
+      "title": "Preferência - Presidente",
+      "sensitive": ["escolha_presidente", "outro_presidente_nome"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "CATOLICA"
+        },
+        "raca_cor": {
+          "type": "string",
+          "__example__": "PARDA"
+        },
+        "avaliacao_governador": {
+          "type": "string",
+          "__example__": "BOA"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Nona Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se fosse para escolher um representante para presidente da República hoje, qual seria sua preferência?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "escolha_presidente",
+                "label": "Escolha sua opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "TARCISIO_FREITAS",
+                    "title": "Tarcísio de Freitas"
+                  },
+                  {
+                    "id": "LULA",
+                    "title": "Lula"
+                  },
+                  {
+                    "id": "JAIR_BOLSONARO",
+                    "title": "Jair Bolsonaro"
+                  },
+                  {
+                    "id": "MICHELLE_BOLSONARO",
+                    "title": "Michelle Bolsonaro"
+                  },
+                  {
+                    "id": "CIRO_GOMES",
+                    "title": "Ciro Gomes"
+                  },
+                  {
+                    "id": "RATINHO_JUNIOR",
+                    "title": "Ratinho Júnior"
+                  },
+                  {
+                    "id": "RONALDO_CAIADO",
+                    "title": "Ronaldo Caiado"
+                  },
+                  {
+                    "id": "ROMEU_ZEMA",
+                    "title": "Romeu Zema"
+                  },
+                  {
+                    "id": "INDECISO",
+                    "title": "Indeciso"
+                  },
+                  {
+                    "id": "BRANCO_NULO",
+                    "title": "Branco/Nulo"
+                  },
+                  {
+                    "id": "OUTRO_PRESIDENTE",
+                    "title": "Outro candidato"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.escolha_presidente} == 'OUTRO_PRESIDENTE'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_presidente_nome",
+                    "label": "Digite o candidato",
+                    "input-type": "text",
+                    "max-chars": 20,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "ESCOLHA_GOVERNADOR"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${data.religiao}",
+                    "raca_cor": "${data.raca_cor}",
+                    "avaliacao_governador": "${data.avaliacao_governador}",
+                    "escolha_presidente": "${form.escolha_presidente}",
+                    "outro_presidente_nome": "${form.outro_presidente_nome}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLHA_GOVERNADOR",
+      "title": "Preferência - Governador",
+      "sensitive": ["escolha_governador", "outro_governador_nome"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "CATOLICA"
+        },
+        "raca_cor": {
+          "type": "string",
+          "__example__": "PARDA"
+        },
+        "avaliacao_governador": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "escolha_presidente": {
+          "type": "string",
+          "__example__": "LULA"
+        },
+        "outro_presidente_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Décima Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se fosse para escolher um representante para governador da Bahia hoje, qual seria sua preferência?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "escolha_governador",
+                "label": "Escolha sua opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "ACM_NETO",
+                    "title": "ACM Neto"
+                  },
+                  {
+                    "id": "JERONIMO_RODRIGUES",
+                    "title": "Jerônimo Rodrigues"
+                  },
+                  {
+                    "id": "OUTRO_GOVERNADOR",
+                    "title": "Outro candidato"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.escolha_governador} == 'OUTRO_GOVERNADOR'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_governador_nome",
+                    "label": "Digite o candidato",
+                    "input-type": "text",
+                    "max-chars": 20,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "ESCOLHA_SENADOR"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${data.religiao}",
+                    "raca_cor": "${data.raca_cor}",
+                    "avaliacao_governador": "${data.avaliacao_governador}",
+                    "escolha_presidente": "${data.escolha_presidente}",
+                    "outro_presidente_nome": "${data.outro_presidente_nome}",
+                    "escolha_governador": "${form.escolha_governador}",
+                    "outro_governador_nome": "${form.outro_governador_nome}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLHA_SENADOR",
+      "title": "Preferência - Senador",
+      "sensitive": ["escolha_senador"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "CATOLICA"
+        },
+        "raca_cor": {
+          "type": "string",
+          "__example__": "PARDA"
+        },
+        "avaliacao_governador": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "escolha_presidente": {
+          "type": "string",
+          "__example__": "LULA"
+        },
+        "outro_presidente_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "escolha_governador": {
+          "type": "string",
+          "__example__": "ACM_NETO"
+        },
+        "outro_governador_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Décima Primeira Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se fosse para escolher representantes para senador hoje, quais seriam suas preferências? (Escolha até 2 opções)"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "CheckboxGroup",
+                "name": "escolha_senador",
+                "label": "Escolha suas opções (máximo 2):",
+                "required": true,
+                "min-selected-items": 1,
+                "max-selected-items": 2,
+                "data-source": [
+                  {
+                    "id": "JAQUES_WAGNER",
+                    "title": "Jaques Wagner"
+                  },
+                  {
+                    "id": "RUI_COSTA",
+                    "title": "Rui Costa"
+                  },
+                  {
+                    "id": "ANGELO_CORONEL",
+                    "title": "Ângelo Coronel"
+                  },
+                  {
+                    "id": "OTTO_ALENCAR",
+                    "title": "Otto Alencar"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "ESCOLHA_DEP_FEDERAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${data.religiao}",
+                    "raca_cor": "${data.raca_cor}",
+                    "avaliacao_governador": "${data.avaliacao_governador}",
+                    "escolha_presidente": "${data.escolha_presidente}",
+                    "outro_presidente_nome": "${data.outro_presidente_nome}",
+                    "escolha_governador": "${data.escolha_governador}",
+                    "outro_governador_nome": "${data.outro_governador_nome}",
+                    "escolha_senador": "${form.escolha_senador}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLHA_DEP_FEDERAL",
+      "title": "Preferência - Deputado Federal",
+      "sensitive": ["escolha_dep_federal", "outro_dep_federal_nome"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "CATOLICA"
+        },
+        "raca_cor": {
+          "type": "string",
+          "__example__": "PARDA"
+        },
+        "avaliacao_governador": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "escolha_presidente": {
+          "type": "string",
+          "__example__": "LULA"
+        },
+        "outro_presidente_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "escolha_governador": {
+          "type": "string",
+          "__example__": "ACM_NETO"
+        },
+        "outro_governador_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "escolha_senador": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["JAQUES_WAGNER", "OTTO_ALENCAR"]
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Décima Segunda Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se fosse para escolher um representante federal hoje, qual seria sua preferência?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "escolha_dep_federal",
+                "label": "Escolha sua opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTTO_FILHO",
+                    "title": "Otto Filho"
+                  },
+                  {
+                    "id": "ELISANGELA_ARAUJO",
+                    "title": "Elisangela Araújo"
+                  },
+                  {
+                    "id": "AFONSO_FLORENCE",
+                    "title": "Afonso Florence"
+                  },
+                  {
+                    "id": "CLAUDIO_CAJADO",
+                    "title": "Cláudio Cajado"
+                  },
+                  {
+                    "id": "OUTRO_DEP_FEDERAL",
+                    "title": "Outro candidato"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.escolha_dep_federal} == 'OUTRO_DEP_FEDERAL'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_dep_federal_nome",
+                    "label": "Digite o candidato",
+                    "input-type": "text",
+                    "max-chars": 20,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "ESCOLHA_DEP_ESTADUAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${data.religiao}",
+                    "raca_cor": "${data.raca_cor}",
+                    "avaliacao_governador": "${data.avaliacao_governador}",
+                    "escolha_presidente": "${data.escolha_presidente}",
+                    "outro_presidente_nome": "${data.outro_presidente_nome}",
+                    "escolha_governador": "${data.escolha_governador}",
+                    "outro_governador_nome": "${data.outro_governador_nome}",
+                    "escolha_senador": "${data.escolha_senador}",
+                    "escolha_dep_federal": "${form.escolha_dep_federal}",
+                    "outro_dep_federal_nome": "${form.outro_dep_federal_nome}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLHA_DEP_ESTADUAL",
+      "title": "Preferência - Deputado Estadual",
+      "sensitive": ["escolha_dep_estadual", "outro_dep_estadual_nome"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "CATOLICA"
+        },
+        "raca_cor": {
+          "type": "string",
+          "__example__": "PARDA"
+        },
+        "avaliacao_governador": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "escolha_presidente": {
+          "type": "string",
+          "__example__": "LULA"
+        },
+        "outro_presidente_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "escolha_governador": {
+          "type": "string",
+          "__example__": "ACM_NETO"
+        },
+        "outro_governador_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "escolha_senador": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["JAQUES_WAGNER", "OTTO_ALENCAR"]
+        },
+        "escolha_dep_federal": {
+          "type": "string",
+          "__example__": "OTTO_FILHO"
+        },
+        "outro_dep_federal_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Décima Terceira Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se fosse para escolher um representante estadual hoje, qual seria sua preferência?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "escolha_dep_estadual",
+                "label": "Escolha sua opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MARIA_DEL_CARMEN",
+                    "title": "Maria del Carmen"
+                  },
+                  {
+                    "id": "NEUSA_CADORE",
+                    "title": "Neusa Cadore"
+                  },
+                  {
+                    "id": "EDUARDO_ALENCAR",
+                    "title": "Eduardo Alencar"
+                  },
+                  {
+                    "id": "ANGELO_ALMEIDA",
+                    "title": "Ângelo Almeida"
+                  },
+                  {
+                    "id": "OUTRO_DEP_ESTADUAL",
+                    "title": "Outro candidato"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.escolha_dep_estadual} == 'OUTRO_DEP_ESTADUAL'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_dep_estadual_nome",
+                    "label": "Digite o candidato",
+                    "input-type": "text",
+                    "max-chars": 20,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_PREFEITO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${data.religiao}",
+                    "raca_cor": "${data.raca_cor}",
+                    "avaliacao_governador": "${data.avaliacao_governador}",
+                    "escolha_presidente": "${data.escolha_presidente}",
+                    "outro_presidente_nome": "${data.outro_presidente_nome}",
+                    "escolha_governador": "${data.escolha_governador}",
+                    "outro_governador_nome": "${data.outro_governador_nome}",
+                    "escolha_senador": "${data.escolha_senador}",
+                    "escolha_dep_federal": "${data.escolha_dep_federal}",
+                    "outro_dep_federal_nome": "${data.outro_dep_federal_nome}",
+                    "escolha_dep_estadual": "${form.escolha_dep_estadual}",
+                    "outro_dep_estadual_nome": "${form.outro_dep_estadual_nome}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_PREFEITO",
+      "title": "Avaliação da Gestão Municipal",
+      "sensitive": ["avaliacao_prefeito"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "faixa_etaria": {
+          "type": "string",
+          "__example__": "25_34"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "FEMININO"
+        },
+        "renda_familiar": {
+          "type": "string",
+          "__example__": "1_2_SM"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "MEDIO_COMPLETO"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "CATOLICA"
+        },
+        "raca_cor": {
+          "type": "string",
+          "__example__": "PARDA"
+        },
+        "avaliacao_governador": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "escolha_presidente": {
+          "type": "string",
+          "__example__": "LULA"
+        },
+        "outro_presidente_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "escolha_governador": {
+          "type": "string",
+          "__example__": "ACM_NETO"
+        },
+        "outro_governador_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "escolha_senador": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["JAQUES_WAGNER", "OTTO_ALENCAR"]
+        },
+        "escolha_dep_federal": {
+          "type": "string",
+          "__example__": "OTTO_FILHO"
+        },
+        "outro_dep_federal_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "escolha_dep_estadual": {
+          "type": "string",
+          "__example__": "MARIA_DEL_CARMEN"
+        },
+        "outro_dep_estadual_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Décima Quarta Pergunta"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você analisa a gestão do prefeito Canário?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_prefeito",
+                "label": "Sua avaliação:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTIMA",
+                    "title": "Ótima"
+                  },
+                  {
+                    "id": "BOA",
+                    "title": "Boa"
+                  },
+                  {
+                    "id": "REGULAR",
+                    "title": "Regular"
+                  },
+                  {
+                    "id": "RUIM",
+                    "title": "Ruim"
+                  },
+                  {
+                    "id": "PESSIMA",
+                    "title": "Péssima"
+                  },
+                  {
+                    "id": "NAO_SABE",
+                    "title": "Não sabe / Não opina"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Finalizar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AGRADECIMENTO_FINAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "faixa_etaria": "${data.faixa_etaria}",
+                    "genero": "${data.genero}",
+                    "renda_familiar": "${data.renda_familiar}",
+                    "escolaridade": "${data.escolaridade}",
+                    "religiao": "${data.religiao}",
+                    "raca_cor": "${data.raca_cor}",
+                    "avaliacao_governador": "${data.avaliacao_governador}",
+                    "escolha_presidente": "${data.escolha_presidente}",
+                    "outro_presidente_nome": "${data.outro_presidente_nome}",
+                    "escolha_governador": "${data.escolha_governador}",
+                    "outro_governador_nome": "${data.outro_governador_nome}",
+                    "escolha_senador": "${data.escolha_senador}",
+                    "escolha_dep_federal": "${data.escolha_dep_federal}",
+                    "outro_dep_federal_nome": "${data.outro_dep_federal_nome}",
+                    "escolha_dep_estadual": "${data.escolha_dep_estadual}",
+                    "outro_dep_estadual_nome": "${data.outro_dep_estadual_nome}",
+                    "avaliacao_prefeito": "${form.avaliacao_prefeito}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_RECUSA",
+      "title": "Obrigado",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "NAO"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "😊 Obrigado"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agradecemos seu tempo. Caso mude de ideia, estaremos aqui!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Sua opinião é muito importante para nós."
+          },
+          {
+            "type": "Form",
+            "name": "form_recusa",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQUISA_2025_BAIXA_GRANDE",
+                    "status": "recusou_participar",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "timestamp": "${now()}",
+                    "user_agent": "${navigator.userAgent}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_NAO_CIDADE",
+      "title": "Pesquisa Restrita",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "morador_cidade": {
+          "type": "string",
+          "__example__": "NAO"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📍 Pesquisa Restrita"
+          },
+          {
+            "type": "TextBody",
+            "text": "Esta pesquisa é exclusiva para moradores de Baixa Grande - BA."
+          },
+          {
+            "type": "TextBody",
+            "text": "Agradecemos seu interesse!"
+          },
+          {
+            "type": "Form",
+            "name": "form_nao_cidade",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQUISA_2025_BAIXA_GRANDE",
+                    "status": "nao_morador_cidade",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "morador_cidade": "${data.morador_cidade}",
+                    "timestamp": "${now()}",
+                    "user_agent": "${navigator.userAgent}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_FINAL",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+           "__example__": "SIM"
+          },
+       "morador_cidade": {
+         "type": "string",
+         "__example__": "SIM"
+       },
+       "faixa_etaria": {
+         "type": "string",
+         "__example__": "25_34"
+       },
+       "genero": {
+         "type": "string",
+         "__example__": "FEMININO"
+       },
+       "renda_familiar": {
+         "type": "string",
+         "__example__": "1_2_SM"
+       },
+       "escolaridade": {
+         "type": "string",
+         "__example__": "MEDIO_COMPLETO"
+       },
+       "religiao": {
+         "type": "string",
+         "__example__": "CATOLICA"
+       },
+       "raca_cor": {
+         "type": "string",
+         "__example__": "PARDA"
+       },
+       "avaliacao_governador": {
+         "type": "string",
+         "__example__": "BOA"
+       },
+       "escolha_presidente": {
+         "type": "string",
+         "__example__": "LULA"
+       },
+       "outro_presidente_nome": {
+         "type": "string",
+         "__example__": "Nome do candidato"
+       },
+       "escolha_governador": {
+         "type": "string",
+         "__example__": "ACM_NETO"
+       },
+       "outro_governador_nome": {
+         "type": "string",
+         "__example__": "Nome do candidato"
+       },
+       "escolha_senador": {
+         "type": "array",
+         "items": {
+           "type": "string"
+         },
+         "__example__": ["JAQUES_WAGNER", "OTTO_ALENCAR"]
+       },
+       "escolha_dep_federal": {
+         "type": "string",
+         "__example__": "OTTO_FILHO"
+       },
+       "outro_dep_federal_nome": {
+         "type": "string",
+         "__example__": "Nome do candidato"
+       },
+       "escolha_dep_estadual": {
+         "type": "string",
+         "__example__": "MARIA_DEL_CARMEN"
+       },
+       "outro_dep_estadual_nome": {
+         "type": "string",
+         "__example__": "Nome do candidato"
+       },
+       "avaliacao_prefeito": {
+         "type": "string",
+         "__example__": "BOA"
+       }
+     },
+     "layout": {
+       "type": "SingleColumnLayout",
+       "children": [
+         {
+           "type": "TextHeading",
+           "text": "🎉 Pesquisa Concluída"
+         },
+         {
+           "type": "TextBody",
+           "text": "**Muito obrigado** por participar da nossa pesquisa de opinião de Baixa Grande - BA!",
+           "markdown": true
+         },
+         {
+           "type": "TextBody",
+           "text": "Suas respostas são anônimas e contribuem para uma democracia mais transparente."
+         },
+         {
+           "type": "TextBody",
+           "text": "📊 Os resultados serão divulgados em breve nos nossos canais oficiais."
+         },
+         {
+           "type": "Form",
+           "name": "form_final",
+           "children": [
+             {
+               "type": "Footer",
+               "label": "✅ Finalizar",
+               "on-click-action": {
+                 "name": "complete",
+                 "payload": {
+                   "flow_modulo": "PESQUISA",
+                   "pesquisa_id": "PESQUISA_2025_BAIXA_GRANDE_COMPLETA",
+                   "status": "pesquisa_concluida",
+                   "aceita_participar": "${data.aceita_participar}",
+                   "morador_cidade": "${data.morador_cidade}",
+                   "faixa_etaria": "${data.faixa_etaria}",
+                   "genero": "${data.genero}",
+                   "renda_familiar": "${data.renda_familiar}",
+                   "escolaridade": "${data.escolaridade}",
+                   "religiao": "${data.religiao}",
+                   "raca_cor": "${data.raca_cor}",
+                   "avaliacao_governador": "${data.avaliacao_governador}",
+                   "escolha_presidente": "${data.escolha_presidente}",
+                   "outro_presidente_nome": "${data.outro_presidente_nome}",
+                   "escolha_governador": "${data.escolha_governador}",
+                   "outro_governador_nome": "${data.outro_governador_nome}",
+                   "escolha_senador": "${data.escolha_senador}",
+                   "escolha_dep_federal": "${data.escolha_dep_federal}",
+                   "outro_dep_federal_nome": "${data.outro_dep_federal_nome}",
+                   "escolha_dep_estadual": "${data.escolha_dep_estadual}",
+                   "outro_dep_estadual_nome": "${data.outro_dep_estadual_nome}",
+                   "avaliacao_prefeito": "${data.avaliacao_prefeito}",
+                   "timestamp": "${now()}",
+                   "user_agent": "${navigator.userAgent}"
+                 }
+               }
+             }
+           ]
+         }
+       ]
+     }
+   }
+ ]
+}

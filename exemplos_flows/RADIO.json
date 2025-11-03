@@ -1,0 +1,1660 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "INICIO": ["PERGUNTA_UM", "AGRADECIMENTO_RECUSA"],
+    "PERGUNTA_UM": ["PERGUNTA_DOIS"],
+    "PERGUNTA_DOIS": ["PERGUNTA_TRES"],
+    "PERGUNTA_TRES": ["PERGUNTA_QUATRO"],
+    "PERGUNTA_QUATRO": ["PERGUNTA_CINCO"],
+    "PERGUNTA_CINCO": ["PERGUNTA_SEIS"],
+    "PERGUNTA_SEIS": ["PERGUNTA_SETE"],
+    "PERGUNTA_SETE": ["PERGUNTA_OITO"],
+    "PERGUNTA_OITO": ["PERGUNTA_NOVE"],
+    "PERGUNTA_NOVE": ["PERGUNTA_NOVE_B"],
+    "PERGUNTA_NOVE_B": ["PERGUNTA_DEZ"],
+    "PERGUNTA_DEZ": ["PERGUNTA_ONZE"],
+    "PERGUNTA_ONZE": ["AGRADECIMENTO_FINAL"],
+    "AGRADECIMENTO_RECUSA": [],
+    "AGRADECIMENTO_FINAL": []
+  },
+  "screens": [
+    {
+      "id": "INICIO",
+      "title": "Pesquisa de Opinião Pública",
+      "sensitive": ["aceita_participar"],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Pesquisa de Opinião Pública - Teresina - PI"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você aceita participar desta pesquisa rápida sobre preferências em Teresina - PI?"
+          },
+          {
+            "type": "TextBody",
+            "text": "A pesquisa é anônima e levará alguns minutos. Suas respostas são muito importantes para nós."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_participar",
+                "label": "Você aceita participar?",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim, aceito participar",
+                    "description": "Iniciar pesquisa agora"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não, obrigado",
+                    "description": "Não quero participar"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.aceita_participar} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Começar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "PERGUNTA_UM"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_RECUSA"
+                      },
+                      "payload": {
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_UM",
+      "title": "Rádios mais ouvidas",
+      "sensitive": ["radios_ouvidas"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📻 Pergunta 1 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Quais emissoras de rádio de Teresina você ouve com maior frequência?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "CheckboxGroup",
+                "name": "radios_ouvidas",
+                "label": "Selecione uma ou mais opções:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "TERESINA_FM",
+                    "title": "Teresina FM"
+                  },
+                  {
+                    "id": "COCAIS",
+                    "title": "Cocais"
+                  },
+                  {
+                    "id": "CLUBE",
+                    "title": "Clube"
+                  },
+                  {
+                    "id": "CIDADE_VERDE",
+                    "title": "Cidade Verde"
+                  },
+                  {
+                    "id": "MIX",
+                    "title": "Mix"
+                  },
+                  {
+                    "id": "PIONEIRA",
+                    "title": "Pioneira"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_DOIS"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${form.radios_ouvidas}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_DOIS",
+      "title": "Horários de audiência",
+      "sensitive": ["horarios"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⏰ Pergunta 2 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Em qual horário do dia você costuma ouvir rádio?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "CheckboxGroup",
+                "name": "horarios",
+                "label": "Pode marcar mais de uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MANHA",
+                    "title": "☀️ Manhã",
+                    "description": "6h às 12h"
+                  },
+                  {
+                    "id": "TARDE",
+                    "title": "🌤️ Tarde",
+                    "description": "12h às 18h"
+                  },
+                  {
+                    "id": "NOITE",
+                    "title": "🌙 Noite",
+                    "description": "18h às 00h"
+                  },
+                  {
+                    "id": "MADRUGADA",
+                    "title": "🌃 Madrugada",
+                    "description": "00h às 6h"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_TRES"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${form.horarios}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_TRES",
+      "title": "Programa jornalístico",
+      "sensitive": ["programa_jornalistico"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📰 Pergunta 3 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual programa jornalístico de rádio você costuma acompanhar para se manter informado?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "programa_jornalistico",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "JT_PRIMEIRA",
+                    "title": "Jornal da Teresina 1ª Edição"
+                  },
+                  {
+                    "id": "JT_SEGUNDA",
+                    "title": "Jornal da Teresina 2ª Edição"
+                  },
+                  {
+                    "id": "ACORDA_PIAUI",
+                    "title": "Acorda Piauí"
+                  },
+                  {
+                    "id": "CV_NOTICIAS",
+                    "title": "Cidade Verde Notícias"
+                  },
+                  {
+                    "id": "JP_PRIMEIRA",
+                    "title": "Jornal da Pioneira 1ª Edição"
+                  },
+                  {
+                    "id": "JP_SEGUNDA",
+                    "title": "Jornal da Pioneira 2ª Edição"
+                  },
+                  {
+                    "id": "PRIMEIRAS_NOTICIAS",
+                    "title": "Primeiras Notícias"
+                  },
+                  {
+                    "id": "REDACAO_CLUBE",
+                    "title": "Redação Clube News"
+                  },
+                  {
+                    "id": "JCN_PRIMEIRA",
+                    "title": "Jornal Clube News 1ª Edição"
+                  },
+                  {
+                    "id": "JCN_SEGUNDA",
+                    "title": "Jornal Clube News 2ª Edição"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro programa"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_QUATRO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${form.programa_jornalistico}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_QUATRO",
+      "title": "Meio de comunicação",
+      "sensitive": ["meio_comunicacao"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📡 Pergunta 4 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual meio de comunicação você considera mais confiável para se informar?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "meio_comunicacao",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "REDES_SOCIAIS",
+                    "title": "📱 Redes Sociais"
+                  },
+                  {
+                    "id": "PORTAIS",
+                    "title": "💻 Portais"
+                  },
+                  {
+                    "id": "PODCAST",
+                    "title": "🎧 Podcast"
+                  },
+                  {
+                    "id": "RADIO",
+                    "title": "📻 Rádio"
+                  },
+                  {
+                    "id": "TV",
+                    "title": "📺 TV"
+                  },
+                  {
+                    "id": "REVISTAS",
+                    "title": "📖 Revistas"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_CINCO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${form.meio_comunicacao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_CINCO",
+      "title": "Avaliação - Administração Federal",
+      "sensitive": ["avaliacao_lula"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 5 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é a sua avaliação sobre a administração do presidente Lula?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_lula",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTIMA",
+                    "title": "Ótima"
+                  },
+                  {
+                    "id": "BOA",
+                    "title": "Boa"
+                  },
+                  {
+                    "id": "REGULAR",
+                    "title": "Regular"
+                  },
+                  {
+                    "id": "RUIM",
+                    "title": "Ruim"
+                  },
+                  {
+                    "id": "PESSIMA",
+                    "title": "Péssima"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_SEIS"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${form.avaliacao_lula}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_SEIS",
+      "title": "Avaliação - Administração Estadual",
+      "sensitive": ["avaliacao_rafael"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "BOA"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 6 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é a sua avaliação sobre a administração do governador Rafael Fonteles?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_rafael",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTIMA",
+                    "title": "Ótima"
+                  },
+                  {
+                    "id": "BOA",
+                    "title": "Boa"
+                  },
+                  {
+                    "id": "REGULAR",
+                    "title": "Regular"
+                  },
+                  {
+                    "id": "RUIM",
+                    "title": "Ruim"
+                  },
+                  {
+                    "id": "PESSIMA",
+                    "title": "Péssima"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_SETE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "avaliacao_rafael": "${form.avaliacao_rafael}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_SETE",
+      "title": "Avaliação - Administração Municipal",
+      "sensitive": ["avaliacao_silvio"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "avaliacao_rafael": {
+          "type": "string",
+          "__example__": "REGULAR"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 7 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é a sua avaliação sobre a administração do prefeito Sílvio Mendes?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_silvio",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTIMA",
+                    "title": "Ótima"
+                  },
+                  {
+                    "id": "BOA",
+                    "title": "Boa"
+                  },
+                  {
+                    "id": "REGULAR",
+                    "title": "Regular"
+                  },
+                  {
+                    "id": "RUIM",
+                    "title": "Ruim"
+                  },
+                  {
+                    "id": "PESSIMA",
+                    "title": "Péssima"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_OITO"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "avaliacao_rafael": "${data.avaliacao_rafael}",
+                    "avaliacao_silvio": "${form.avaliacao_silvio}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_OITO",
+      "title": "Principais problemas",
+      "sensitive": ["problemas"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "avaliacao_rafael": {
+          "type": "string",
+          "__example__": "REGULAR"
+        },
+        "avaliacao_silvio": {
+          "type": "string",
+          "__example__": "BOA"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏙️ Pergunta 8 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Na sua opinião, quais são os três principais problemas de Teresina?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "CheckboxGroup",
+                "name": "problemas",
+                "label": "Selecione exatamente 3 opções:",
+                "required": true,
+                "min-selected-items": 3,
+                "max-selected-items": 3,
+                "data-source": [
+                  {
+                    "id": "SAUDE",
+                    "title": "🏥 Saúde"
+                  },
+                  {
+                    "id": "DESENVOLVIMENTO_SOCIAL",
+                    "title": "👥 Desenvolvimento Social"
+                  },
+                  {
+                    "id": "SEGURANCA",
+                    "title": "🚔 Segurança"
+                  },
+                  {
+                    "id": "TRANSPORTE",
+                    "title": "🚌 Transporte"
+                  },
+                  {
+                    "id": "EMPREGO_RENDA",
+                    "title": "💼 Emprego e Renda"
+                  },
+                  {
+                    "id": "LAZER",
+                    "title": "🎭 Lazer"
+                  },
+                  {
+                    "id": "EDUCACAO",
+                    "title": "📚 Educação"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro problema"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_NOVE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "avaliacao_rafael": "${data.avaliacao_rafael}",
+                    "avaliacao_silvio": "${data.avaliacao_silvio}",
+                    "problemas": "${form.problemas}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_NOVE",
+      "title": "Primeiro Senador",
+      "sensitive": ["primeiro_senador", "outro_primeiro_nome"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "avaliacao_rafael": {
+          "type": "string",
+          "__example__": "REGULAR"
+        },
+        "avaliacao_silvio": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "problemas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["SAUDE", "SEGURANCA", "TRANSPORTE"]
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Pergunta 9 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se a eleição para senador fosse hoje, qual seria sua primeira escolha?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "primeiro_senador",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "CIRO_NOGUEIRA",
+                    "title": "Ciro Nogueira (PP)"
+                  },
+                  {
+                    "id": "JULIO_CESAR",
+                    "title": "Júlio César (PSD)"
+                  },
+                  {
+                    "id": "MARCELO_CASTRO",
+                    "title": "Marcelo Castro (PMDB)"
+                  },
+                  {
+                    "id": "OUTRO_PRIMEIRO",
+                    "title": "Outro candidato"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.primeiro_senador} == 'OUTRO_PRIMEIRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_primeiro_nome",
+                    "label": "Digite o candidato",
+                    "input-type": "text",
+                    "max-chars": 20,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_NOVE_B"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "avaliacao_rafael": "${data.avaliacao_rafael}",
+                    "avaliacao_silvio": "${data.avaliacao_silvio}",
+                    "problemas": "${data.problemas}",
+                    "primeiro_senador": "${form.primeiro_senador}",
+                    "outro_primeiro_nome": "${form.outro_primeiro_nome}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_NOVE_B",
+      "title": "Segundo Senador",
+      "sensitive": ["segundo_senador", "outro_segundo_nome"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "avaliacao_rafael": {
+          "type": "string",
+          "__example__": "REGULAR"
+        },
+        "avaliacao_silvio": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "problemas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["SAUDE", "SEGURANCA", "TRANSPORTE"]
+        },
+        "primeiro_senador": {
+          "type": "string",
+          "__example__": "CIRO_NOGUEIRA"
+        },
+        "outro_primeiro_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🗳️ Pergunta 10 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "E qual seria sua segunda escolha para senador?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "segundo_senador",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "CIRO_NOGUEIRA",
+                    "title": "Ciro Nogueira (PP)"
+                  },
+                  {
+                    "id": "JULIO_CESAR",
+                    "title": "Júlio César (PSD)"
+                  },
+                  {
+                    "id": "MARCELO_CASTRO",
+                    "title": "Marcelo Castro (PMDB)"
+                  },
+                  {
+                    "id": "NAO_VOTARIA",
+                    "title": "Não votaria em nenhum outro"
+                  },
+                  {
+                    "id": "OUTRO_SEGUNDO",
+                    "title": "Outro candidato"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.segundo_senador} == 'OUTRO_SEGUNDO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "outro_segundo_nome",
+                    "label": "Digite o candidato",
+                    "input-type": "text",
+                    "max-chars": 20,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_DEZ"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "avaliacao_rafael": "${data.avaliacao_rafael}",
+                    "avaliacao_silvio": "${data.avaliacao_silvio}",
+                    "problemas": "${data.problemas}",
+                    "primeiro_senador": "${data.primeiro_senador}",
+                    "outro_primeiro_nome": "${data.outro_primeiro_nome}",
+                    "segundo_senador": "${form.segundo_senador}",
+                    "outro_segundo_nome": "${form.outro_segundo_nome}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_DEZ",
+      "title": "Avaliação - Energia",
+      "sensitive": ["avaliacao_equatorial"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "avaliacao_rafael": {
+          "type": "string",
+          "__example__": "REGULAR"
+        },
+        "avaliacao_silvio": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "problemas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["SAUDE", "SEGURANCA", "TRANSPORTE"]
+        },
+        "primeiro_senador": {
+          "type": "string",
+          "__example__": "CIRO_NOGUEIRA"
+        },
+        "outro_primeiro_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "segundo_senador": {
+          "type": "string",
+          "__example__": "MARCELO_CASTRO"
+        },
+        "outro_segundo_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⚡ Pergunta 11 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é a sua avaliação sobre a qualidade da energia elétrica fornecida pela Equatorial?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_equatorial",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTIMA",
+                    "title": "Ótima"
+                  },
+                  {
+                    "id": "BOA",
+                    "title": "Boa"
+                  },
+                  {
+                    "id": "REGULAR",
+                    "title": "Regular"
+                  },
+                  {
+                    "id": "RUIM",
+                    "title": "Ruim"
+                  },
+                  {
+                    "id": "PESSIMA",
+                    "title": "Péssima"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima →",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PERGUNTA_ONZE"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "avaliacao_rafael": "${data.avaliacao_rafael}",
+                    "avaliacao_silvio": "${data.avaliacao_silvio}",
+                    "problemas": "${data.problemas}",
+                    "primeiro_senador": "${data.primeiro_senador}",
+                    "outro_primeiro_nome": "${data.outro_primeiro_nome}",
+                    "segundo_senador": "${data.segundo_senador}",
+                    "outro_segundo_nome": "${data.outro_segundo_nome}",
+                    "avaliacao_equatorial": "${form.avaliacao_equatorial}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PERGUNTA_ONZE",
+      "title": "Avaliação - Água",
+      "sensitive": ["avaliacao_aguas"],
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "avaliacao_rafael": {
+          "type": "string",
+          "__example__": "REGULAR"
+        },
+        "avaliacao_silvio": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "problemas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["SAUDE", "SEGURANCA", "TRANSPORTE"]
+        },
+        "primeiro_senador": {
+          "type": "string",
+          "__example__": "CIRO_NOGUEIRA"
+        },
+        "outro_primeiro_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "segundo_senador": {
+          "type": "string",
+          "__example__": "MARCELO_CASTRO"
+        },
+        "outro_segundo_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "avaliacao_equatorial": {
+          "type": "string",
+          "__example__": "REGULAR"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "💧 Pergunta 12 de 12"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é a sua avaliação sobre o serviço de abastecimento de água fornecido pela Águas de Teresina?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_aguas",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "OTIMA",
+                    "title": "Ótima"
+                  },
+                  {
+                    "id": "BOA",
+                    "title": "Boa"
+                  },
+                  {
+                    "id": "REGULAR",
+                    "title": "Regular"
+                  },
+                  {
+                    "id": "RUIM",
+                    "title": "Ruim"
+                  },
+                  {
+                    "id": "PESSIMA",
+                    "title": "Péssima"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Finalizar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AGRADECIMENTO_FINAL"
+                  },
+                  "payload": {
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "avaliacao_rafael": "${data.avaliacao_rafael}",
+                    "avaliacao_silvio": "${data.avaliacao_silvio}",
+                    "problemas": "${data.problemas}",
+                    "primeiro_senador": "${data.primeiro_senador}",
+                    "outro_primeiro_nome": "${data.outro_primeiro_nome}",
+                    "segundo_senador": "${data.segundo_senador}",
+                    "outro_segundo_nome": "${data.outro_segundo_nome}",
+                    "avaliacao_equatorial": "${data.avaliacao_equatorial}",
+                    "avaliacao_aguas": "${form.avaliacao_aguas}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_RECUSA",
+      "title": "Obrigado",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "NAO"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "😊 Agradecemos"
+          },
+          {
+            "type": "TextBody",
+            "text": "Respeitamos sua decisão. Caso mude de ideia, estaremos sempre disponíveis."
+          },
+          {
+            "type": "TextBody",
+            "text": "Sua opinião é muito importante para nós."
+          },
+          {
+            "type": "Form",
+            "name": "form_recusa",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQ_TERESINA_2025",
+                    "status": "recusou_participar",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "timestamp": "${now()}",
+                    "user_agent": "${navigator.userAgent}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_FINAL",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "SIM"
+        },
+        "radios_ouvidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["TERESINA_FM", "COCAIS"]
+        },
+        "horarios": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["MANHA", "NOITE"]
+        },
+        "programa_jornalistico": {
+          "type": "string",
+          "__example__": "ACORDA_PIAUI"
+        },
+        "meio_comunicacao": {
+          "type": "string",
+          "__example__": "RADIO"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "avaliacao_rafael": {
+          "type": "string",
+          "__example__": "REGULAR"
+        },
+        "avaliacao_silvio": {
+          "type": "string",
+          "__example__": "BOA"
+        },
+        "problemas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "__example__": ["SAUDE", "SEGURANCA", "TRANSPORTE"]
+        },
+        "primeiro_senador": {
+          "type": "string",
+          "__example__": "CIRO_NOGUEIRA"
+        },
+        "outro_primeiro_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "segundo_senador": {
+          "type": "string",
+          "__example__": "MARCELO_CASTRO"
+        },
+        "outro_segundo_nome": {
+          "type": "string",
+          "__example__": "Nome do candidato"
+        },
+        "avaliacao_equatorial": {
+          "type": "string",
+          "__example__": "REGULAR"
+        },
+        "avaliacao_aguas": {
+          "type": "string",
+          "__example__": "BOA"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎉 Pesquisa Concluída com Sucesso!"
+          },
+          {
+            "type": "TextBody",
+            "text": "**Muito obrigado** por participar da nossa pesquisa de opinião pública!",
+            "markdown": true
+          },
+          {
+            "type": "TextBody",
+            "text": "📊 Suas respostas são anônimas e contribuem para entender melhor as necessidades da nossa cidade."
+          },
+          {
+            "type": "Form",
+            "name": "form_final",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "flow_modulo": "PESQUISA",
+                    "pesquisa_id": "PESQ_TERESINA_2025_COMPLETA",
+                    "status": "pesquisa_concluida",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "radios_ouvidas": "${data.radios_ouvidas}",
+                    "horarios": "${data.horarios}",
+                    "programa_jornalistico": "${data.programa_jornalistico}",
+                    "meio_comunicacao": "${data.meio_comunicacao}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "avaliacao_rafael": "${data.avaliacao_rafael}",
+                    "avaliacao_silvio": "${data.avaliacao_silvio}",
+                    "problemas": "${data.problemas}",
+                    "primeiro_senador": "${data.primeiro_senador}",
+                    "outro_primeiro_nome": "${data.outro_primeiro_nome}",
+                    "segundo_senador": "${data.segundo_senador}",
+                    "outro_segundo_nome": "${data.outro_segundo_nome}",
+                    "avaliacao_equatorial": "${data.avaliacao_equatorial}",
+                    "avaliacao_aguas": "${data.avaliacao_aguas}",
+                    "timestamp": "${now()}",
+                    "user_agent": "${navigator.userAgent}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

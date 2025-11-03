@@ -1,0 +1,4877 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "INICIO": [
+      "CONFIRMACAO_MACEIO",
+      "AGRADECIMENTO_RECUSA"
+    ],
+    "CONFIRMACAO_MACEIO": [
+      "GENERO",
+      "AGRADECIMENTO_NAO_MACEIO"
+    ],
+    "AGRADECIMENTO_NAO_MACEIO": [],
+    "GENERO": [
+      "GENERO_OUTRO",
+      "IDADE"
+    ],
+    "GENERO_OUTRO": [
+      "IDADE"
+    ],
+    "IDADE": [
+      "ESCOLARIDADE"
+    ],
+    "ESCOLARIDADE": [
+      "ESCOLARIDADE_OUTRO",
+      "RELIGIAO"
+    ],
+    "ESCOLARIDADE_OUTRO": [
+      "RELIGIAO"
+    ],
+    "RELIGIAO": [
+      "RELIGIAO_OUTRO",
+      "RENDA"
+    ],
+    "RELIGIAO_OUTRO": [
+      "RENDA"
+    ],
+    "RENDA": [
+      "AVALIACAO_JHC"
+    ],
+    "AVALIACAO_JHC": [
+      "AVALIACAO_PAULO_DANTAS"
+    ],
+    "AVALIACAO_PAULO_DANTAS": [
+      "AVALIACAO_LULA"
+    ],
+    "AVALIACAO_LULA": [
+      "PROBLEMA_ESPONTANEO"
+    ],
+    "PROBLEMA_ESPONTANEO": [
+      "PROBLEMA_ESTIMULADO"
+    ],
+    "PROBLEMA_ESTIMULADO": [
+      "PROBLEMA_OUTRO",
+      "SENADOR_ESPONTANEO_VAGA_UM"
+    ],
+    "PROBLEMA_OUTRO": [
+      "SENADOR_ESPONTANEO_VAGA_UM"
+    ],
+    "SENADOR_ESPONTANEO_VAGA_UM": [
+      "SENADOR_ESPONTANEO_VAGA_DOIS"
+    ],
+    "SENADOR_ESPONTANEO_VAGA_DOIS": [
+      "SENADOR_ESTIMULADO_VAGA_UM"
+    ],
+    "SENADOR_ESTIMULADO_VAGA_UM": [
+      "SENADOR_ESTIMULADO_VAGA_DOIS"
+    ],
+    "SENADOR_ESTIMULADO_VAGA_DOIS": [
+      "DEPUTADO_FEDERAL_ESPONTANEO"
+    ],
+    "DEPUTADO_FEDERAL_ESPONTANEO": [
+      "DEPUTADO_FEDERAL_ESTIMULADO"
+    ],
+    "DEPUTADO_FEDERAL_ESTIMULADO": [
+      "DEPUTADO_ESTADUAL_ESPONTANEO"
+    ],
+    "DEPUTADO_ESTADUAL_ESPONTANEO": [
+      "DEPUTADO_ESTADUAL_ESTIMULADO"
+    ],
+    "DEPUTADO_ESTADUAL_ESTIMULADO": [
+      "GOVERNADOR_ESPONTANEO"
+    ],
+    "GOVERNADOR_ESPONTANEO": [
+      "GOVERNADOR_ESTIMULADO"
+    ],
+    "GOVERNADOR_ESTIMULADO": [
+      "PRESIDENTE_ESPONTANEO"
+    ],
+    "PRESIDENTE_ESPONTANEO": [
+      "PRESIDENTE_ESTIMULADO"
+    ],
+    "PRESIDENTE_ESTIMULADO": [
+      "AGRADECIMENTO_FINAL"
+    ],
+    "AGRADECIMENTO_RECUSA": [],
+    "AGRADECIMENTO_FINAL": []
+  },
+  "screens": [
+    {
+      "id": "INICIO",
+      "title": "Bem-vindo à Pesquisa de Opinião Maceió",
+      "sensitive": [
+        "aceita_participar"
+      ],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Pesquisa de Opinião Maceió 2026"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você aceita participar desta pesquisa sobre preferências e avaliação de gestores em Maceió?"
+          },
+          {
+            "type": "TextBody",
+            "text": "A pesquisa é confidencial e levará alguns minutos."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "aceita_participar",
+                "label": "Sua resposta:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "✅ Sim, aceito participar"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "❌ Não quero participar"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.aceita_participar} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Iniciar Pesquisa",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "CONFIRMACAO_MACEIO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_RECUSA"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${form.aceita_participar}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONFIRMACAO_MACEIO",
+      "title": "Confirmação de Residência",
+      "sensitive": [
+        "mora_maceio"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏠 Pergunta 1 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Você mora atualmente em Maceió?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "mora_maceio",
+                "label": "Selecione uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SIM",
+                    "title": "Sim, moro em Maceió"
+                  },
+                  {
+                    "id": "NAO",
+                    "title": "Não, moro em outra cidade"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.mora_maceio} == 'SIM'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "GENERO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${form.mora_maceio}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Finalizar",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "AGRADECIMENTO_NAO_MACEIO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${form.mora_maceio}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_NAO_MACEIO",
+      "title": "Pesquisa Finalizada",
+      "terminal": true,
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "😊 Obrigado pelo interesse"
+          },
+          {
+            "type": "TextBody",
+            "text": "Esta pesquisa é específica para moradores de Maceió. Agradecemos seu interesse em participar!"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "status": "nao_mora_maceio"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        }
+      }
+    },
+    {
+      "id": "GENERO",
+      "title": "Dados Demográficos - Gênero",
+      "sensitive": [
+        "genero",
+        "genero_outro"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👤 Pergunta 2 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é o seu gênero?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "genero",
+                "label": "Selecione uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MASCULINO",
+                    "title": "Masculino"
+                  },
+                  {
+                    "id": "FEMININO",
+                    "title": "Feminino"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  },
+                  {
+                    "id": "NAO_RESPONDER",
+                    "title": "Prefiro não responder"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.genero} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "genero_outro",
+                    "label": "Digite:",
+                    "input-type": "text",
+                    "max-chars": 20,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.genero} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "GENERO_OUTRO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${data.mora_maceio}",
+                        "genero": "${form.genero}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "IDADE"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${data.mora_maceio}",
+                        "genero": "${form.genero}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GENERO_OUTRO",
+      "title": "Dados Demográficos - Gênero Especificado",
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "👤 Continuação da Pergunta 2"
+          },
+          {
+            "type": "TextBody",
+            "text": "Obrigado pela especificação."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "IDADE"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "IDADE",
+      "title": "Dados Demográficos - Idade",
+      "sensitive": [
+        "idade"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📅 Pergunta 3 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é a sua faixa etária?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "idade",
+                "label": "Selecione sua faixa etária:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "16_24",
+                    "title": "16 a 24 anos"
+                  },
+                  {
+                    "id": "25_34",
+                    "title": "25 a 34 anos"
+                  },
+                  {
+                    "id": "35_44",
+                    "title": "35 a 44 anos"
+                  },
+                  {
+                    "id": "45_59",
+                    "title": "45 a 59 anos"
+                  },
+                  {
+                    "id": "60_MAIS",
+                    "title": "60 anos ou mais"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "ESCOLARIDADE"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${form.idade}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLARIDADE",
+      "title": "Dados Demográficos - Escolaridade",
+      "sensitive": [
+        "escolaridade",
+        "escolaridade_outro"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎓 Pergunta 4 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é o seu nível de escolaridade?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "escolaridade",
+                "label": "Selecione seu nível de escolaridade:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "FUNDAMENTAL_INCOMPLETO",
+                    "title": "Fundamental incompleto"
+                  },
+                  {
+                    "id": "FUNDAMENTAL_COMPLETO",
+                    "title": "Fundamental completo"
+                  },
+                  {
+                    "id": "MEDIO_INCOMPLETO",
+                    "title": "Médio incompleto"
+                  },
+                  {
+                    "id": "MEDIO_COMPLETO",
+                    "title": "Médio completo"
+                  },
+                  {
+                    "id": "SUPERIOR_INCOMPLETO",
+                    "title": "Superior incompleto"
+                  },
+                  {
+                    "id": "SUPERIOR_COMPLETO",
+                    "title": "Superior completo"
+                  },
+                  {
+                    "id": "POS_GRADUACAO",
+                    "title": "Pós-graduação"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.escolaridade} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "escolaridade_outro",
+                    "label": "Digite:",
+                    "input-type": "text",
+                    "max-chars": 30,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.escolaridade} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "ESCOLARIDADE_OUTRO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${data.mora_maceio}",
+                        "genero": "${data.genero}",
+                        "genero_outro": "${data.genero_outro}",
+                        "idade": "${data.idade}",
+                        "escolaridade": "${form.escolaridade}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "RELIGIAO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${data.mora_maceio}",
+                        "genero": "${data.genero}",
+                        "genero_outro": "${data.genero_outro}",
+                        "idade": "${data.idade}",
+                        "escolaridade": "${form.escolaridade}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ESCOLARIDADE_OUTRO",
+      "title": "Dados Demográficos - Escolaridade Especificada",
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎓 Continuação da Pergunta 4"
+          },
+          {
+            "type": "TextBody",
+            "text": "Obrigado pela especificação."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "RELIGIAO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "RELIGIAO",
+      "title": "Dados Demográficos - Religião",
+      "sensitive": [
+        "religiao",
+        "religiao_outra"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⛪ Pergunta 5 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é a sua religião ou crença?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "religiao",
+                "label": "Selecione uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "CATOLICA",
+                    "title": "Católica"
+                  },
+                  {
+                    "id": "EVANGELICA",
+                    "title": "Evangélica"
+                  },
+                  {
+                    "id": "ESPIRITA",
+                    "title": "Espírita"
+                  },
+                  {
+                    "id": "UMBANDA_CANDOMBLE",
+                    "title": "Umbanda/Candomblé"
+                  },
+                  {
+                    "id": "SEM_RELIGIAO",
+                    "title": "Sem religião"
+                  },
+                  {
+                    "id": "OUTRA",
+                    "title": "Outra"
+                  },
+                  {
+                    "id": "NAO_RESPONDER",
+                    "title": "Prefiro não responder"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.religiao} == 'OUTRA'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "religiao_outra",
+                    "label": "Digite:",
+                    "input-type": "text",
+                    "max-chars": 25,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.religiao} == 'OUTRA'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "RELIGIAO_OUTRO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${data.mora_maceio}",
+                        "genero": "${data.genero}",
+                        "genero_outro": "${data.genero_outro}",
+                        "idade": "${data.idade}",
+                        "escolaridade": "${data.escolaridade}",
+                        "escolaridade_outro": "${data.escolaridade_outro}",
+                        "religiao": "${form.religiao}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "RENDA"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${data.mora_maceio}",
+                        "genero": "${data.genero}",
+                        "genero_outro": "${data.genero_outro}",
+                        "idade": "${data.idade}",
+                        "escolaridade": "${data.escolaridade}",
+                        "escolaridade_outro": "${data.escolaridade_outro}",
+                        "religiao": "${form.religiao}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "RELIGIAO_OUTRO",
+      "title": "Dados Demográficos - Religião Especificada",
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⛪ Continuação da Pergunta 5"
+          },
+          {
+            "type": "TextBody",
+            "text": "Obrigado pela especificação."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "RENDA"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "RENDA",
+      "title": "Dados Demográficos - Renda",
+      "sensitive": [
+        "renda"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "💰 Pergunta 6 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Qual é a sua faixa de renda familiar mensal?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "renda",
+                "label": "Selecione sua faixa de renda:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "ATE_2SM",
+                    "title": "Até 2 salários mínimos"
+                  },
+                  {
+                    "id": "2_5SM",
+                    "title": "De 2 a 5 salários mínimos"
+                  },
+                  {
+                    "id": "5_10SM",
+                    "title": "De 5 a 10 salários mínimos"
+                  },
+                  {
+                    "id": "10_20SM",
+                    "title": "De 10 a 20 salários mínimos"
+                  },
+                  {
+                    "id": "ACIMA_20SM",
+                    "title": "Acima de 20 salários mínimos"
+                  },
+                  {
+                    "id": "NAO_RESPONDER",
+                    "title": "Prefiro não responder"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_JHC"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${form.renda}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_JHC",
+      "title": "Avaliação de Gestão - JHC",
+      "sensitive": [
+        "avaliacao_jhc"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Pergunta 7 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você avalia a gestão de João Henrique Caldas (JHC) em Maceió? Dê uma nota de 1 a 10:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_jhc",
+                "label": "Sua avaliação:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "1",
+                    "title": "1"
+                  },
+                  {
+                    "id": "2",
+                    "title": "2"
+                  },
+                  {
+                    "id": "3",
+                    "title": "3"
+                  },
+                  {
+                    "id": "4",
+                    "title": "4"
+                  },
+                  {
+                    "id": "5",
+                    "title": "5"
+                  },
+                  {
+                    "id": "6",
+                    "title": "6"
+                  },
+                  {
+                    "id": "7",
+                    "title": "7"
+                  },
+                  {
+                    "id": "8",
+                    "title": "8"
+                  },
+                  {
+                    "id": "9",
+                    "title": "9"
+                  },
+                  {
+                    "id": "10",
+                    "title": "10"
+                  },
+                  {
+                    "id": "NAO_CONHECE",
+                    "title": "Não conheço"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_PAULO_DANTAS"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${form.avaliacao_jhc}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_PAULO_DANTAS",
+      "title": "Avaliação de Gestão - Paulo Dantas",
+      "sensitive": [
+        "avaliacao_paulo_dantas"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Pergunta 8 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você avalia a gestão de Paulo Dantas em Alagoas? Dê uma nota de 1 a 10:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_paulo_dantas",
+                "label": "Sua avaliação:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "1",
+                    "title": "1"
+                  },
+                  {
+                    "id": "2",
+                    "title": "2"
+                  },
+                  {
+                    "id": "3",
+                    "title": "3"
+                  },
+                  {
+                    "id": "4",
+                    "title": "4"
+                  },
+                  {
+                    "id": "5",
+                    "title": "5"
+                  },
+                  {
+                    "id": "6",
+                    "title": "6"
+                  },
+                  {
+                    "id": "7",
+                    "title": "7"
+                  },
+                  {
+                    "id": "8",
+                    "title": "8"
+                  },
+                  {
+                    "id": "9",
+                    "title": "9"
+                  },
+                  {
+                    "id": "10",
+                    "title": "10"
+                  },
+                  {
+                    "id": "NAO_CONHECE",
+                    "title": "Não conheço"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AVALIACAO_LULA"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${form.avaliacao_paulo_dantas}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AVALIACAO_LULA",
+      "title": "Avaliação de Gestão - Lula",
+      "sensitive": [
+        "avaliacao_lula"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📊 Pergunta 9 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Como você avalia a gestão do presidente Lula? Dê uma nota de 1 a 10:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "avaliacao_lula",
+                "label": "Sua avaliação:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "1",
+                    "title": "1"
+                  },
+                  {
+                    "id": "2",
+                    "title": "2"
+                  },
+                  {
+                    "id": "3",
+                    "title": "3"
+                  },
+                  {
+                    "id": "4",
+                    "title": "4"
+                  },
+                  {
+                    "id": "5",
+                    "title": "5"
+                  },
+                  {
+                    "id": "6",
+                    "title": "6"
+                  },
+                  {
+                    "id": "7",
+                    "title": "7"
+                  },
+                  {
+                    "id": "8",
+                    "title": "8"
+                  },
+                  {
+                    "id": "9",
+                    "title": "9"
+                  },
+                  {
+                    "id": "10",
+                    "title": "10"
+                  },
+                  {
+                    "id": "NAO_CONHECE",
+                    "title": "Não conheço"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PROBLEMA_ESPONTANEO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${form.avaliacao_lula}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PROBLEMA_ESPONTANEO",
+      "title": "Principal Problema - Espontânea",
+      "sensitive": [
+        "problema_espontaneo"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏙️ Pergunta 10 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Na sua opinião, qual é o principal problema de Maceió atualmente?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "problema_espontaneo",
+                "label": "Digite sua resposta:",
+                "input-type": "text",
+                "max-chars": 100,
+                "required": true,
+                "helper-text": "Responda com suas próprias palavras"
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PROBLEMA_ESTIMULADO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${form.problema_espontaneo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PROBLEMA_ESTIMULADO",
+      "title": "Principal Problema - Estimulada",
+      "sensitive": [
+        "problema_estimulado",
+        "problema_outro"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏙️ Pergunta 11 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agora, das opções abaixo, qual considera o principal problema de Maceió?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "problema_estimulado",
+                "label": "Selecione o principal problema:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "SEGURANCA",
+                    "title": "Segurança pública"
+                  },
+                  {
+                    "id": "SAUDE",
+                    "title": "Saúde"
+                  },
+                  {
+                    "id": "EDUCACAO",
+                    "title": "Educação"
+                  },
+                  {
+                    "id": "TRANSPORTE",
+                    "title": "Transporte público"
+                  },
+                  {
+                    "id": "EMPREGO",
+                    "title": "Desemprego"
+                  },
+                  {
+                    "id": "INFRAESTRUTURA",
+                    "title": "Infraestrutura urbana"
+                  },
+                  {
+                    "id": "MEIO_AMBIENTE",
+                    "title": "Meio ambiente"
+                  },
+                  {
+                    "id": "CORRUPCAO",
+                    "title": "Corrupção"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.problema_estimulado} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "problema_outro",
+                    "label": "Digite:",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.problema_estimulado} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "PROBLEMA_OUTRO"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${data.mora_maceio}",
+                        "genero": "${data.genero}",
+                        "genero_outro": "${data.genero_outro}",
+                        "idade": "${data.idade}",
+                        "escolaridade": "${data.escolaridade}",
+                        "escolaridade_outro": "${data.escolaridade_outro}",
+                        "religiao": "${data.religiao}",
+                        "religiao_outra": "${data.religiao_outra}",
+                        "renda": "${data.renda}",
+                        "avaliacao_jhc": "${data.avaliacao_jhc}",
+                        "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                        "avaliacao_lula": "${data.avaliacao_lula}",
+                        "problema_espontaneo": "${data.problema_espontaneo}",
+                        "problema_estimulado": "${form.problema_estimulado}"
+                      }
+                    }
+                  }
+                ],
+                "else": [
+                  {
+                    "type": "Footer",
+                    "label": "Próxima Pergunta",
+                    "on-click-action": {
+                      "name": "navigate",
+                      "next": {
+                        "type": "screen",
+                        "name": "SENADOR_ESPONTANEO_VAGA_UM"
+                      },
+                      "payload": {
+                        "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                        "aceita_participar": "${data.aceita_participar}",
+                        "mora_maceio": "${data.mora_maceio}",
+                        "genero": "${data.genero}",
+                        "genero_outro": "${data.genero_outro}",
+                        "idade": "${data.idade}",
+                        "escolaridade": "${data.escolaridade}",
+                        "escolaridade_outro": "${data.escolaridade_outro}",
+                        "religiao": "${data.religiao}",
+                        "religiao_outra": "${data.religiao_outra}",
+                        "renda": "${data.renda}",
+                        "avaliacao_jhc": "${data.avaliacao_jhc}",
+                        "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                        "avaliacao_lula": "${data.avaliacao_lula}",
+                        "problema_espontaneo": "${data.problema_espontaneo}",
+                        "problema_estimulado": "${form.problema_estimulado}"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PROBLEMA_OUTRO",
+      "title": "Principal Problema - Especificado",
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏙️ Continuação da Pergunta 11"
+          },
+          {
+            "type": "TextBody",
+            "text": "Obrigado pela especificação."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "SENADOR_ESPONTANEO_VAGA_UM"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SENADOR_ESPONTANEO_VAGA_UM",
+      "title": "Senador - 1ª Vaga (Espontânea)",
+      "sensitive": [
+        "senador_espontaneo_vaga1"
+      ],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 12 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se as eleições fossem hoje, em quem você votaria para Senador - 1ª vaga?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "senador_espontaneo_vaga1",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "max-chars": 50,
+                "required": true,
+                "helper-text": "Nome que vem à sua mente"
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "SENADOR_ESPONTANEO_VAGA_DOIS"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${form.senador_espontaneo_vaga1}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      }
+    },
+    {
+      "id": "SENADOR_ESPONTANEO_VAGA_DOIS",
+      "title": "Senador - 2ª Vaga (Espontânea)",
+      "sensitive": [
+        "senador_espontaneo_vaga2"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 13 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "E para Senador - 2ª vaga, em quem você votaria?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "senador_espontaneo_vaga2",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "max-chars": 50,
+                "required": true,
+                "helper-text": "Nome que vem à sua mente"
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "SENADOR_ESTIMULADO_VAGA_UM"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${form.senador_espontaneo_vaga2}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SENADOR_ESTIMULADO_VAGA_UM",
+      "title": "Senador - 1ª Vaga (Estimulada)",
+      "sensitive": [
+        "senador_estimulado_vaga1",
+        "senador_vaga1_outro"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 14 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agora, dos nomes abaixo, em quem você votaria para Senador - 1ª vaga?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "senador_estimulado_vaga1",
+                "label": "Escolha um nome:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "RENAN_CALHEIROS",
+                    "title": "Renan Calheiros"
+                  },
+                  {
+                    "id": "PAULAO",
+                    "title": "Paulão"
+                  },
+                  {
+                    "id": "ARTHUR_LIRA",
+                    "title": "Arthur Lira"
+                  },
+                  {
+                    "id": "JHC",
+                    "title": "JHC (João Henrique Caldas)"
+                  },
+                  {
+                    "id": "ALFREDO_GASPAR",
+                    "title": "Alfredo Gaspar"
+                  },
+                  {
+                    "id": "DAVI_DAVINO_FILHO",
+                    "title": "Davi Davino Filho"
+                  },
+                  {
+                    "id": "EUDOCIA_CALDAS",
+                    "title": "Eudócia Caldas"
+                  },
+                  {
+                    "id": "ITALO_BONJA",
+                    "title": "Italo Bonja"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  },
+                  {
+                    "id": "BRANCO_NULO",
+                    "title": "Branco/Nulo"
+                  },
+                  {
+                    "id": "NAO_SEI",
+                    "title": "Não sei"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.senador_estimulado_vaga1} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "senador_vaga1_outro",
+                    "label": "Digite o nome:",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "SENADOR_ESTIMULADO_VAGA_DOIS"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${form.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${form.senador_vaga1_outro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SENADOR_ESTIMULADO_VAGA_DOIS",
+      "title": "Senador - 2ª Vaga (Estimulada)",
+      "sensitive": [
+        "senador_estimulado_vaga2",
+        "senador_vaga2_outro"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 15 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "E para Senador - 2ª vaga, dos nomes abaixo, em quem você votaria?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "senador_estimulado_vaga2",
+                "label": "Escolha um nome:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "RENAN_CALHEIROS",
+                    "title": "Renan Calheiros"
+                  },
+                  {
+                    "id": "PAULAO",
+                    "title": "Paulão"
+                  },
+                  {
+                    "id": "ARTHUR_LIRA",
+                    "title": "Arthur Lira"
+                  },
+                  {
+                    "id": "JHC",
+                    "title": "JHC (João Henrique Caldas)"
+                  },
+                  {
+                    "id": "ALFREDO_GASPAR",
+                    "title": "Alfredo Gaspar"
+                  },
+                  {
+                    "id": "DAVI_DAVINO_FILHO",
+                    "title": "Davi Davino Filho"
+                  },
+                  {
+                    "id": "EUDOCIA_CALDAS",
+                    "title": "Eudócia Caldas"
+                  },
+                  {
+                    "id": "ITALO_BONJA",
+                    "title": "Italo Bonja"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  },
+                  {
+                    "id": "BRANCO_NULO",
+                    "title": "Branco/Nulo"
+                  },
+                  {
+                    "id": "NAO_SEI",
+                    "title": "Não sei"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.senador_estimulado_vaga2} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "senador_vaga2_outro",
+                    "label": "Digite o nome:",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEPUTADO_FEDERAL_ESPONTANEO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${form.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${form.senador_vaga2_outro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEPUTADO_FEDERAL_ESPONTANEO",
+      "title": "Deputado Federal (Espontânea)",
+      "sensitive": [
+        "deputado_federal_espontaneo"
+      ],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 16 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se as eleições fossem hoje, em quem você votaria para Deputado Federal?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "deputado_federal_espontaneo",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "max-chars": 50,
+                "required": true,
+                "helper-text": "Nome que vem à sua mente"
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEPUTADO_FEDERAL_ESTIMULADO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${form.deputado_federal_espontaneo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      }
+    },
+    {
+      "id": "DEPUTADO_FEDERAL_ESTIMULADO",
+      "title": "Deputado Federal (Estimulada)",
+      "sensitive": [
+        "deputado_federal_estimulado",
+        "deputado_federal_outro"
+      ],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 17 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agora, dos nomes abaixo, em quem você votaria para Deputado Federal?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "deputado_federal_estimulado",
+                "label": "Escolha um nome:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "ALFREDO_GASPAR",
+                    "title": "Alfredo Gaspar"
+                  },
+                  {
+                    "id": "ARTHUR_LIRA",
+                    "title": "Arthur Lira"
+                  },
+                  {
+                    "id": "DANIEL_BARBOSA",
+                    "title": "Daniel Barbosa"
+                  },
+                  {
+                    "id": "DELEGADO_FABIO_COSTA",
+                    "title": "Delegado Fábio Costa"
+                  },
+                  {
+                    "id": "ISNALDO_BULHOES_JR",
+                    "title": "Isnaldo Bulhões Jr."
+                  },
+                  {
+                    "id": "LUCIANO_AMARAL",
+                    "title": "Luciano Amaral"
+                  },
+                  {
+                    "id": "MARX_BELTRAO",
+                    "title": "Marx Beltrão"
+                  },
+                  {
+                    "id": "PAULAO",
+                    "title": "Paulão"
+                  },
+                  {
+                    "id": "RAFAEL_BRITO",
+                    "title": "Rafael Brito"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  },
+                  {
+                    "id": "BRANCO_NULO",
+                    "title": "Branco/Nulo"
+                  },
+                  {
+                    "id": "NAO_SEI",
+                    "title": "Não sei"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.deputado_federal_estimulado} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "deputado_federal_outro",
+                    "label": "Digite o nome:",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEPUTADO_ESTADUAL_ESPONTANEO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${data.deputado_federal_espontaneo}",
+                    "deputado_federal_estimulado": "${form.deputado_federal_estimulado}",
+                    "deputado_federal_outro": "${form.deputado_federal_outro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        }
+      }
+    },
+    {
+      "id": "DEPUTADO_ESTADUAL_ESPONTANEO",
+      "title": "Deputado Estadual (Espontânea)",
+      "sensitive": [
+        "deputado_estadual_espontaneo"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 18 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se as eleições fossem hoje, em quem você votaria para Deputado Estadual?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "deputado_estadual_espontaneo",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "max-chars": 50,
+                "required": true,
+                "helper-text": "Nome que vem à sua mente"
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DEPUTADO_ESTADUAL_ESTIMULADO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${data.deputado_federal_espontaneo}",
+                    "deputado_federal_estimulado": "${data.deputado_federal_estimulado}",
+                    "deputado_federal_outro": "${data.deputado_federal_outro}",
+                    "deputado_estadual_espontaneo": "${form.deputado_estadual_espontaneo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEPUTADO_ESTADUAL_ESTIMULADO",
+      "title": "Deputado Estadual (Estimulada)",
+      "sensitive": [
+        "deputado_estadual_estimulado",
+        "deputado_estadual_outro"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 19 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agora, dos nomes abaixo, em quem você votaria para Deputado Estadual?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "deputado_estadual_estimulado",
+                "label": "Escolha um nome:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "ALEXANDRE_AYRES",
+                    "title": "Alexandre Ayres"
+                  },
+                  {
+                    "id": "ANGELA_GARROTE",
+                    "title": "Ângela Garrote"
+                  },
+                  {
+                    "id": "ANTONIO_ALBUQUERQUE",
+                    "title": "Antonio Albuquerque"
+                  },
+                  {
+                    "id": "BRENO_ALBUQUERQUE",
+                    "title": "Breno Albuquerque"
+                  },
+                  {
+                    "id": "BRUNO_TOLEDO",
+                    "title": "Bruno Toledo"
+                  },
+                  {
+                    "id": "CABO_BEBETO",
+                    "title": "Cabo Bebeto"
+                  },
+                  {
+                    "id": "CARLA_DANTAS",
+                    "title": "Carla Dantas"
+                  },
+                  {
+                    "id": "DELEGADO_LEONAM",
+                    "title": "Delegado Leonam"
+                  },
+                  {
+                    "id": "DOUTOR_WANDERLEY",
+                    "title": "Doutor Wanderley"
+                  },
+                  {
+                    "id": "DUDU_RONALSA",
+                    "title": "Dudu Ronalsa"
+                  },
+                  {
+                    "id": "FATIMA_CANUTO",
+                    "title": "Fátima Canuto"
+                  },
+                  {
+                    "id": "FRANCISCO_TENORIO",
+                    "title": "Francisco Tenório"
+                  },
+                  {
+                    "id": "GABI_GONCALVES",
+                    "title": "Gabi Gonçalves"
+                  },
+                  {
+                    "id": "LELO_MAIA",
+                    "title": "Lelo Maia"
+                  },
+                  {
+                    "id": "MARCELO_VICTOR",
+                    "title": "Marcelo Victor"
+                  },
+                  {
+                    "id": "REMI_CALHEIROS",
+                    "title": "Remi Calheiros"
+                  },
+                  {
+                    "id": "RICARDO_NEZINHO",
+                    "title": "Ricardo Nezinho"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  },
+                  {
+                    "id": "BRANCO_NULO",
+                    "title": "Branco/Nulo"
+                  },
+                  {
+                    "id": "NAO_SEI",
+                    "title": "Não sei"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.deputado_estadual_estimulado} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "deputado_estadual_outro",
+                    "label": "Digite o nome:",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "GOVERNADOR_ESPONTANEO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${data.deputado_federal_espontaneo}",
+                    "deputado_federal_estimulado": "${data.deputado_federal_estimulado}",
+                    "deputado_federal_outro": "${data.deputado_federal_outro}",
+                    "deputado_estadual_espontaneo": "${data.deputado_estadual_espontaneo}",
+                    "deputado_estadual_estimulado": "${form.deputado_estadual_estimulado}",
+                    "deputado_estadual_outro": "${form.deputado_estadual_outro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GOVERNADOR_ESPONTANEO",
+      "title": "Governador - Espontânea",
+      "sensitive": [
+        "governador_espontaneo"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 20 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se as eleições fossem hoje, em quem você votaria para Governador de Alagoas?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "governador_espontaneo",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "max-chars": 50,
+                "required": true,
+                "helper-text": "Nome que vem à sua mente"
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "GOVERNADOR_ESTIMULADO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${data.deputado_federal_espontaneo}",
+                    "deputado_federal_estimulado": "${data.deputado_federal_estimulado}",
+                    "deputado_federal_outro": "${data.deputado_federal_outro}",
+                    "deputado_estadual_espontaneo": "${data.deputado_estadual_espontaneo}",
+                    "deputado_estadual_estimulado": "${data.deputado_estadual_estimulado}",
+                    "deputado_estadual_outro": "${data.deputado_estadual_outro}",
+                    "governador_espontaneo": "${form.governador_espontaneo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "GOVERNADOR_ESTIMULADO",
+      "title": "Governador - Estimulada",
+      "sensitive": [
+        "governador_estimulado",
+        "governador_outro"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 21 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agora, dos nomes abaixo, em quem você votaria para Governador de Alagoas?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "governador_estimulado",
+                "label": "Escolha um nome:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "RENAN_FILHO",
+                    "title": "Renan Filho"
+                  },
+                  {
+                    "id": "JHC",
+                    "title": "JHC (João Henrique Caldas)"
+                  },
+                  {
+                    "id": "ISNALDO_BULHOES",
+                    "title": "Isnaldo Bulhões"
+                  },
+                  {
+                    "id": "PAULO_DANTAS",
+                    "title": "Paulo Dantas"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  },
+                  {
+                    "id": "BRANCO_NULO",
+                    "title": "Branco/Nulo"
+                  },
+                  {
+                    "id": "NAO_SEI",
+                    "title": "Não sei"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.governador_estimulado} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "governador_outro",
+                    "label": "Digite o nome:",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PRESIDENTE_ESPONTANEO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${data.deputado_federal_espontaneo}",
+                    "deputado_federal_estimulado": "${data.deputado_federal_estimulado}",
+                    "deputado_federal_outro": "${data.deputado_federal_outro}",
+                    "deputado_estadual_espontaneo": "${data.deputado_estadual_espontaneo}",
+                    "deputado_estadual_estimulado": "${data.deputado_estadual_estimulado}",
+                    "deputado_estadual_outro": "${data.deputado_estadual_outro}",
+                    "governador_espontaneo": "${data.governador_espontaneo}",
+                    "governador_estimulado": "${form.governador_estimulado}",
+                    "governador_outro": "${form.governador_outro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "PRESIDENTE_ESPONTANEO",
+      "title": "Presidente - Espontânea",
+      "sensitive": [
+        "presidente_espontaneo"
+      ],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 22 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Se as eleições fossem hoje, em quem você votaria para Presidente do Brasil?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "presidente_espontaneo",
+                "label": "Digite o nome:",
+                "input-type": "text",
+                "max-chars": 50,
+                "required": true,
+                "helper-text": "Nome que vem à sua mente"
+              },
+              {
+                "type": "Footer",
+                "label": "Próxima Pergunta",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "PRESIDENTE_ESTIMULADO"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${data.deputado_federal_espontaneo}",
+                    "deputado_federal_estimulado": "${data.deputado_federal_estimulado}",
+                    "deputado_federal_outro": "${data.deputado_federal_outro}",
+                    "deputado_estadual_espontaneo": "${data.deputado_estadual_espontaneo}",
+                    "deputado_estadual_estimulado": "${data.deputado_estadual_estimulado}",
+                    "deputado_estadual_outro": "${data.deputado_estadual_outro}",
+                    "governador_espontaneo": "${data.governador_espontaneo}",
+                    "governador_estimulado": "${data.governador_estimulado}",
+                    "governador_outro": "${data.governador_outro}",
+                    "presidente_espontaneo": "${form.presidente_espontaneo}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      }
+    },
+    {
+      "id": "PRESIDENTE_ESTIMULADO",
+      "title": "Presidente - Estimulada",
+      "sensitive": [
+        "presidente_estimulado",
+        "presidente_outro"
+      ],
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "presidente_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🏛️ Pergunta 23 de 23"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agora, dos nomes abaixo, em quem você votaria para Presidente do Brasil?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "presidente_estimulado",
+                "label": "Escolha um nome:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "LULA",
+                    "title": "Lula"
+                  },
+                  {
+                    "id": "JAIR_BOLSONARO",
+                    "title": "Jair Bolsonaro"
+                  },
+                  {
+                    "id": "CIRO_GOMES",
+                    "title": "Ciro Gomes"
+                  },
+                  {
+                    "id": "TARCISIO_FREITAS",
+                    "title": "Tarcísio de Freitas"
+                  },
+                  {
+                    "id": "ROMEU_ZEMA",
+                    "title": "Romeu Zema"
+                  },
+                  {
+                    "id": "RATINHO_JR",
+                    "title": "Ratinho Jr."
+                  },
+                  {
+                    "id": "RONALDO_CAIADO",
+                    "title": "Ronaldo Caiado"
+                  },
+                  {
+                    "id": "EDUARDO_LEITE",
+                    "title": "Eduardo Leite"
+                  },
+                  {
+                    "id": "MICHELLE_BOLSONARO",
+                    "title": "Michelle Bolsonaro"
+                  },
+                  {
+                    "id": "EDUARDO_BOLSONARO",
+                    "title": "Eduardo Bolsonaro"
+                  },
+                  {
+                    "id": "OUTRO",
+                    "title": "Outro"
+                  },
+                  {
+                    "id": "BRANCO_NULO",
+                    "title": "Branco/Nulo"
+                  },
+                  {
+                    "id": "NAO_SEI",
+                    "title": "Não sei"
+                  }
+                ]
+              },
+              {
+                "type": "If",
+                "condition": "${form.presidente_estimulado} == 'OUTRO'",
+                "then": [
+                  {
+                    "type": "TextInput",
+                    "name": "presidente_outro",
+                    "label": "Digite o nome:",
+                    "input-type": "text",
+                    "max-chars": 50,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Finalizar Pesquisa",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "AGRADECIMENTO_FINAL"
+                  },
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${data.deputado_federal_espontaneo}",
+                    "deputado_federal_estimulado": "${data.deputado_federal_estimulado}",
+                    "deputado_federal_outro": "${data.deputado_federal_outro}",
+                    "deputado_estadual_espontaneo": "${data.deputado_estadual_espontaneo}",
+                    "deputado_estadual_estimulado": "${data.deputado_estadual_estimulado}",
+                    "deputado_estadual_outro": "${data.deputado_estadual_outro}",
+                    "governador_espontaneo": "${data.governador_espontaneo}",
+                    "governador_estimulado": "${data.governador_estimulado}",
+                    "governador_outro": "${data.governador_outro}",
+                    "presidente_espontaneo": "${data.presidente_espontaneo}",
+                    "presidente_estimulado": "${form.presidente_estimulado}",
+                    "presidente_outro": "${form.presidente_outro}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_RECUSA",
+      "title": "Pesquisa Finalizada",
+      "terminal": true,
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "😊 Obrigado"
+          },
+          {
+            "type": "TextBody",
+            "text": "Agradecemos seu tempo. Caso mude de ideia, estaremos aqui!"
+          },
+          {
+            "type": "TextBody",
+            "text": "Sua opinião é muito importante para nós."
+          },
+          {
+            "type": "Form",
+            "name": "form_recusa",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "status": "recusou_participar"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        }
+      }
+    },
+    {
+      "id": "AGRADECIMENTO_FINAL",
+      "title": "Pesquisa Concluída",
+      "terminal": true,
+      "data": {
+        "pesquisa_id": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "aceita_participar": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "mora_maceio": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "genero_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "idade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "escolaridade_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "religiao_outra": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "renda": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_jhc": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_paulo_dantas": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "avaliacao_lula": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "problema_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_espontaneo_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga1": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga1_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_estimulado_vaga2": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "senador_vaga2_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_federal_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "deputado_estadual_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "governador_outro": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "presidente_espontaneo": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "presidente_estimulado": {
+          "type": "string",
+          "__example__": "***"
+        },
+        "presidente_outro": {
+          "type": "string",
+          "__example__": "***"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🎉 Pesquisa Concluída"
+          },
+          {
+            "type": "TextBody",
+            "text": "**Muito obrigado** por participar da nossa pesquisa de opinião!",
+            "markdown": true
+          },
+          {
+            "type": "TextBody",
+            "text": "Suas respostas são anônimas e contribuem para uma democracia mais transparente."
+          },
+          {
+            "type": "TextBody",
+            "text": "📊 Os resultados serão divulgados em breve nos nossos canais oficiais."
+          },
+          {
+            "type": "Form",
+            "name": "form_final",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "pesquisa_id": "PESQ_OPINIAO_MACEIO_2026",
+                    "aceita_participar": "${data.aceita_participar}",
+                    "mora_maceio": "${data.mora_maceio}",
+                    "genero": "${data.genero}",
+                    "genero_outro": "${data.genero_outro}",
+                    "idade": "${data.idade}",
+                    "escolaridade": "${data.escolaridade}",
+                    "escolaridade_outro": "${data.escolaridade_outro}",
+                    "religiao": "${data.religiao}",
+                    "religiao_outra": "${data.religiao_outra}",
+                    "renda": "${data.renda}",
+                    "avaliacao_jhc": "${data.avaliacao_jhc}",
+                    "avaliacao_paulo_dantas": "${data.avaliacao_paulo_dantas}",
+                    "avaliacao_lula": "${data.avaliacao_lula}",
+                    "problema_espontaneo": "${data.problema_espontaneo}",
+                    "problema_estimulado": "${data.problema_estimulado}",
+                    "problema_outro": "${data.problema_outro}",
+                    "senador_espontaneo_vaga1": "${data.senador_espontaneo_vaga1}",
+                    "senador_espontaneo_vaga2": "${data.senador_espontaneo_vaga2}",
+                    "senador_estimulado_vaga1": "${data.senador_estimulado_vaga1}",
+                    "senador_vaga1_outro": "${data.senador_vaga1_outro}",
+                    "senador_estimulado_vaga2": "${data.senador_estimulado_vaga2}",
+                    "senador_vaga2_outro": "${data.senador_vaga2_outro}",
+                    "deputado_federal_espontaneo": "${data.deputado_federal_espontaneo}",
+                    "deputado_federal_estimulado": "${data.deputado_federal_estimulado}",
+                    "deputado_federal_outro": "${data.deputado_federal_outro}",
+                    "deputado_estadual_espontaneo": "${data.deputado_estadual_espontaneo}",
+                    "deputado_estadual_estimulado": "${data.deputado_estadual_estimulado}",
+                    "deputado_estadual_outro": "${data.deputado_estadual_outro}",
+                    "governador_espontaneo": "${data.governador_espontaneo}",
+                    "governador_estimulado": "${data.governador_estimulado}",
+                    "governador_outro": "${data.governador_outro}",
+                    "presidente_espontaneo": "${data.presidente_espontaneo}",
+                    "presidente_estimulado": "${data.presidente_estimulado}",
+                    "presidente_outro": "${data.presidente_outro}",
+                    "status": "pesquisa_concluida"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
