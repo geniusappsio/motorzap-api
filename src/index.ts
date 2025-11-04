@@ -6,6 +6,6 @@ if (cluster.isPrimary) {
   	for (let i = 0; i < os.availableParallelism(); i++)
     	cluster.fork()
 } else {
-  	await import('./http/server')
+  	await import('./presentation/http/server')
   	console.log(`Worker ${process.pid} started`)
 }
