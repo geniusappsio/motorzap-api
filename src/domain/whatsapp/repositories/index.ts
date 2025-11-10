@@ -1,0 +1,5 @@
+export * from './business-manager-repository.interface'
+export * from './whatsapp-business-account-repository.interface'
+export * from './whatsapp-flow-repository.interface'
+export * from './whatsapp-message-template-repository.interface'
+export * from './whatsapp-phone-number-repository.interface'

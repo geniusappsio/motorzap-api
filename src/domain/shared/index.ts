@@ -1,3 +1,3 @@
-export * from './domain-error';
-export * from './result';
-export * from './base-entity';
+export * from './base-entity'
+export * from './domain-error'
+export * from './result'

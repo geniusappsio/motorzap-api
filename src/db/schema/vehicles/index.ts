@@ -1,5 +1,0 @@
-export * from './vehicleBrands'
-export * from './vehicleDetails'
-export * from './vehicleModels'
-export * from './vehicleTypes'
-export * from './vehicleYears'

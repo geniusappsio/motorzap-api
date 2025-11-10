@@ -23,7 +23,20 @@ export default [
         Buffer: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
-        Bun: 'readonly'
+        Bun: 'readonly',
+        // Bun runtime globals (Web APIs)
+        fetch: 'readonly',
+        URLSearchParams: 'readonly',
+        FormData: 'readonly',
+        Headers: 'readonly',
+        Request: 'readonly',
+        Response: 'readonly',
+        // Timer APIs
+        Timer: 'readonly',
+        setInterval: 'readonly',
+        setTimeout: 'readonly',
+        clearInterval: 'readonly',
+        clearTimeout: 'readonly'
       }
     },
     plugins: {

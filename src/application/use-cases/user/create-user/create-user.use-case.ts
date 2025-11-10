@@ -1,40 +1,40 @@
-import type { IUserRepository } from '../../../../domain/user';
-import { UserAlreadyExistsError, Phone } from '../../../../domain/user';
-import type { Result } from '../../../../domain/shared';
-import { UserFactory } from '../../../factories/user/user.factory';
-import type { CreateUserDTO } from './create-user.dto';
-import type { CreateUserResponse } from './create-user.response';
+import type { Result } from '../../../../domain/shared'
+import type { IUserRepository } from '../../../../domain/user'
+import { UserAlreadyExistsError } from '../../../../domain/user'
+import { UserFactory } from '../../../factories/user/user.factory'
+import type { CreateUserDTO } from './create-user.dto'
+import type { CreateUserResponse } from './create-user.response'
 
 export class CreateUserUseCase {
-  private readonly userFactory: UserFactory;
+  private readonly userFactory: UserFactory
 
-  constructor(private readonly userRepository: IUserRepository) {
-    this.userFactory = new UserFactory();
+  constructor (private readonly userRepository: IUserRepository) {
+    this.userFactory = new UserFactory()
   }
 
-  async execute(dto: CreateUserDTO): Promise<Result<CreateUserResponse>> {
+  async execute (dto: CreateUserDTO): Promise<Result<CreateUserResponse>> {
     // Create entity using factory
-    const userResult = this.userFactory.create(dto);
+    const userResult = this.userFactory.create(dto)
     if (userResult.isFailure) {
-      return userResult;
+      return userResult
     }
 
-    const user = userResult.getOrThrow();
+    const user = userResult.getOrThrow()
 
     // Check if user already exists
-    const existingUserResult = await this.userRepository.findByPhone(user.getPhone());
+    const existingUserResult = await this.userRepository.findByPhone(user.getPhone())
     if (existingUserResult.isSuccess) {
       return existingUserResult.flatMap(() => {
         // Return failure if user exists
-        const error = new UserAlreadyExistsError(user.getPhone().getValue());
-        return { isSuccess: false, isFailure: true, error } as any;
-      });
+        const error = new UserAlreadyExistsError(user.getPhone().getValue())
+        return { isSuccess: false, isFailure: true, error } as any
+      })
     }
 
     // Save user to repository
-    const saveResult = await this.userRepository.save(user);
+    const saveResult = await this.userRepository.save(user)
     if (saveResult.isFailure) {
-      return saveResult;
+      return saveResult
     }
 
     // Return response
@@ -44,9 +44,9 @@ export class CreateUserUseCase {
       role: user.getRole().getValue(),
       name: user.getName(),
       email: user.getEmail(),
-      createdAt: user.getCreatedAt(),
-    };
+      createdAt: user.getCreatedAt()
+    }
 
-    return { isSuccess: true, isFailure: false, value: response } as any;
+    return { isSuccess: true, isFailure: false, value: response } as any
   }
 }

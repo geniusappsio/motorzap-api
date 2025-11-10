@@ -1,5 +1,5 @@
-import { User, Phone, Role } from '../../../domain/user';
-import type { Result } from '../../../domain/shared';
+import type { Result } from '../../../domain/shared'
+import { Phone, Role, User } from '../../../domain/user'
 
 export interface CreateUserData {
   phone: string;
@@ -19,33 +19,33 @@ export interface UserPersistenceData {
 }
 
 export class UserFactory {
-  create(data: CreateUserData): Result<User> {
+  create (data: CreateUserData): Result<User> {
     // Create value objects
-    const phoneResult = Phone.create(data.phone);
+    const phoneResult = Phone.create(data.phone)
     if (phoneResult.isFailure) {
-      return phoneResult;
+      return phoneResult
     }
 
-    const roleResult = Role.create(data.role);
+    const roleResult = Role.create(data.role)
     if (roleResult.isFailure) {
-      return roleResult;
+      return roleResult
     }
 
     // Create entity
-    const phone = phoneResult.getOrThrow();
-    const role = roleResult.getOrThrow();
+    const phone = phoneResult.getOrThrow()
+    const role = roleResult.getOrThrow()
 
     return User.create({
       phone,
       role,
       name: data.name,
-      email: data.email,
-    });
+      email: data.email
+    })
   }
 
-  reconstitute(data: UserPersistenceData): User {
-    const phone = Phone.createUnsafe(data.phone);
-    const role = Role.createUnsafe(data.role as any);
+  reconstitute (data: UserPersistenceData): User {
+    const phone = Phone.createUnsafe(data.phone)
+    const role = Role.createUnsafe(data.role as any)
 
     return User.reconstitute({
       id: data.id,
@@ -54,7 +54,7 @@ export class UserFactory {
       name: data.name,
       email: data.email,
       createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-    });
+      updatedAt: data.updatedAt
+    })
   }
 }

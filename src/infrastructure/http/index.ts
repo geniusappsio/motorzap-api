@@ -1,2 +1,2 @@
-export * from './controllers';
-export * from './validators';
+export * from './controllers'
+export * from './validators'

@@ -1,2 +1,2 @@
-export * from './repositories';
-export { db } from './drizzle/connection';
+export { db } from './drizzle/connection'
+export * from './repositories'

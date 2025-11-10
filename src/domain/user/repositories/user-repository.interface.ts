@@ -1,6 +1,6 @@
-import { User } from '../entities/user.entity';
-import { Phone } from '../value-objects/phone.vo';
-import type { Result } from '../../shared';
+import type { Result } from '../../shared'
+import { User } from '../entities/user.entity'
+import { Phone } from '../value-objects/phone.vo'
 
 export interface IUserRepository {
   save(user: User): Promise<Result<void>>;

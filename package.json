@@ -4,13 +4,13 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/http/server.ts",
-    "build": "bun build --minify-whitespace --minify-syntax src/db/migrate.ts src/http/server.ts --target bun --outdir ./dist",
+    "build": "bun build --minify-whitespace --minify-syntax src/infrastructure/database/drizzle/migrate.ts src/http/server.ts --target bun --outdir ./dist",
     "build:binario": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile server src/index.ts",
     "start": "NODE_ENV=production bun dist/server.js",
     "test": "bun test",
     "generate": "drizzle-kit generate",
-    "migrate": "bun src/db/migrate.ts",
-    "seed": "bun src/db/seed.ts",
+    "migrate": "bun src/infrastructure/database/drizzle/migrate.ts",
+    "seed": "bun src/infrastructure/database/drizzle/seed.ts",
     "studio": "drizzle-kit studio --verbose",
     "lint": "eslint --fix src"
   },

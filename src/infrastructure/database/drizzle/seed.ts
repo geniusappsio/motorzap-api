@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
 import chalk from 'chalk'
 
-import { db } from '@/db/connection'
-import { user } from '@/db/schema'
+import { db } from './connection'
+import { user } from './schema'
 
 /**
  * Reset database and seed initial data

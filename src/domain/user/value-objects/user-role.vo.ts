@@ -1,5 +1,5 @@
-import { InvalidUserRoleError } from '../errors/user-errors';
-import { Result, ok, fail } from '../../shared';
+import { fail, ok, Result } from '../../shared'
+import { InvalidUserRoleError } from '../errors/user-errors'
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -8,47 +8,47 @@ export enum UserRole {
 }
 
 export class Role {
-  private readonly value: UserRole;
+  private readonly value: UserRole
 
-  private constructor(value: UserRole) {
-    this.value = value;
+  private constructor (value: UserRole) {
+    this.value = value
   }
 
-  static create(role: string): Result<Role> {
-    const normalizedRole = role.toUpperCase();
+  static create (role: string): Result<Role> {
+    const normalizedRole = role.toUpperCase()
 
     if (!Object.values(UserRole).includes(normalizedRole as UserRole)) {
-      return fail(new InvalidUserRoleError(role));
+      return fail(new InvalidUserRoleError(role))
     }
 
-    return ok(new Role(normalizedRole as UserRole));
+    return ok(new Role(normalizedRole as UserRole))
   }
 
-  static createUnsafe(role: UserRole): Role {
-    return new Role(role);
+  static createUnsafe (role: UserRole): Role {
+    return new Role(role)
   }
 
-  getValue(): UserRole {
-    return this.value;
+  getValue (): UserRole {
+    return this.value
   }
 
-  isAdmin(): boolean {
-    return this.value === UserRole.ADMIN;
+  isAdmin (): boolean {
+    return this.value === UserRole.ADMIN
   }
 
-  isManager(): boolean {
-    return this.value === UserRole.MANAGER;
+  isManager (): boolean {
+    return this.value === UserRole.MANAGER
   }
 
-  isCustomer(): boolean {
-    return this.value === UserRole.CUSTOMER;
+  isCustomer (): boolean {
+    return this.value === UserRole.CUSTOMER
   }
 
-  equals(other: Role): boolean {
-    return this.value === other.value;
+  equals (other: Role): boolean {
+    return this.value === other.value
   }
 
-  toString(): string {
-    return this.value;
+  toString (): string {
+    return this.value
   }
 }

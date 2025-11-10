@@ -1,65 +1,65 @@
-import type { DomainError } from './domain-error';
+import type { DomainError } from './domain-error'
 
 export type Result<T> = Success<T> | Failure;
 
 export class Success<T> {
-  readonly isSuccess = true;
-  readonly isFailure = false;
+  readonly isSuccess = true
+  readonly isFailure = false
 
-  constructor(readonly value: T) {}
+  constructor (readonly value: T) {}
 
-  getOrThrow(): T {
-    return this.value;
+  getOrThrow (): T {
+    return this.value
   }
 
-  map<U>(fn: (value: T) => U): Result<U> {
-    return new Success(fn(this.value));
+  map<U> (fn: (value: T) => U): Result<U> {
+    return new Success(fn(this.value))
   }
 
-  async mapAsync<U>(fn: (value: T) => Promise<U>): Promise<Result<U>> {
+  async mapAsync<U> (fn: (value: T) => Promise<U>): Promise<Result<U>> {
     try {
-      const value = await fn(this.value);
-      return new Success(value);
+      const value = await fn(this.value)
+      return new Success(value)
     } catch (error) {
-      return new Failure(error as DomainError);
+      return new Failure(error as DomainError)
     }
   }
 
-  flatMap<U>(fn: (value: T) => Result<U>): Result<U> {
-    return fn(this.value);
+  flatMap<U> (fn: (value: T) => Result<U>): Result<U> {
+    return fn(this.value)
   }
 
-  fold<U>(onFailure: (error: DomainError) => U, onSuccess: (value: T) => U): U {
-    return onSuccess(this.value);
+  fold<U> (onFailure: (error: DomainError) => U, onSuccess: (value: T) => U): U {
+    return onSuccess(this.value)
   }
 }
 
 export class Failure {
-  readonly isSuccess = false;
-  readonly isFailure = true;
+  readonly isSuccess = false
+  readonly isFailure = true
 
-  constructor(readonly error: DomainError) {}
+  constructor (readonly error: DomainError) {}
 
-  getOrThrow(): never {
-    throw this.error;
+  getOrThrow (): never {
+    throw this.error
   }
 
-  map<U>(): Result<U> {
-    return this as any;
+  map<U> (): Result<U> {
+    return this as any
   }
 
-  async mapAsync<U>(): Promise<Result<U>> {
-    return this as any;
+  async mapAsync<U> (): Promise<Result<U>> {
+    return this as any
   }
 
-  flatMap<U>(): Result<U> {
-    return this as any;
+  flatMap<U> (): Result<U> {
+    return this as any
   }
 
-  fold<U>(onFailure: (error: DomainError) => U): U {
-    return onFailure(this.error);
+  fold<U> (onFailure: (error: DomainError) => U): U {
+    return onFailure(this.error)
   }
 }
 
-export const ok = <T>(value: T): Result<T> => new Success(value);
-export const fail = (error: DomainError): Failure => new Failure(error);
+export const ok = <T>(value: T): Result<T> => new Success(value)
+export const fail = (error: DomainError): Failure => new Failure(error)
