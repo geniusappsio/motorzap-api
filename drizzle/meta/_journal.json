@@ -29,6 +29,13 @@
       "when": 1759179975106,
       "tag": "0003_previous_shooting_star",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1762812922484,
+      "tag": "0004_dizzy_thunderbolt_ross",
+      "breakpoints": true
     }
   ]
 }

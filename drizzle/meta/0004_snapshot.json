@@ -1,0 +1,1679 @@
+{
+  "id": "ee1e332c-e7a0-4327-a87e-96359bbc3df0",
+  "prevId": "fa68124b-4024-40ac-b34c-e3175370ffe6",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.tb_users": {
+      "name": "tb_users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "internal_id": {
+          "name": "internal_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "user_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'CUSTOMER'"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tb_users_internal_id_unique": {
+          "name": "tb_users_internal_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "internal_id"
+          ]
+        },
+        "tb_users_phone_unique": {
+          "name": "tb_users_phone_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "phone"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_vehicle_brands": {
+      "name": "tb_vehicle_brands",
+      "schema": "",
+      "columns": {
+        "code": {
+          "name": "code",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_vehicle_details": {
+      "name": "tb_vehicle_details",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "brand": {
+          "name": "brand",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code_fipe": {
+          "name": "code_fipe",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fuel": {
+          "name": "fuel",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fuel_acronym": {
+          "name": "fuel_acronym",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "model": {
+          "name": "model",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "model_year": {
+          "name": "model_year",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price_history": {
+          "name": "price_history",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reference_month": {
+          "name": "reference_month",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vehicle_type": {
+          "name": "vehicle_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tb_vehicle_details_code_fipe_unique": {
+          "name": "tb_vehicle_details_code_fipe_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code_fipe"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_vehicle_models": {
+      "name": "tb_vehicle_models",
+      "schema": "",
+      "columns": {
+        "code": {
+          "name": "code",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_vehicle_years": {
+      "name": "tb_vehicle_years",
+      "schema": "",
+      "columns": {
+        "code": {
+          "name": "code",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_business_managers": {
+      "name": "tb_business_managers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "internal_id": {
+          "name": "internal_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meta_business_id": {
+          "name": "meta_business_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verification_status": {
+          "name": "verification_status",
+          "type": "business_verification_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "access_token": {
+          "name": "access_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_synced_at": {
+          "name": "last_synced_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flow_certificate_private": {
+          "name": "flow_certificate_private",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flow_certificate_password": {
+          "name": "flow_certificate_password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "business_type": {
+          "name": "business_type",
+          "type": "business_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "timezone": {
+          "name": "timezone",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "currency": {
+          "name": "currency",
+          "type": "varchar(3)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tb_business_managers_internal_id_unique": {
+          "name": "tb_business_managers_internal_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "internal_id"
+          ]
+        },
+        "tb_business_managers_meta_business_id_unique": {
+          "name": "tb_business_managers_meta_business_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "meta_business_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_whatsapp_business_accounts": {
+      "name": "tb_whatsapp_business_accounts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "internal_id": {
+          "name": "internal_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "business_manager_id": {
+          "name": "business_manager_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meta_waba_id": {
+          "name": "meta_waba_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currency": {
+          "name": "currency",
+          "type": "varchar(3)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "timezone_id": {
+          "name": "timezone_id",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "message_template_namespace": {
+          "name": "message_template_namespace",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "account_review_status": {
+          "name": "account_review_status",
+          "type": "waba_review_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "business_verification_status": {
+          "name": "business_verification_status",
+          "type": "waba_business_verification",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ownership_type": {
+          "name": "ownership_type",
+          "type": "waba_ownership_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "conversation_analytics_enabled": {
+          "name": "conversation_analytics_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tb_whatsapp_business_accounts_business_manager_id_tb_business_managers_id_fk": {
+          "name": "tb_whatsapp_business_accounts_business_manager_id_tb_business_managers_id_fk",
+          "tableFrom": "tb_whatsapp_business_accounts",
+          "tableTo": "tb_business_managers",
+          "columnsFrom": [
+            "business_manager_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tb_whatsapp_business_accounts_internal_id_unique": {
+          "name": "tb_whatsapp_business_accounts_internal_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "internal_id"
+          ]
+        },
+        "tb_whatsapp_business_accounts_meta_waba_id_unique": {
+          "name": "tb_whatsapp_business_accounts_meta_waba_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "meta_waba_id"
+          ]
+        },
+        "tb_whatsapp_business_accounts_message_template_namespace_unique": {
+          "name": "tb_whatsapp_business_accounts_message_template_namespace_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "message_template_namespace"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_whatsapp_flows": {
+      "name": "tb_whatsapp_flows",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "internal_id": {
+          "name": "internal_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "waba_id": {
+          "name": "waba_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meta_flow_id": {
+          "name": "meta_flow_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "flow_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "categories": {
+          "name": "categories",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "flow_json": {
+          "name": "flow_json",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "json_version": {
+          "name": "json_version",
+          "type": "flow_json_version",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "data_api_version": {
+          "name": "data_api_version",
+          "type": "flow_data_api_version",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "data_channel_uri": {
+          "name": "data_channel_uri",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "endpoint_uri": {
+          "name": "endpoint_uri",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "preview_url": {
+          "name": "preview_url",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "preview_expires_at": {
+          "name": "preview_expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "validation_errors": {
+          "name": "validation_errors",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_validation_at": {
+          "name": "last_validation_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "can_send_message": {
+          "name": "can_send_message",
+          "type": "flow_health_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "health_status_details": {
+          "name": "health_status_details",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_health_check_at": {
+          "name": "last_health_check_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assets_count": {
+          "name": "assets_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "total_sent": {
+          "name": "total_sent",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "total_completed": {
+          "name": "total_completed",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deprecated_at": {
+          "name": "deprecated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_waba_id_flow": {
+          "name": "idx_waba_id_flow",
+          "columns": [
+            {
+              "expression": "waba_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_flow_status": {
+          "name": "idx_flow_status",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "tb_whatsapp_flows_waba_id_tb_whatsapp_business_accounts_id_fk": {
+          "name": "tb_whatsapp_flows_waba_id_tb_whatsapp_business_accounts_id_fk",
+          "tableFrom": "tb_whatsapp_flows",
+          "tableTo": "tb_whatsapp_business_accounts",
+          "columnsFrom": [
+            "waba_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tb_whatsapp_flows_internal_id_unique": {
+          "name": "tb_whatsapp_flows_internal_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "internal_id"
+          ]
+        },
+        "tb_whatsapp_flows_meta_flow_id_unique": {
+          "name": "tb_whatsapp_flows_meta_flow_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "meta_flow_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_whatsapp_flow_assets": {
+      "name": "tb_whatsapp_flow_assets",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "flow_id": {
+          "name": "flow_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "asset_type": {
+          "name": "asset_type",
+          "type": "flow_asset_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "download_url": {
+          "name": "download_url",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url_expires_at": {
+          "name": "url_expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tb_whatsapp_flow_assets_flow_id_tb_whatsapp_flows_id_fk": {
+          "name": "tb_whatsapp_flow_assets_flow_id_tb_whatsapp_flows_id_fk",
+          "tableFrom": "tb_whatsapp_flow_assets",
+          "tableTo": "tb_whatsapp_flows",
+          "columnsFrom": [
+            "flow_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_whatsapp_message_templates": {
+      "name": "tb_whatsapp_message_templates",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "internal_id": {
+          "name": "internal_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "waba_id": {
+          "name": "waba_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meta_template_id": {
+          "name": "meta_template_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "language": {
+          "name": "language",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "template_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "template_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "previous_category": {
+          "name": "previous_category",
+          "type": "template_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "components": {
+          "name": "components",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rejected_reason": {
+          "name": "rejected_reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rejected_at": {
+          "name": "rejected_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "quality_score": {
+          "name": "quality_score",
+          "type": "template_quality_score",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "quality_score_date": {
+          "name": "quality_score_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_sent": {
+          "name": "total_sent",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "total_delivered": {
+          "name": "total_delivered",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "total_read": {
+          "name": "total_read",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "last_used_at": {
+          "name": "last_used_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "approved_at": {
+          "name": "approved_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_waba_id_template": {
+          "name": "idx_waba_id_template",
+          "columns": [
+            {
+              "expression": "waba_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_template_status": {
+          "name": "idx_template_status",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_template_category": {
+          "name": "idx_template_category",
+          "columns": [
+            {
+              "expression": "category",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_template_name_lang": {
+          "name": "idx_template_name_lang",
+          "columns": [
+            {
+              "expression": "name",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "language",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "tb_whatsapp_message_templates_waba_id_tb_whatsapp_business_accounts_id_fk": {
+          "name": "tb_whatsapp_message_templates_waba_id_tb_whatsapp_business_accounts_id_fk",
+          "tableFrom": "tb_whatsapp_message_templates",
+          "tableTo": "tb_whatsapp_business_accounts",
+          "columnsFrom": [
+            "waba_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tb_whatsapp_message_templates_internal_id_unique": {
+          "name": "tb_whatsapp_message_templates_internal_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "internal_id"
+          ]
+        },
+        "tb_whatsapp_message_templates_meta_template_id_unique": {
+          "name": "tb_whatsapp_message_templates_meta_template_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "meta_template_id"
+          ]
+        },
+        "unique_waba_name_language": {
+          "name": "unique_waba_name_language",
+          "nullsNotDistinct": false,
+          "columns": [
+            "waba_id",
+            "name",
+            "language"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.tb_whatsapp_phone_numbers": {
+      "name": "tb_whatsapp_phone_numbers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "internal_id": {
+          "name": "internal_id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "waba_id": {
+          "name": "waba_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "meta_phone_number_id": {
+          "name": "meta_phone_number_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "display_phone_number": {
+          "name": "display_phone_number",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "verified_name": {
+          "name": "verified_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name_status": {
+          "name": "name_status",
+          "type": "phone_name_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "certificate": {
+          "name": "certificate",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "certificate_status": {
+          "name": "certificate_status",
+          "type": "phone_certificate_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "quality_rating": {
+          "name": "quality_rating",
+          "type": "phone_quality_rating",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "messaging_limit_tier": {
+          "name": "messaging_limit_tier",
+          "type": "messaging_limit_tier",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "current_limit": {
+          "name": "current_limit",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "phone_number_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "platform_type": {
+          "name": "platform_type",
+          "type": "phone_platform_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "account_mode": {
+          "name": "account_mode",
+          "type": "phone_account_mode",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_pin_enabled": {
+          "name": "is_pin_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "pin": {
+          "name": "pin",
+          "type": "varchar(6)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_official_business_account": {
+          "name": "is_official_business_account",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "throughput_level": {
+          "name": "throughput_level",
+          "type": "phone_throughput_level",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "messages_per_second": {
+          "name": "messages_per_second",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "code_verification_status": {
+          "name": "code_verification_status",
+          "type": "code_verification_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "last_status_check": {
+          "name": "last_status_check",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_phone_number": {
+          "name": "idx_phone_number",
+          "columns": [
+            {
+              "expression": "phone_number",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_waba_id_phone": {
+          "name": "idx_waba_id_phone",
+          "columns": [
+            {
+              "expression": "waba_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "idx_status_quality": {
+          "name": "idx_status_quality",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "quality_rating",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "tb_whatsapp_phone_numbers_waba_id_tb_whatsapp_business_accounts_id_fk": {
+          "name": "tb_whatsapp_phone_numbers_waba_id_tb_whatsapp_business_accounts_id_fk",
+          "tableFrom": "tb_whatsapp_phone_numbers",
+          "tableTo": "tb_whatsapp_business_accounts",
+          "columnsFrom": [
+            "waba_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tb_whatsapp_phone_numbers_internal_id_unique": {
+          "name": "tb_whatsapp_phone_numbers_internal_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "internal_id"
+          ]
+        },
+        "tb_whatsapp_phone_numbers_meta_phone_number_id_unique": {
+          "name": "tb_whatsapp_phone_numbers_meta_phone_number_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "meta_phone_number_id"
+          ]
+        },
+        "tb_whatsapp_phone_numbers_phone_number_unique": {
+          "name": "tb_whatsapp_phone_numbers_phone_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "phone_number"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.user_role": {
+      "name": "user_role",
+      "schema": "public",
+      "values": [
+        "MANAGER",
+        "CUSTOMER",
+        "ADMIN"
+      ]
+    },
+    "public.vehicle_type": {
+      "name": "vehicle_type",
+      "schema": "public",
+      "values": [
+        "cars",
+        "motorcycles",
+        "trucks"
+      ]
+    },
+    "public.business_type": {
+      "name": "business_type",
+      "schema": "public",
+      "values": [
+        "SMALL_BUSINESS",
+        "MEDIUM_BUSINESS",
+        "ENTERPRISE",
+        "INDIVIDUAL",
+        "OTHER"
+      ]
+    },
+    "public.business_verification_status": {
+      "name": "business_verification_status",
+      "schema": "public",
+      "values": [
+        "VERIFIED",
+        "UNVERIFIED",
+        "PENDING",
+        "REJECTED"
+      ]
+    },
+    "public.waba_business_verification": {
+      "name": "waba_business_verification",
+      "schema": "public",
+      "values": [
+        "VERIFIED",
+        "UNVERIFIED",
+        "PENDING",
+        "FAILED"
+      ]
+    },
+    "public.waba_ownership_type": {
+      "name": "waba_ownership_type",
+      "schema": "public",
+      "values": [
+        "OWNED",
+        "CLIENT",
+        "SHARED"
+      ]
+    },
+    "public.waba_review_status": {
+      "name": "waba_review_status",
+      "schema": "public",
+      "values": [
+        "APPROVED",
+        "PENDING",
+        "REJECTED",
+        "RESTRICTED"
+      ]
+    },
+    "public.flow_asset_type": {
+      "name": "flow_asset_type",
+      "schema": "public",
+      "values": [
+        "FLOW_JSON",
+        "IMAGE",
+        "VIDEO",
+        "DOCUMENT"
+      ]
+    },
+    "public.flow_data_api_version": {
+      "name": "flow_data_api_version",
+      "schema": "public",
+      "values": [
+        "3.0",
+        "3.1"
+      ]
+    },
+    "public.flow_health_status": {
+      "name": "flow_health_status",
+      "schema": "public",
+      "values": [
+        "HEALTHY",
+        "UNHEALTHY",
+        "WARNING",
+        "UNKNOWN"
+      ]
+    },
+    "public.flow_json_version": {
+      "name": "flow_json_version",
+      "schema": "public",
+      "values": [
+        "2.1",
+        "3.0",
+        "3.1"
+      ]
+    },
+    "public.flow_status": {
+      "name": "flow_status",
+      "schema": "public",
+      "values": [
+        "DRAFT",
+        "PUBLISHED",
+        "DEPRECATED",
+        "BLOCKED",
+        "THROTTLED"
+      ]
+    },
+    "public.template_category": {
+      "name": "template_category",
+      "schema": "public",
+      "values": [
+        "MARKETING",
+        "UTILITY",
+        "AUTHENTICATION"
+      ]
+    },
+    "public.template_quality_score": {
+      "name": "template_quality_score",
+      "schema": "public",
+      "values": [
+        "HIGH",
+        "MEDIUM",
+        "LOW",
+        "PENDING",
+        "UNKNOWN"
+      ]
+    },
+    "public.template_status": {
+      "name": "template_status",
+      "schema": "public",
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "PAUSED",
+        "DISABLED",
+        "ARCHIVED"
+      ]
+    },
+    "public.code_verification_status": {
+      "name": "code_verification_status",
+      "schema": "public",
+      "values": [
+        "VERIFIED",
+        "NOT_VERIFIED",
+        "REVOKED"
+      ]
+    },
+    "public.messaging_limit_tier": {
+      "name": "messaging_limit_tier",
+      "schema": "public",
+      "values": [
+        "TIER_50",
+        "TIER_250",
+        "TIER_1K",
+        "TIER_10K",
+        "TIER_100K",
+        "TIER_UNLIMITED"
+      ]
+    },
+    "public.phone_account_mode": {
+      "name": "phone_account_mode",
+      "schema": "public",
+      "values": [
+        "SANDBOX",
+        "LIVE"
+      ]
+    },
+    "public.phone_certificate_status": {
+      "name": "phone_certificate_status",
+      "schema": "public",
+      "values": [
+        "VALID",
+        "EXPIRED",
+        "REVOKED",
+        "PENDING",
+        "NONE"
+      ]
+    },
+    "public.phone_name_status": {
+      "name": "phone_name_status",
+      "schema": "public",
+      "values": [
+        "APPROVED",
+        "PENDING",
+        "REJECTED",
+        "NONE",
+        "EXPIRED"
+      ]
+    },
+    "public.phone_number_status": {
+      "name": "phone_number_status",
+      "schema": "public",
+      "values": [
+        "CONNECTED",
+        "DISCONNECTED",
+        "MIGRATED",
+        "PENDING",
+        "DELETED",
+        "FLAGGED",
+        "RESTRICTED"
+      ]
+    },
+    "public.phone_platform_type": {
+      "name": "phone_platform_type",
+      "schema": "public",
+      "values": [
+        "CLOUD_API",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "public.phone_quality_rating": {
+      "name": "phone_quality_rating",
+      "schema": "public",
+      "values": [
+        "GREEN",
+        "YELLOW",
+        "RED",
+        "NA"
+      ]
+    },
+    "public.phone_throughput_level": {
+      "name": "phone_throughput_level",
+      "schema": "public",
+      "values": [
+        "STANDARD",
+        "HIGH"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
