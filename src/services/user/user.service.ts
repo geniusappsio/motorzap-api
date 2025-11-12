@@ -3,7 +3,7 @@ import type { PostgresJsDatabase } from 'drizzle-orm/postgres-js'
 
 import { fail, ok, Result } from '@/shared'
 import { Phone, Role, User, UserAlreadyExistsError, UserNotFoundError } from '@/models/user'
-import { user as userSchema } from '@/infrastructure/database/drizzle/schema/users'
+import { user as userSchema } from '@/database/schema/users'
 
 // DTOs
 export interface CreateUserDTO {

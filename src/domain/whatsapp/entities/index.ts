@@ -1,5 +1,0 @@
-export * from './business-manager.entity'
-export * from './whatsapp-business-account.entity'
-export * from './whatsapp-flow.entity'
-export * from './whatsapp-message-template.entity'
-export * from './whatsapp-phone-number.entity'

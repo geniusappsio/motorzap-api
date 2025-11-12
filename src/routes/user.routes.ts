@@ -1,6 +1,6 @@
 import { Elysia, t } from 'elysia'
 
-import { db } from '@/infrastructure/database/drizzle/connection'
+import { db } from '@/database/connection'
 import { UserService } from '@/services/user/user.service'
 
 const userService = new UserService(db)

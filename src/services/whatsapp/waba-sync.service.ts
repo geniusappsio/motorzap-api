@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm'
 
-import { db } from '@/infrastructure/database/drizzle/connection'
-import { businessManager } from '@/infrastructure/database/drizzle/schema/business-managers'
-import { whatsappBusinessAccount } from '@/infrastructure/database/drizzle/schema/whatsapp-business-accounts'
-import { whatsappPhoneNumber } from '@/infrastructure/database/drizzle/schema/whatsapp-phone-numbers'
+import { db } from '@/database/connection'
+import { businessManager } from '@/database/schema/business-managers'
+import { whatsappBusinessAccount } from '@/database/schema/whatsapp-business-accounts'
+import { whatsappPhoneNumber } from '@/database/schema/whatsapp-phone-numbers'
 import type { MetaPhoneNumber, MetaWABA } from './meta-graph-api.types'
 import { MetaGraphAPIService } from './meta-graph-api.service'
 
