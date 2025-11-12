@@ -1,8 +1,9 @@
 import { randomUUID } from 'crypto'
 
 import { BaseEntity, fail, ok, Result } from '@/shared'
-import { InvalidWhatsAppMessageTemplateDataError } from './whatsapp-errors'
+
 import { QualityRating, TemplateCategory, TemplateStatus, TemplateStatusEnum } from '../value-objects'
+import { InvalidWhatsAppMessageTemplateDataError } from './whatsapp-errors'
 
 export interface WhatsAppMessageTemplateProps {
   wabaId: string;

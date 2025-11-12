@@ -1,4 +1,5 @@
 import { fail, ok, Result } from '@/shared'
+
 import { InvalidUserRoleError } from './user-errors'
 
 export enum UserRole {

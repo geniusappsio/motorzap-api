@@ -1,8 +1,9 @@
 import { randomUUID } from 'crypto'
 
 import { BaseEntity, fail, ok, Result } from '@/shared'
-import { InvalidWhatsAppFlowDataError } from './whatsapp-errors'
+
 import { FlowCategory, FlowStatus, FlowStatusEnum } from '../value-objects'
+import { InvalidWhatsAppFlowDataError } from './whatsapp-errors'
 
 export interface WhatsAppFlowProps {
   wabaId: string;

@@ -1,4 +1,5 @@
 import { fail, ok, Result } from '@/shared'
+
 import { InvalidPhoneNumberE164Error } from './whatsapp-errors'
 
 export class PhoneNumberE164 {

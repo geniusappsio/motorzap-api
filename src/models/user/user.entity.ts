@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto'
 
 import { BaseEntity, fail, ok, Result } from '@/shared'
+
 import { Phone } from './phone.vo'
 import { InvalidUserDataError } from './user-errors'
 import { Role } from './user-role.vo'

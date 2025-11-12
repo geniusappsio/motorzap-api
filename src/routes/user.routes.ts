@@ -5,6 +5,7 @@ import { UserService } from '@/services/user/user.service'
 
 const userService = new UserService(db)
 
+// eslint-disable-next-line drizzle/enforce-delete-with-where
 export const userRoutes = new Elysia({ prefix: '/api/v1/users' })
   // Create user
   .post('/', async ({ body, set }) => {
@@ -122,6 +123,7 @@ export const userRoutes = new Elysia({ prefix: '/api/v1/users' })
 
   // Delete user
   .delete('/:id', async ({ params, set }) => {
+    // eslint-disable-next-line drizzle/enforce-delete-with-where
     const result = await userService.delete(params.id)
 
     if (result.isFailure) {

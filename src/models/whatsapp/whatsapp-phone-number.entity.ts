@@ -1,8 +1,9 @@
 import { randomUUID } from 'crypto'
 
 import { BaseEntity, fail, ok, Result } from '@/shared'
-import { InvalidWhatsAppPhoneNumberDataError } from './whatsapp-errors'
+
 import { PhoneNumberE164, QualityRating, QualityRatingEnum } from '../value-objects'
+import { InvalidWhatsAppPhoneNumberDataError } from './whatsapp-errors'
 
 export interface WhatsAppPhoneNumberProps {
   wabaId: string;

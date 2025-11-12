@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto'
 
 import { BaseEntity, fail, ok, Result } from '@/shared'
+
 import { InvalidWhatsAppBusinessAccountDataError } from './whatsapp-errors'
 
 export interface WhatsAppBusinessAccountProps {

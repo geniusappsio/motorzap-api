@@ -8,12 +8,12 @@
 import { afterAll, beforeAll, describe, expect, test } from 'bun:test'
 import { eq } from 'drizzle-orm'
 
-import { db } from '@/infrastructure/database/drizzle/connection'
-import { businessManager } from '@/infrastructure/database/drizzle/schema/business-managers'
-import { whatsappBusinessAccount } from '@/infrastructure/database/drizzle/schema/whatsapp-business-accounts'
-import { whatsappPhoneNumber } from '@/infrastructure/database/drizzle/schema/whatsapp-phone-numbers'
+import { db } from '@/database/connection'
+import { businessManager } from '@/database/schema/business-managers'
+import { whatsappBusinessAccount } from '@/database/schema/whatsapp-business-accounts'
+import { whatsappPhoneNumber } from '@/database/schema/whatsapp-phone-numbers'
 
-import { SyncBusinessManagerUseCase } from '../use-cases/sync-business-manager.use-case'
+import { WABASyncService } from '@/services/whatsapp/waba-sync.service'
 
 describe('Business Manager Sync', () => {
   let testBusinessManagerId: string
@@ -55,15 +55,13 @@ describe('Business Manager Sync', () => {
   })
 
   test('deve sincronizar Business Manager e preencher campos automaticamente', async () => {
-    const syncUseCase = new SyncBusinessManagerUseCase()
+    const syncService = new WABASyncService()
 
-    const result = await syncUseCase.execute({
-      businessManagerId: testBusinessManagerId
-    })
+    const result = await syncService.syncBusinessManager(testBusinessManagerId)
 
     expect(result.success).toBe(true)
-    expect(result.result.metaBusinessId).toBeDefined()
-    expect(result.result.wabasCount).toBeGreaterThan(0)
+    expect(result.metaBusinessId).toBeDefined()
+    expect(result.wabasCount).toBeGreaterThan(0)
 
     // Verificar se foi atualizado no banco
     const [bm] = await db
@@ -146,30 +144,6 @@ describe('Business Manager Sync', () => {
 })
 
 /**
- * Teste manual (não automatizado)
- *
- * Execute este arquivo diretamente:
- * bun run src/domain/whatsapp/__tests__/sync-business-manager.test.example.ts
+ * Nota: Para testar manualmente a sincronização, crie um teste específico
+ * ou use o job scheduler diretamente.
  */
-if (import.meta.main) {
-  console.log('🧪 Executando teste manual de sincronização...\n')
-
-  // Substitua pelo ID do seu Business Manager
-  const BUSINESS_MANAGER_ID = process.argv[2] || 'your-business-manager-id'
-
-  const syncUseCase = new SyncBusinessManagerUseCase()
-
-  const result = await syncUseCase.execute({
-    businessManagerId: BUSINESS_MANAGER_ID
-  })
-
-  console.log('\n📊 Resultado da sincronização:')
-  console.log(JSON.stringify(result, null, 2))
-
-  if (result.success) {
-    console.log('\n✅ Sincronização concluída com sucesso!')
-  } else {
-    console.log('\n❌ Sincronização falhou:')
-    console.log(result.result.errors)
-  }
-}

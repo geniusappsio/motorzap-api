@@ -4,8 +4,9 @@ import { db } from '@/database/connection'
 import { businessManager } from '@/database/schema/business-managers'
 import { whatsappBusinessAccount } from '@/database/schema/whatsapp-business-accounts'
 import { whatsappPhoneNumber } from '@/database/schema/whatsapp-phone-numbers'
-import type { MetaPhoneNumber, MetaWABA } from './meta-graph-api.types'
+
 import { MetaGraphAPIService } from './meta-graph-api.service'
+import type { MetaPhoneNumber, MetaWABA } from './meta-graph-api.types'
 
 export interface SyncResult {
   success: boolean

@@ -68,9 +68,20 @@ describe('UserService', () => {
 
     test('should fail if user already exists', async () => {
       // Arrange
-      mockDb.query.users.findFirst = mock(() => Promise.resolve({
-        id: 'existing-id',
-        phone: '11999999999'
+      // Mock the select().from().where().limit() chain used by findByPhone
+      mockDb.select = mock(() => ({
+        from: mock(() => ({
+          where: mock(() => ({
+            limit: mock(() => Promise.resolve([{
+              id: 'existing-id',
+              phone: '11999999999',
+              name: 'Existing User',
+              role: 'CUSTOMER',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            }]))
+          }))
+        }))
       }))
 
       const dto = {

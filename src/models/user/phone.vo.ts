@@ -1,4 +1,5 @@
 import { fail, ok, Result } from '@/shared'
+
 import { InvalidPhoneError } from './user-errors'
 
 export class Phone {
