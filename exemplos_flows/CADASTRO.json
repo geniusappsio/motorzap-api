@@ -1,0 +1,297 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "TERMOS": ["CADASTRO_USUARIO"],
+    "CADASTRO_USUARIO": ["CONFIRMACAO_DADOS"],
+    "CONFIRMACAO_DADOS": []
+  },
+  "screens": [
+    {
+      "id": "TERMOS",
+      "title": "Termos de Uso 1/3",
+      "sensitive": ["aceita_termos"],
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🚗 Bem-vindo ao MotorZap"
+          },
+          {
+            "type": "TextBody",
+            "text": "Termos de Uso e Privacidade"
+          },
+          {
+            "type": "TextBody",
+            "text": "O MotorZap é uma plataforma de marketplace que conecta compradores, vendedores e prestadores de serviços do setor automotivo através do WhatsApp."
+          },
+          {
+            "type": "TextBody",
+            "text": "De acordo com a LGPD, seus dados serão utilizados exclusivamente para prestação dos serviços da plataforma."
+          },
+          {
+            "type": "TextCaption",
+            "text": "Ao prosseguir, você concorda com o uso de seus dados conforme descrito nos Termos de Uso."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "OptIn",
+                "name": "aceita_termos",
+                "label": "Li e concordo com os Termos de Uso e Política de Privacidade",
+                "required": true,
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {}
+                }
+              },
+              {
+                "type": "Footer",
+                "label": "Aceitar e Continuar",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "CADASTRO_USUARIO"
+                  },
+                  "payload": {
+                    "aceita_termos": "${form.aceita_termos}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CADASTRO_USUARIO",
+      "title": "Cadastro 2/3",
+      "sensitive": ["nome", "cpf", "email", "data_nascimento", "genero", "cep"],
+      "data": {
+        "aceita_termos": {
+          "type": "boolean",
+          "__example__": true
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📝 Complete seu cadastro"
+          },
+          {
+            "type": "TextBody",
+            "text": "Preencha seus dados para começar a usar a plataforma:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "nome",
+                "label": "Nome completo *",
+                "input-type": "text",
+                "pattern": "^[A-Za-zÀ-ÖØ-öø-ÿ]+(\\s[A-Za-zÀ-ÖØ-öø-ÿ]+)+$",
+                "helper-text": "Digite nome e sobrenome",
+                "min-chars": 3,
+                "max-chars": 100,
+                "required": true
+              },
+              {
+                "type": "TextInput",
+                "name": "cpf",
+                "label": "CPF *",
+                "input-type": "text",
+                "pattern": "^[0-9]{11}$",
+                "helper-text": "Somente números (11 dígitos)",
+                "min-chars": 11,
+                "max-chars": 11,
+                "required": true
+              },
+              {
+                "type": "TextInput",
+                "name": "email",
+                "label": "E-mail",
+                "input-type": "email",
+                "max-chars": 100,
+                "required": false,
+                "helper-text": "Opcional - Ex: seuemail@exemplo.com"
+              },
+              {
+                "type": "DatePicker",
+                "name": "data_nascimento",
+                "label": "Data de nascimento *",
+                "max-date": "2007-11-22",
+                "helper-text": "Você precisa ter 18 anos ou mais",
+                "required": true
+              },
+              {
+                "type": "Dropdown",
+                "name": "genero",
+                "label": "Gênero *",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MASCULINO",
+                    "title": "Masculino"
+                  },
+                  {
+                    "id": "FEMININO",
+                    "title": "Feminino"
+                  },
+                  {
+                    "id": "OUTROS",
+                    "title": "Outros"
+                  }
+                ]
+              },
+              {
+                "type": "TextInput",
+                "name": "cep",
+                "label": "CEP *",
+                "input-type": "text",
+                "pattern": "^[0-9]{8}$",
+                "helper-text": "Somente números (8 dígitos)",
+                "min-chars": 8,
+                "max-chars": 8,
+                "required": true
+              },
+              {
+                "type": "Footer",
+                "label": "Continuar",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "CONFIRMACAO_DADOS"
+                  },
+                  "payload": {
+                    "aceita_termos": "${data.aceita_termos}",
+                    "nome": "${form.nome}",
+                    "cpf": "${form.cpf}",
+                    "email": "${form.email}",
+                    "data_nascimento": "${form.data_nascimento}",
+                    "data_nascimento_formatada": "${form.data_nascimento}",
+                    "genero": "${form.genero}",
+                    "cep": "${form.cep}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONFIRMACAO_DADOS",
+      "title": "Confirmação 3/3",
+      "terminal": true,
+      "success": true,
+      "data": {
+        "aceita_termos": {
+          "type": "boolean",
+          "__example__": true
+        },
+        "nome": {
+          "type": "string",
+          "__example__": "João da Silva"
+        },
+        "cpf": {
+          "type": "string",
+          "__example__": "12345678900"
+        },
+        "email": {
+          "type": "string",
+          "__example__": "joao@exemplo.com"
+        },
+        "data_nascimento": {
+          "type": "string",
+          "__example__": "1990-01-15"
+        },
+        "data_nascimento_formatada": {
+          "type": "string",
+          "__example__": "15/01/1990"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "MASCULINO"
+        },
+        "cep": {
+          "type": "string",
+          "__example__": "49000000"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📋 Confirme seus dados"
+          },
+          {
+            "type": "TextBody",
+            "text": "Revise as informações antes de finalizar:"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**Nome:** ' ${data.nome}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**CPF:** ' ${data.cpf}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**E-mail:** ' ${data.email}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**Data de Nascimento:** ' ${data.data_nascimento_formatada}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**Gênero:** ' ${data.genero}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**CEP:** ' ${data.cep}`"
+          },
+          {
+            "type": "TextCaption",
+            "text": "Ao confirmar, seu cadastro será finalizado no MotorZap."
+          },
+          {
+            "type": "Footer",
+            "label": "Confirmar Cadastro",
+            "on-click-action": {
+              "name": "complete",
+              "payload": {
+                "flow_modulo": "CADASTRO_USUARIO",
+                "flow_step": 3,
+                "aceita_termos": "${data.aceita_termos}",
+                "nome": "${data.nome}",
+                "cpf": "${data.cpf}",
+                "email": "${data.email}",
+                "data_nascimento": "${data.data_nascimento}",
+                "genero": "${data.genero}",
+                "cep": "${data.cep}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
