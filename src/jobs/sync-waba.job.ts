@@ -1,9 +1,10 @@
 import chalk from 'chalk'
 import { isNotNull } from 'drizzle-orm'
 
-import { SyncBusinessManagerUseCase } from '../../domain/whatsapp/use-cases/sync-business-manager.use-case'
-import { db } from '../database/drizzle/connection'
-import { businessManager } from '../database/drizzle/schema/business-managers'
+import { businessManager } from '@/database/schema/business-managers'
+import { WABASyncService } from '@/services/whatsapp/waba-sync.service'
+
+import { db } from '../database/connection'
 import type { Job } from './scheduler'
 
 /**
@@ -44,7 +45,7 @@ export const syncWABAJob: Job = {
       console.log(chalk.blue(`📋 Found ${chalk.cyan.bold(businessManagers.length)} Business Manager(s) to sync`))
 
       // 2. Sync each Business Manager
-      const syncUseCase = new SyncBusinessManagerUseCase()
+      const syncService = new WABASyncService()
       const results = []
 
       for (const bm of businessManagers) {
@@ -56,17 +57,15 @@ export const syncWABAJob: Job = {
         const bmName = bm.name || 'unnamed'
         console.log(chalk.cyan(`🔄 Syncing Business Manager: ${chalk.bold(bm.id)} ${chalk.gray(`(${bmName})`)}`))
 
-        const result = await syncUseCase.execute({
-          businessManagerId: bm.id
-        })
+        const result = await syncService.syncBusinessManager(bm.id)
 
         results.push({
           id: bm.id,
           name: bm.name,
           success: result.success,
-          wabasCount: result.result.wabasCount,
-          phoneNumbersCount: result.result.phoneNumbersCount,
-          errors: result.result.errors
+          wabasCount: result.wabasCount,
+          phoneNumbersCount: result.phoneNumbersCount,
+          errors: result.errors
         })
       }
 

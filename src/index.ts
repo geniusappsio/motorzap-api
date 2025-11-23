@@ -4,7 +4,7 @@ import process from 'node:process'
 
 import chalk from 'chalk'
 
-import { initializeJobs, stopJobs } from './infrastructure/jobs'
+import { initializeJobs, stopJobs } from './jobs'
 
 if (cluster.isPrimary) {
   	console.log(chalk.magenta.bold(`🟣 Primary ${process.pid} is running`))
@@ -37,6 +37,6 @@ if (cluster.isPrimary) {
     	process.exit(0)
   	})
 } else {
-  	await import('./presentation/http/server')
+  	await import('./server')
   	console.log(chalk.green(`✅ Worker ${process.pid} started`))
 }
