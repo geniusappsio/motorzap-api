@@ -1,0 +1,470 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "TERMOS": ["DADOS_PESSOAIS"],
+    "DADOS_PESSOAIS": ["CPF"],
+    "CPF": ["CEP"],
+    "CEP": ["CONFIRMACAO_DADOS"],
+    "CONFIRMACAO_DADOS": []
+  },
+  "screens": [
+    {
+      "id": "TERMOS",
+      "title": "Termos de Uso 1/5",
+      "sensitive": ["aceita_termos"],
+      "data": {
+        "whatsapp_numero": {
+          "type": "string",
+          "__example__": "5579999999999"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🚗 Bem-vindo ao MotorZap"
+          },
+          {
+            "type": "TextBody",
+            "text": "Termos de Uso e Privacidade"
+          },
+          {
+            "type": "TextBody",
+            "text": "O MotorZap é uma plataforma de marketplace que conecta compradores, vendedores e prestadores de serviços do setor automotivo através do WhatsApp."
+          },
+          {
+            "type": "TextBody",
+            "text": "De acordo com a LGPD, seus dados serão utilizados exclusivamente para prestação dos serviços da plataforma."
+          },
+          {
+            "type": "TextCaption",
+            "text": "Ao prosseguir, você concorda com o uso de seus dados conforme descrito nos Termos de Uso."
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "OptIn",
+                "name": "aceita_termos",
+                "label": "Li e concordo com os Termos de Uso e Política de Privacidade",
+                "required": true,
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {}
+                }
+              },
+              {
+                "type": "Footer",
+                "label": "Aceitar e Continuar",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "DADOS_PESSOAIS"
+                  },
+                  "payload": {
+                    "whatsapp_numero": "${data.whatsapp_numero}",
+                    "aceita_termos": "${form.aceita_termos}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "DADOS_PESSOAIS",
+      "title": "Dados Pessoais 2/5",
+      "sensitive": ["nome", "email", "data_nascimento", "genero"],
+      "data": {
+        "whatsapp_numero": {
+          "type": "string",
+          "__example__": "5579999999999"
+        },
+        "aceita_termos": {
+          "type": "boolean",
+          "__example__": true
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📝 Seus Dados Pessoais"
+          },
+          {
+            "type": "TextBody",
+            "text": "Preencha suas informações básicas:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "nome",
+                "label": "Nome completo *",
+                "input-type": "text",
+                "pattern": "^[A-Za-zÀ-ÖØ-öø-ÿ]+(\\s[A-Za-zÀ-ÖØ-öø-ÿ]+)+$",
+                "helper-text": "Digite nome e sobrenome",
+                "min-chars": 3,
+                "max-chars": 100,
+                "required": true
+              },
+              {
+                "type": "DatePicker",
+                "name": "data_nascimento",
+                "label": "Data de nascimento *",
+                "max-date": "2007-11-28",
+                "helper-text": "Você precisa ter 18 anos ou mais",
+                "required": true
+              },
+              {
+                "type": "Dropdown",
+                "name": "genero",
+                "label": "Gênero *",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MASCULINO",
+                    "title": "Masculino"
+                  },
+                  {
+                    "id": "FEMININO",
+                    "title": "Feminino"
+                  },
+                  {
+                    "id": "OUTROS",
+                    "title": "Outros"
+                  }
+                ]
+              },
+              {
+                "type": "TextInput",
+                "name": "email",
+                "label": "E-mail (opcional)",
+                "input-type": "email",
+                "max-chars": 100,
+                "required": false,
+                "helper-text": "Ex: seuemail@exemplo.com"
+              },
+              {
+                "type": "Footer",
+                "label": "Continuar",
+                "on-click-action": {
+                  "name": "navigate",
+                  "next": {
+                    "type": "screen",
+                    "name": "CPF"
+                  },
+                  "payload": {
+                    "whatsapp_numero": "${data.whatsapp_numero}",
+                    "aceita_termos": "${data.aceita_termos}",
+                    "nome": "${form.nome}",
+                    "data_nascimento": "${form.data_nascimento}",
+                    "genero": "${form.genero}",
+                    "email": "${form.email}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CPF",
+      "title": "CPF 3/5",
+      "sensitive": ["cpf"],
+      "data": {
+        "whatsapp_numero": {
+          "type": "string",
+          "__example__": "5579999999999"
+        },
+        "aceita_termos": {
+          "type": "boolean",
+          "__example__": true
+        },
+        "nome": {
+          "type": "string",
+          "__example__": "João da Silva"
+        },
+        "data_nascimento": {
+          "type": "string",
+          "__example__": "1990-01-15"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "MASCULINO"
+        },
+        "email": {
+          "type": "string",
+          "__example__": "joao@exemplo.com"
+        },
+        "error_messages": {
+          "type": "object",
+          "__example__": {}
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🔐 Validação de CPF"
+          },
+          {
+            "type": "TextBody",
+            "text": "Informe seu CPF para validação:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "error-messages": "${data.error_messages}",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "cpf",
+                "label": "CPF *",
+                "input-type": "text",
+                "pattern": "^[0-9]{11}$",
+                "helper-text": "Somente números (11 dígitos)",
+                "min-chars": 11,
+                "max-chars": 11,
+                "required": true
+              },
+              {
+                "type": "Footer",
+                "label": "Validar CPF",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "flow_modulo": "CADASTRO_USUARIO",
+                    "flow_step": "validar_cpf",
+                    "whatsapp_numero": "${data.whatsapp_numero}",
+                    "aceita_termos": "${data.aceita_termos}",
+                    "nome": "${data.nome}",
+                    "data_nascimento": "${data.data_nascimento}",
+                    "genero": "${data.genero}",
+                    "email": "${data.email}",
+                    "cpf": "${form.cpf}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CEP",
+      "title": "CEP 4/5",
+      "sensitive": ["cep"],
+      "data": {
+        "whatsapp_numero": {
+          "type": "string",
+          "__example__": "5579999999999"
+        },
+        "aceita_termos": {
+          "type": "boolean",
+          "__example__": true
+        },
+        "nome": {
+          "type": "string",
+          "__example__": "João da Silva"
+        },
+        "data_nascimento": {
+          "type": "string",
+          "__example__": "1990-01-15"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "MASCULINO"
+        },
+        "email": {
+          "type": "string",
+          "__example__": "joao@exemplo.com"
+        },
+        "cpf": {
+          "type": "string",
+          "__example__": "12345678900"
+        },
+        "error_messages": {
+          "type": "object",
+          "__example__": {}
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📍 Seu Endereço"
+          },
+          {
+            "type": "TextBody",
+            "text": "Informe seu CEP para localização:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "error-messages": "${data.error_messages}",
+            "children": [
+              {
+                "type": "TextInput",
+                "name": "cep",
+                "label": "CEP *",
+                "input-type": "text",
+                "pattern": "^[0-9]{8}$",
+                "helper-text": "Somente números (8 dígitos)",
+                "min-chars": 8,
+                "max-chars": 8,
+                "required": true
+              },
+              {
+                "type": "Footer",
+                "label": "Validar CEP",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "flow_modulo": "CADASTRO_USUARIO",
+                    "flow_step": "validar_cep",
+                    "whatsapp_numero": "${data.whatsapp_numero}",
+                    "aceita_termos": "${data.aceita_termos}",
+                    "nome": "${data.nome}",
+                    "data_nascimento": "${data.data_nascimento}",
+                    "genero": "${data.genero}",
+                    "email": "${data.email}",
+                    "cpf": "${data.cpf}",
+                    "cep": "${form.cep}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONFIRMACAO_DADOS",
+      "title": "Confirmação 5/5",
+      "terminal": true,
+      "success": true,
+      "data": {
+        "whatsapp_numero": {
+          "type": "string",
+          "__example__": "5579999999999"
+        },
+        "aceita_termos": {
+          "type": "boolean",
+          "__example__": true
+        },
+        "nome": {
+          "type": "string",
+          "__example__": "João da Silva"
+        },
+        "cpf": {
+          "type": "string",
+          "__example__": "12345678900"
+        },
+        "email": {
+          "type": "string",
+          "__example__": "joao@exemplo.com"
+        },
+        "data_nascimento": {
+          "type": "string",
+          "__example__": "1990-01-15"
+        },
+        "genero": {
+          "type": "string",
+          "__example__": "MASCULINO"
+        },
+        "cep": {
+          "type": "string",
+          "__example__": "49000000"
+        },
+        "endereco": {
+          "type": "string",
+          "__example__": "Rua das Flores, Centro - Aracaju/SE"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📋 Confirme seus dados"
+          },
+          {
+            "type": "TextBody",
+            "text": "Revise as informações antes de finalizar:"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**Nome:** ' ${data.nome}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**CPF:** ' ${data.cpf}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**E-mail:** ' ${data.email}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**Data de Nascimento:** ' ${data.data_nascimento}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**Gênero:** ' ${data.genero}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**CEP:** ' ${data.cep}`"
+          },
+          {
+            "type": "TextBody",
+            "markdown": true,
+            "text": "`'**Endereço:** ' ${data.endereco}`"
+          },
+          {
+            "type": "TextCaption",
+            "text": "Ao confirmar, seu cadastro será finalizado no MotorZap."
+          },
+          {
+            "type": "Footer",
+            "label": "Confirmar Cadastro",
+            "on-click-action": {
+              "name": "complete",
+              "payload": {
+                "flow_modulo": "CADASTRO_USUARIO",
+                "flow_step": "cadastro_finalizado",
+                "whatsapp_numero": "${data.whatsapp_numero}",
+                "aceita_termos": "${data.aceita_termos}",
+                "nome": "${data.nome}",
+                "cpf": "${data.cpf}",
+                "email": "${data.email}",
+                "data_nascimento": "${data.data_nascimento}",
+                "genero": "${data.genero}",
+                "cep": "${data.cep}",
+                "endereco": "${data.endereco}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

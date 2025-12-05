@@ -1,0 +1,573 @@
+{
+  "version": "7.0",
+  "data_api_version": "3.0",
+  "routing_model": {
+    "ACAO_AGENDAMENTO": ["TIPO_AGENDAMENTO", "LISTA_AGENDAMENTOS", "SEM_RESULTADOS", "VOLTAR_MENU"],
+    "VOLTAR_MENU": [],
+    "TIPO_AGENDAMENTO": ["LISTA_ESPECIALIDADES", "SEM_RESULTADOS"],
+    "LISTA_ESPECIALIDADES": ["LISTA_VAGAS", "SEM_RESULTADOS"],
+    "LISTA_VAGAS": ["CONFIRMACAO_AGENDAMENTO"],
+    "CONFIRMACAO_AGENDAMENTO": [],
+    "LISTA_AGENDAMENTOS": [],
+    "SEM_RESULTADOS": []
+  },
+  "screens": [
+    {
+      "id": "ACAO_AGENDAMENTO",
+      "title": "Agendamento Médico",
+      "data" : {
+        "contato_numero": {
+          "type": "string",
+          "__example__": "75992742819"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextBody",
+            "text": "Selecione a ação que deseja realizar:"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "acao_selecionada",
+                "label": "Escolha uma opção:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "MARCAR",
+                    "title": "📅 Fazer uma marcação",
+                    "description": "Agendar nova consulta, exame ou procedimento"
+                  },
+                  {
+                    "id": "CONSULTAR",
+                    "title": "🔍 Consultar um agendamento",
+                    "description": "Ver meus agendamentos existentes"
+                  },
+                  {
+                    "id": "CANCELAR",
+                    "title": "❌ Cancelar um agendamento",
+                    "description": "Cancelar agendamento existente"
+                  },
+                  {
+                    "id": "VOLTAR",
+                    "title": "⬅️ Voltar ao menu principal",
+                    "description": "Retornar ao menu principal"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Continuar",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "flow_modulo": "AGENDAMENTO",
+                    "acao_selecionada": "${form.acao_selecionada}",
+                    "contato_numero": "${data.contato_numero}",
+                    "flow_step": "acao_selecionada"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "VOLTAR_MENU",
+      "title": "Voltando ao Menu",
+      "terminal": true,
+      "data": {
+        "contato_numero": {
+          "type": "string",
+          "__example__": "75992742819"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "⬅️ Voltando ao Menu"
+          },
+          {
+            "type": "TextBody",
+            "text": "Ao finalizar você será redirecionado ao menu principal"
+          },
+          {
+            "type": "Form",
+            "name": "form_voltar",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "✅ Finalizar",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                   "flow_modulo": "AGENDAMENTO",
+                    "acao_selecionada": "MENU_PRINCIPAL",
+                    "contato_numero": "${data.contato_numero}",
+                    "flow_step": "acao_selecionada"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "TIPO_AGENDAMENTO",
+      "title": "Tipo de Agendamento",
+      "data" : {
+        "contato_numero": {
+          "type": "string",
+          "__example__": "75992742819"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📋 Selecione o Tipo"
+          },
+          {
+            "type": "TextBody",
+            "text": "Que tipo de agendamento você deseja fazer?"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "tipo_agendamento",
+                "label": "Escolha o tipo:",
+                "required": true,
+                "data-source": [
+                  {
+                    "id": "CONSULTA",
+                    "title": "👨‍⚕️ Consulta",
+                    "description": "Consulta médica com especialista"
+                  },
+                  {
+                    "id": "EXAME",
+                    "title": "🔬 Exame",
+                    "description": "Exames laboratoriais ou de imagem"
+                  },
+                  {
+                    "id": "PROCEDIMENTO",
+                    "title": "🏥 Procedimento",
+                    "description": "Procedimentos médicos e cirúrgicos"
+                  }
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "Buscar Disponibilidade",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "flow_modulo": "AGENDAMENTO",
+                    "contato_numero": "${data.contato_numero}",
+                    "tipo_agendamento": "${form.tipo_agendamento}",
+                    "acao_selecionada": "MARCAR",
+                    "flow_step": "tipo_selecionado"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "LISTA_ESPECIALIDADES",
+      "title": "Especialidades Disponíveis",
+      "data": {
+        "contato_numero": {
+          "type": "string",
+          "__example__": "75992742819"
+        },
+        "titulo_secao": {
+          "type": "string",
+          "__example__": "Especialidades Médicas"
+        },
+        "especialidades": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "title": {"type": "string"},
+              "description": {"type": "string"}
+            }
+          },
+          "__example__": [
+            {
+              "id": "CARDIOLOGIA",
+              "title": "❤️ Cardiologia",
+              "description": "Especialista em coração"
+            }
+          ]
+        },
+        "tipo_agendamento": {
+          "type": "string",
+          "__example__": "CONSULTA"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "especialidade_selecionada",
+                "label": "Selecione uma opção disponível:",
+                "required": true,
+                "data-source": "${data.especialidades}"
+              },
+              {
+                "type": "Footer",
+                "label": "Ver Vagas Disponíveis",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "flow_modulo": "AGENDAMENTO",
+                    "contato_numero": "${data.contato_numero}",
+                    "acao_selecionada": "MARCAR",
+                    "especialidade_selecionada": "${form.especialidade_selecionada}",
+                    "tipo_agendamento": "${data.tipo_agendamento}",
+                    "flow_step": "especialidade_selecionada"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "LISTA_VAGAS",
+      "title": "Vagas Disponíveis",
+      "data": {
+        "contato_numero": {
+        "type": "string",
+        "__example__": "75992742819"
+        },
+        "vagas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "title": {"type": "string"},
+              "description": {"type": "string"}
+            }
+          },
+          "__example__": [
+            {
+              "id": "vaga_1",
+              "title": "📅 15/01/2025 - 14:00",
+              "description": "Dr. João Silva - Unidade Centro"
+            }
+          ]
+        },
+        "especialidade_selecionada": {
+          "type": "string",
+          "__example__": "CARDIOLOGIA"  
+        },
+        "tipo_agendamento": {
+          "type": "string",
+          "__example__": "CONSULTA"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📅 Horários Disponíveis"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "vaga_selecionada",
+                "label": "Selecione um horário:",
+                "required": true,
+                "data-source": "${data.vagas}"
+              },
+              {
+                "type": "Footer",
+                "label": "Confirmar Agendamento",
+                "on-click-action": {
+                  "name": "data_exchange",
+                  "payload": {
+                    "flow_modulo": "AGENDAMENTO",
+                    "contato_numero": "${data.contato_numero}",
+                    "acao_selecionada": "MARCAR",
+                    "vaga_selecionada": "${form.vaga_selecionada}",
+                    "especialidade_selecionada": "${data.especialidade_selecionada}",
+                    "tipo_agendamento": "${data.tipo_agendamento}",
+                    "flow_step": "vaga_selecionada"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "CONFIRMACAO_AGENDAMENTO",
+      "title": "Confirmar Agendamento",
+      "terminal": true,
+      "data": {
+        "flow_modulo": {
+          "type": "string",
+          "__example__": "AGENDAMENTO"
+        },
+        "contato_numero": {
+        "type": "string",
+        "__example__": "75992742819"
+        },
+        "acao_selecionada": {
+          "type": "string",
+          "__example__": "MARCAR"
+        },
+        "tipo_agendamento": {
+          "type": "string",  
+          "__example__": "CONSULTA"
+        },
+        "especialidade_nome": {
+          "type": "string",
+          "__example__": "Cardiologia"
+        },
+        "especialidade_selecionada": {
+          "type": "string",
+          "__example__": "CARDIOLOGIA"
+        },
+        "vaga_selecionada": {
+          "type": "string",
+          "__example__": "vaga_1"
+        },
+        "flow_step": {
+          "type": "string",
+          "__example__": "vaga_selecionada"
+        },
+        "dados_agendamento": {
+          "type": "string",
+          "__example__": "vaga_selecionada"
+        },
+        "requisicao_medica": {
+          "type": "boolean",
+          "__example__": true
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "✅ Confirmação do Agendamento"
+          },
+          {
+            "type": "TextBody",
+            "text": "${data.dados_agendamento}",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "DocumentPicker",
+                "name": "requisicao_medica",
+                "label": "Anexe aqui a sua requisição médica",
+                "visible": "${data.requisicao_medica}",
+                "min-uploaded-documents": 1,
+                "max-uploaded-documents": 1,
+                "allowed-mime-types": [
+                  "image/jpeg",
+                  "application/pdf",
+                  "image/avif",
+                  "image/heic",
+                  "image/heif",
+                  "image/png",
+                  "image/tiff",
+                  "image/webp"
+                ]
+              },
+              {
+                "type": "Footer",
+                "label": "✅ Confirmar Agendamento",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "flow_modulo": "AGENDAMENTO",
+                    "contato_numero": "${data.contato_numero}",
+                    "acao_selecionada": "MARCAR",
+                    "tipo_agendamento": "${data.tipo_agendamento}",
+                    "especialidade_selecionada": "${data.especialidade_selecionada}",
+                    "vaga_selecionada": "${data.vaga_selecionada}",
+                    "flow_step": "agendamento_confirmado",
+                    "requisicao_medica": "${form.requisicao_medica}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "LISTA_AGENDAMENTOS",
+      "title": "Agendamentos",
+      "terminal": true,
+      "data": {
+        "flow_modulo": {
+          "type": "string",
+          "__example__": "AGENDAMENTO"
+        },
+        "contato_numero": {
+        "type": "string",
+        "__example__": "75992742819"
+        },
+        "acao_selecionada": {
+          "type": "string",
+          "__example__": "MARCAR"
+        },
+        "flow_step": {
+          "type": "string",
+          "__example__": "vaga_selecionada"
+        },
+        "botao_texto": {
+          "type": "string",
+          "__example__": "✅ Finalizar Consulta"
+        },
+        "is_required": {
+          "type": "boolean",
+          "__example__": true
+        },
+        "agendamentos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "title": {"type": "string"},
+              "description": {"type": "string"}
+            }
+          },
+          "__example__": [
+            {
+              "id": "agend_1",
+              "title": "Cardiologia - 15/01/2025",
+              "description": "Dr. João Silva - Unidade Centro"
+            }
+          ]
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "📋 Seus agendamentos"
+          },
+          {
+            "type": "Form",
+            "name": "form",
+            "children": [
+              {
+                "type": "RadioButtonsGroup",
+                "name": "agendamento_selecionado",
+                "label": "Aqui estão todos os seus agendamentos:",
+                "required": "${data.is_required}",
+                "data-source": "${data.agendamentos}"
+              },
+              {
+                "type": "Footer",
+                "label": "${data.botao_texto}",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "flow_modulo": "${data.flow_modulo}",
+                    "contato_numero": "${data.contato_numero}",
+                    "acao_selecionada": "${data.acao_selecionada}",
+                    "agendamento_id": "${form.agendamento_selecionado}",
+                    "flow_step": "${data.flow_step}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "SEM_RESULTADOS",
+      "title": "Nenhum Resultado Encontrado",
+      "terminal": true,
+      "data": {
+        "contato_numero": {
+          "type": "string",
+          "__example__": "75992742819"
+        }
+      },
+      "layout": {
+        "type": "SingleColumnLayout",
+        "children": [
+          {
+            "type": "TextHeading",
+            "text": "🔍 Nenhum resultado encontrado"
+          },
+          {
+            "type": "TextBody",
+            "text": "Não encontramos resultados para sua busca no momento."
+          },
+          {
+            "type": "TextBody",
+            "text": "Tente novamente mais tarde ou entre em contato conosco."
+          },
+          {
+            "type": "TextBody",
+            "text": "**Precisa de ajuda?**\n\n📞 Telefone: (75) 9 9274-2819\n📧 Email: contato@geniusapps.io",
+            "markdown": true
+          },
+          {
+            "type": "Form",
+            "name": "form_sem_resultados",
+            "children": [
+              {
+                "type": "Footer",
+                "label": "🔄 Encerrar agendamento",
+                "on-click-action": {
+                  "name": "complete",
+                  "payload": {
+                    "flow_modulo": "AGENDAMENTO",
+                    "contato_numero": "${data.contato_numero}",
+                    "action": "REINICIAR_AGENDAMENTO",
+                    "flow_step": "sem_resultados_finalizado"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
