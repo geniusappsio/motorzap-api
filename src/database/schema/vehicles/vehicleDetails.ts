@@ -4,7 +4,7 @@ import { jsonb, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
 export const vehicleDetail = pgTable('tb_vehicle_details', {
   id: uuid('id').primaryKey().$defaultFn(() => Bun.randomUUIDv7()),
   brand: varchar('brand').notNull(),
-  codeFipe: varchar('code_fipe').notNull().unique(),
+  codeFipe: varchar('code_fipe').notNull(),
   fuel: varchar('fuel').notNull(),
   fuelAcronym: varchar('fuel_acronym').notNull(),
   model: varchar('model').notNull(),

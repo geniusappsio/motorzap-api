@@ -15,6 +15,7 @@
     "migrate": "bun src/database/migrate.ts",
     "seed": "bun src/database/seed.ts",
     "studio": "drizzle-kit studio --verbose",
+    "import:fipe": "bun src/scripts/import-fipe.ts",
     "lint": "eslint --fix src"
   },
   "private": true,
