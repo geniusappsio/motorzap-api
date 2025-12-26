@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: motorzap
       POSTGRES_DB: motorzap
     volumes:
-      - pg_motorzap_data:/var/lib/postgresql/data
+      - pg_motorzap_data:/var/lib/postgresql
     networks:
       - motorzap-network
     healthcheck:
@@ -17,24 +17,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: motorzap-api
-    environment:
-      DATABASE_URL: postgres://motorzap:motorzap@postgres:5432/motorzap
-      PORT: 3333
-      NODE_ENV: production
-    ports:
-      - "3333:3333"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - motorzap-network
-    restart: unless-stopped
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -51,7 +33,6 @@ services:
       - motorzap-network
     depends_on:
       - postgres
-    restart: unless-stopped
 
 volumes:
   pg_motorzap_data:
